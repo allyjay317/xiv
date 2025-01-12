@@ -3,9 +3,10 @@ package main
 import (
 	"log"
 	"net/http"
+
+	"github.com/alyjay/xiv/user"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"alyjay/xiv/user"
 )
 
 func init() {
