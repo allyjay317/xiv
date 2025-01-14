@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { NavigateFunction, useNavigate } from "react-router";
 import { useSiteContext } from "../SiteContext";
 
 const style = {
@@ -7,41 +7,70 @@ const style = {
   border: "1px solid black",
   padding: "8px",
   borderRadius: "25px",
-  backgroundColor: 'cerulean'
+  backgroundColor: 'cerulean',
+  maxHeight: '24px'
 };
 
-type Props = {
-  label: string;
-} & (
-  | {
-      type: "anchor";
-      action: string;
-    }
-  | {
-      type: "button";
-      action: string | (() => void);
-    }
-);
+type BaseNavigationButtonProps = {label: string}
 
-export const NavigationButton = ({ label, type, action }: Props) => {
+type AnchorNavigationProps = BaseNavigationButtonProps & {
+  type: "anchor";
+  action: string
+}
+
+type LinkNavigationProps = BaseNavigationButtonProps & {
+  type: "button"
+  action: string | (() => void);
+}
+type IconNavigationProps = BaseNavigationButtonProps & {
+  type: 'icon',
+  action: string | (() => void);
+  src: string
+}
+
+type Props = AnchorNavigationProps | LinkNavigationProps | IconNavigationProps
+
+export const NavigationButton = (props: Props) => {
   const navigate = useNavigate();
+  const {type, action} = props
 
-    const {userInfo} = useSiteContext()
+    const onButtonClick = () => {
+      if (type === "anchor") {
+        window.open(action, '_self');
+        return;
+      } else if (typeof action === "string") {
+        navigate(action);
+        return;
+      }
+      action();
+    };
     
-
-  const onButtonClick = () => {
-    if (type === "anchor") {
-      window.open(action, '_self');
-      return;
-    } else if (typeof action === "string") {
-      navigate(action);
-      return;
+    switch(props.type){
+      case 'anchor':
+        return <TextButton {...(props as AnchorNavigationProps)} onClick={onButtonClick} />
+      case 'button':
+        return <TextButton {...(props as LinkNavigationProps)} onClick={onButtonClick} />
+      case 'icon':
+        return <IconButton {...props as IconNavigationProps} onClick={onButtonClick} />
     }
-    action();
-  };
+};
+
+function TextButton({label, onClick}: (LinkNavigationProps | AnchorNavigationProps) & {onClick: VoidFunction}){
+  
+  
   return (
-    <div style={{...style, backgroundColor: 'wheat'}} onClick={() => onButtonClick()}>
+    <div style={{...style, backgroundColor: 'wheat'}} onClick={onClick}>
       {label}
     </div>
   );
-};
+}
+
+function IconButton({label, src, onClick}: IconNavigationProps & {onClick: VoidFunction}){
+  return (
+      <img src={src} style={{
+        borderRadius: '50%',
+        cursor: 'pointer',
+        border: '4px solid white'
+      }} onClick={onClick} aria-label={label}/>
+  )
+}

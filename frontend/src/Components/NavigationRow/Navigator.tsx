@@ -1,24 +1,35 @@
+
 import { useSiteContext } from "../SiteContext";
 import { NavigationButton } from "./NavigationButton";
+import { userInfo } from "os";
+
 
 
 export const Navigator = () => {
   const {isLoggedIn, logOut, userInfo} = useSiteContext()
   const loginURI = import.meta.env.VITE_LOGIN_URI
-
+  
   return (
-    <div style={{ display: "flex", backgroundColor: userInfo?.banner_color || 'white' }}>
+    <div style={{
+      display: "flex",
+      backgroundColor: userInfo?.banner_color || 'white',
+      width: "100%",
+      position: 'absolute',
+      top: 0
+    }} >
+      
       <div style={{ flexGrow: 2, justifySelf: "baseline" }}>
         <NavigationButton label="Home" type="button" action="/" />
       </div>
-      <div>
-        {isLoggedIn ? (
+      <div style={{display: 'flex'}}>
+        {isLoggedIn && userInfo ? (
           <>
-            <NavigationButton action="/user" type="button" label="User Page" />
+            <NavigationButton action="/user" label="User Page"  type="icon" src={`https://cdn.discordapp.com/avatars/${userInfo.id}/${userInfo.avatar}`}/>
             <NavigationButton
               action={logOut}
-              type="button"
+              type='button'
               label="logout"
+              
             />
           </>
         ) : (
@@ -30,6 +41,7 @@ export const Navigator = () => {
             />
           </>
         )}
+        
       </div>
     </div>
   );

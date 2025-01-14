@@ -7,18 +7,27 @@ import { Navigator } from './NavigationRow/Navigator';
 import { SiteProvider } from "./SiteContext";
 
 
-
+function SiteContainer({children}: {children: React.ReactNode[]}){
+  return <div style={{
+    width: '100%',
+    height: '100%'
+  }}>
+    <Router>
+    <SiteProvider>
+    {children}
+    </SiteProvider>
+    </Router>
+  </div>
+}
 export const BaseRoute = () => {
   return (
-    <Router>
-      <SiteProvider>
+    <SiteContainer>
       <Navigator />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginRedirect />} />
         <Route path="/user" element={<LoggedInPage />} />
       </Routes>
-      </SiteProvider>
-    </Router>
+      </SiteContainer>
   );
 };
