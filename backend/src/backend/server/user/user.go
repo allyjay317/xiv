@@ -3,6 +3,7 @@ package user
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -16,13 +17,11 @@ import (
 )
 
 type User struct {
-	ID       string `json:"id,omitempty" db:"id"`
-	Username string `json:"username" db:"username"`
-	Email    string `json:"email" db:"email"`
-}
-
-type LoginRequest struct {
-	Code string `json:"code"`
+	ID          string `json:"id,omitempty" db:"id"`
+	Username    string `json:"username" db:"username"`
+	DiscordId   string `json:"discord_id" db:"discord_id"`
+	Avatar      string `json:"avatar" db:"avatar"`
+	AccentColor string `json:"accent_color" db:"accent_color"`
 }
 
 type AuthTokenRequest struct {
@@ -42,41 +41,81 @@ type AuthTokenResponse struct {
 	Scope        string `json:"scope"`
 }
 
-func GetUsers(w http.ResponseWriter, r *http.Request) {
-	var users []User
+type DiscordUserResponse struct {
+	Id                   string `json:"id"`
+	Username             string `json:"username"`
+	Avatar               string `json:"avatar"`
+	Discriminator        string `json:"discriminator"`
+	PublicFlags          int    `json:"public_flags"`
+	Flags                int    `json:"flags"`
+	Banner               string `json:"banner"`
+	AccentColor          int    `json:"accent_color"`
+	GlobalName           string `json:"global_name"`
+	AvatarDecorationData map[string]struct {
+		SkuId string `json:"sku_id"`
+		Asset string `json:"asset"`
+	} `json:"avatar_decoration_data"`
+	BannerColor  string              `json:"banner_color"`
+	Clan         map[string]struct{} `json:"clan"`
+	PrimaryGuild map[string]struct{} `json:"primary_guild"`
+	MfaEnabled   bool                `json:"mfa_enabled"`
+	Locale       string              `json:"locale"`
+	PremiumType  int                 `json:"premium_type"`
+}
+
+// func GetUsers(w http.ResponseWriter, r *http.Request) {
+// 	var users []User
+// 	db, err := database.GetDb(w)
+// 	if err != nil {
+// 		return
+// 	}
+// 	err = db.Select(&users, "SELECT id, username, email FROM users")
+
+// 	if err != nil {
+// 		w.WriteHeader(http.StatusInternalServerError)
+// 		w.Write([]byte("500 - Server Issue"))
+// 		return
+// 	}
+// 	json.NewEncoder(w).Encode(users)
+// }
+
+func GetUser(w http.ResponseWriter, r *http.Request) {
+	var user User
+	id := r.URL.Query().Get("id")
+
 	db, err := database.GetDb(w)
 	if err != nil {
 		return
 	}
-	err = db.Select(&users, "SELECT id, username, email FROM users")
-
+	err = db.Get(&user, `SELECT * FROM users WHERE id=$1`, id)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("500 - Server Issue"))
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("No User Found"))
 		return
 	}
-	json.NewEncoder(w).Encode(users)
+
+	json.NewEncoder(w).Encode(user)
 }
 
-func CreateUser(w http.ResponseWriter, r *http.Request) {
-	var newUser User
-	_ = json.NewDecoder(r.Body).Decode(&newUser)
-	newUUID := uuid.NewString()
+// func CreateUser(w http.ResponseWriter, r *http.Request) {
+// 	var newUser User
+// 	_ = json.NewDecoder(r.Body).Decode(&newUser)
+// 	newUUID := uuid.NewString()
 
-	db, err := database.GetDb(w)
-	if err != nil {
-		return
-	}
+// 	db, err := database.GetDb(w)
+// 	if err != nil {
+// 		return
+// 	}
 
-	_, err = db.Exec(`INSERT INTO users (id, username, email, password) VALUES ($1, $2, $3, $4)`, newUUID, newUser.Username, newUser.Email, "hunter2")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("500 - Server Issue"))
-		return
-	}
-	newUser.ID = newUUID
-	json.NewEncoder(w).Encode(newUser)
-}
+// 	_, err = db.Exec(`INSERT INTO users (id, username, email, password) VALUES ($1, $2, $3, $4)`, newUUID, newUser.Username, newUser.Email, "hunter2")
+// 	if err != nil {
+// 		w.WriteHeader(http.StatusInternalServerError)
+// 		w.Write([]byte("500 - Server Issue"))
+// 		return
+// 	}
+// 	newUser.ID = newUUID
+// 	json.NewEncoder(w).Encode(newUser)
+// }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	client_id, _ := os.LookupEnv("DISCORD_CLIENT_ID")
@@ -124,5 +163,60 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, site_url+"/login?authorization_token="+result.AccessToken+"&token_type="+result.TokenType, http.StatusSeeOther)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", "https://discord.com/api/users/@me", nil)
+	req.Header.Set("Authorization", result.TokenType+" "+result.AccessToken)
+	res, err := client.Do(req)
+	if err != nil {
+		http.Redirect(w, r, site_url+"/error", http.StatusInternalServerError)
+		return
+	}
+
+	defer res.Body.Close()
+
+	// body, err = io.ReadAll(res.Body)
+	// println(string(body))
+	// if err != nil {
+	// 	http.Redirect(w, r, site_url+"/error", http.StatusInternalServerError)
+	// 	return
+	// }
+
+	// var userResult DiscordUserResponse
+	// err = json.Unmarshal([]byte(body), &userResult)
+	// if err != nil {
+	// 	http.Redirect(w, r, site_url+"/error", http.StatusInternalServerError)
+	// 	return
+	// }
+	var userResult DiscordUserResponse
+	_ = json.NewDecoder(res.Body).Decode(&userResult)
+
+	newUUID := uuid.NewString()
+
+	db, err := database.GetDb(w)
+	if err != nil {
+		return
+	}
+
+	var user User
+	user.ID = newUUID
+	err = db.Get(&user, `SELECT * FROM users WHERE discord_id=$1`, userResult.Id)
+	if err != nil {
+		user.Username = userResult.Username
+		user.DiscordId = userResult.Id
+		user.Avatar = userResult.Avatar
+		if userResult.AccentColor != 0 {
+			user.AccentColor = fmt.Sprintf("#%x", userResult.AccentColor)
+		} else if userResult.BannerColor != "" {
+			user.AccentColor = userResult.BannerColor
+		}
+		_, err = db.Exec(`INSERT INTO users (id, username, discord_id, avatar, accent_color) VALUES ($1, $2, $3, $4, $5)`,
+			user.ID,
+			user.Username,
+			user.DiscordId,
+			user.Avatar,
+			user.AccentColor,
+		)
+	}
+
+	http.Redirect(w, r, site_url+"/login?id="+user.ID, http.StatusSeeOther)
 }

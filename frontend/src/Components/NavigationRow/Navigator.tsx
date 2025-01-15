@@ -12,7 +12,7 @@ export const Navigator = () => {
   return (
     <div style={{
       display: "flex",
-      backgroundColor: userInfo?.banner_color || 'white',
+      backgroundColor: userInfo?.accent_color || 'white',
       width: "100%",
       position: 'absolute',
       top: 0
@@ -24,7 +24,7 @@ export const Navigator = () => {
       <div style={{display: 'flex'}}>
         {isLoggedIn && userInfo ? (
           <>
-            <NavigationButton action="/user" label="User Page"  type="icon" src={`https://cdn.discordapp.com/avatars/${userInfo.id}/${userInfo.avatar}`}/>
+            <NavigationButton action="/user" label="User Page"  type="icon" src={`https://cdn.discordapp.com/avatars/${userInfo.discord_id}/${userInfo.avatar}`}/>
             <NavigationButton
               action={logOut}
               type='button'

@@ -9,12 +9,8 @@ export const LoginRedirect = () => {
     const {logIn} = useSiteContext()
     const navigate = useNavigate()
     useEffect(() => {
-        const authorization_token = searchParams.get('authorization_token')
-        const token_type = searchParams.get("token_type")
-        logIn({
-            authorization_token,
-            token_type
-        })
+        const id = searchParams.get('id')
+        logIn(id)
         navigate('/user')
     }, [])
 
