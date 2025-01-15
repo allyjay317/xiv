@@ -7,6 +7,7 @@ type SiteValues = {
   userInfo?: UserInfo;
   logOut: () => void;
   logIn: (discordInfo: any) => void;
+  avatar?: string
 };
 
 const defaultValues: SiteValues = {
@@ -31,18 +32,27 @@ export const SiteProvider = (props: any) => {
   const isLoggedIn = discordAuth ?? false;
 
   useEffect(() => {
-    if (discordAuth) {
+    if (discordAuth?.authorization_token) {
       axios({
         method: "get",
         url: "https://discord.com/api/users/@me",
         headers: {
-          Authorization: `${discordAuth.token_type} ${discordAuth.access_token}`,
+          Authorization: `${discordAuth.token_type} ${discordAuth.authorization_token}`,
         },
       }).then((info) => {
         setUserInfo(info.data as UserInfo);
       });
     }
   }, [discordAuth]);
+
+  // useEffect(() => {
+  //   if(userInfo?.avatar) {
+  //     axios({
+  //       method: "get",
+  //       url: ""
+  //     })
+  //   }
+  // }, [userInfo])
 
   const logOut = () => {
     localStorage.removeItem("discord_auth");
