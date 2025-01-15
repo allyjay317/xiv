@@ -18,6 +18,7 @@ const defaultValues: SiteValues = {
 };
 
 const SiteContext = React.createContext(defaultValues);
+const apiUrl = import.meta.env.VITE_SERVER_URL
 
 export const useSiteContext = () => {
   const context = useContext(SiteContext);
@@ -25,44 +26,37 @@ export const useSiteContext = () => {
 };
 
 export const SiteProvider = (props: any) => {
-  const [discordAuth, setDiscordAuth] = useState(
-    JSON.parse(localStorage.getItem("discord_auth") ?? "{}")
+  const [id, setId] = useState<string | null>(
+    localStorage.getItem("id")
   );
   const [userInfo, setUserInfo] = useState<undefined | UserInfo>();
-  const isLoggedIn = discordAuth ?? false;
+  const isLoggedIn = !!id
 
   useEffect(() => {
-    if (discordAuth?.authorization_token) {
+    if (id) {
       axios({
         method: "get",
-        url: "https://discord.com/api/users/@me",
-        headers: {
-          Authorization: `${discordAuth.token_type} ${discordAuth.authorization_token}`,
-        },
+        url: `${apiUrl}/user`,
+        params: {
+          id
+        }
       }).then((info) => {
         setUserInfo(info.data as UserInfo);
+      }).catch(e => {
+        console.log(e)
       });
     }
-  }, [discordAuth]);
-
-  // useEffect(() => {
-  //   if(userInfo?.avatar) {
-  //     axios({
-  //       method: "get",
-  //       url: ""
-  //     })
-  //   }
-  // }, [userInfo])
+  }, [id]);
 
   const logOut = () => {
-    localStorage.removeItem("discord_auth");
+    localStorage.removeItem("id");
     setUserInfo(undefined);
-    setDiscordAuth(null);
+    setId(null);
   };
 
-  const logIn = (discordInfo: any) => {
-    localStorage.setItem("discord_auth", JSON.stringify(discordInfo));
-    setDiscordAuth(discordInfo);
+  const logIn = (id: string) => {
+    localStorage.setItem("id", id);
+    setId(id)
   };
 
   return (

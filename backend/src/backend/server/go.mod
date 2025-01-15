@@ -8,13 +8,9 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9
+	github.com/rs/cors v1.11.1
 )
 
-require (
-	github.com/jmoiron/sqlx v1.4.0 // indirect
-	github.com/ravener/discord-oauth2 v0.0.0-20230514095040-ae65713199b3 // indirect
-	github.com/rs/cors v1.11.1 // indirect
-	golang.org/x/oauth2 v0.25.0 // indirect
-)
+require github.com/jmoiron/sqlx v1.4.0 // indirect
 
 replace github.com/alyjay/xivdb => ../database

@@ -18,8 +18,8 @@ func init() {
 
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/users", user.GetUsers).Methods("GET")
-	router.HandleFunc("/users", user.CreateUser).Methods("POST")
+	router.HandleFunc("/user", user.GetUser).Methods("GET")
+	// router.HandleFunc("/users", user.CreateUser).Methods("POST")
 	router.HandleFunc("/login", user.LoginUser).Methods("GET")
 
 	c := cors.New(cors.Options{
