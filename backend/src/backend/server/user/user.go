@@ -10,6 +10,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/alyjay/xiv/character"
 	database "github.com/alyjay/xivdb"
 	"github.com/google/uuid"
 
@@ -17,11 +18,12 @@ import (
 )
 
 type User struct {
-	ID          string `json:"id,omitempty" db:"id"`
-	Username    string `json:"username" db:"username"`
-	DiscordId   string `json:"discord_id" db:"discord_id"`
-	Avatar      string `json:"avatar" db:"avatar"`
-	AccentColor string `json:"accent_color" db:"accent_color"`
+	ID          string                `json:"id,omitempty" db:"id"`
+	Username    string                `json:"username" db:"username"`
+	DiscordId   string                `json:"discord_id" db:"discord_id"`
+	Avatar      string                `json:"avatar" db:"avatar"`
+	AccentColor string                `json:"accent_color" db:"accent_color"`
+	Characters  []character.Character `json:"characters"`
 }
 
 type AuthTokenRequest struct {
@@ -63,24 +65,9 @@ type DiscordUserResponse struct {
 	PremiumType  int                 `json:"premium_type"`
 }
 
-// func GetUsers(w http.ResponseWriter, r *http.Request) {
-// 	var users []User
-// 	db, err := database.GetDb(w)
-// 	if err != nil {
-// 		return
-// 	}
-// 	err = db.Select(&users, "SELECT id, username, email FROM users")
-
-// 	if err != nil {
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 		w.Write([]byte("500 - Server Issue"))
-// 		return
-// 	}
-// 	json.NewEncoder(w).Encode(users)
-// }
-
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	var user User
+	var characters []character.Character
 	id := r.URL.Query().Get("id")
 
 	db, err := database.GetDb(w)
@@ -94,28 +81,15 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = db.Select(&characters, `SELECT character_id, name, avatar, portrait FROM characters WHERE user_id=$1`, id)
+	if err != nil {
+
+	}
+
+	user.Characters = append(user.Characters, characters...)
+
 	json.NewEncoder(w).Encode(user)
 }
-
-// func CreateUser(w http.ResponseWriter, r *http.Request) {
-// 	var newUser User
-// 	_ = json.NewDecoder(r.Body).Decode(&newUser)
-// 	newUUID := uuid.NewString()
-
-// 	db, err := database.GetDb(w)
-// 	if err != nil {
-// 		return
-// 	}
-
-// 	_, err = db.Exec(`INSERT INTO users (id, username, email, password) VALUES ($1, $2, $3, $4)`, newUUID, newUser.Username, newUser.Email, "hunter2")
-// 	if err != nil {
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 		w.Write([]byte("500 - Server Issue"))
-// 		return
-// 	}
-// 	newUser.ID = newUUID
-// 	json.NewEncoder(w).Encode(newUser)
-// }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	client_id, _ := os.LookupEnv("DISCORD_CLIENT_ID")
@@ -174,19 +148,6 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	defer res.Body.Close()
 
-	// body, err = io.ReadAll(res.Body)
-	// println(string(body))
-	// if err != nil {
-	// 	http.Redirect(w, r, site_url+"/error", http.StatusInternalServerError)
-	// 	return
-	// }
-
-	// var userResult DiscordUserResponse
-	// err = json.Unmarshal([]byte(body), &userResult)
-	// if err != nil {
-	// 	http.Redirect(w, r, site_url+"/error", http.StatusInternalServerError)
-	// 	return
-	// }
 	var userResult DiscordUserResponse
 	_ = json.NewDecoder(res.Body).Decode(&userResult)
 

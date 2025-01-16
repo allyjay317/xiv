@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS characters;
+DROP FUNCTION IF EXISTS  sync_lastmod
