@@ -1,5 +1,5 @@
 import { Button } from "../common/Button";
-import { useSiteContext } from "../SiteContext";
+import { useSiteContext } from "../context/SiteContext";
 import { NavigationButton } from "./NavigationButton";
 
 export function LoginButton({loginURI}: {loginURI: string}){

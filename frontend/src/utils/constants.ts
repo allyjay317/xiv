@@ -3,6 +3,29 @@ import { Jobs, Slot, UpgradeItem } from './types'
 export const SIDEBAR_WIDTH = 300
 export const HEADER_HEIGHT = 100
 
+import ast from '../assets/img/job_images/Astrologian.png'
+import brd from '../assets/img/job_images/Bard.png'
+import blm from '../assets/img/job_images/BlackMage.png'
+import blu from '../assets/img/job_images/BlueMage.png'
+import dnc from '../assets/img/job_images/Dancer.png'
+import drk from '../assets/img/job_images/DarkKnight.png'
+import drg from '../assets/img/job_images/Dragoon.png'
+import pct from '../assets/img/job_images/GreenMage.png'
+import gnb from '../assets/img/job_images/Gunbreaker.png'
+import mch from '../assets/img/job_images/Machinist.png'
+import mnk from '../assets/img/job_images/Monk.png'
+import nin from '../assets/img/job_images/Ninja.png'
+import pld from '../assets/img/job_images/Paladin.png'
+import rpr from '../assets/img/job_images/Reaper.png'
+import rdm from '../assets/img/job_images/RedMage.png'
+import sge from '../assets/img/job_images/Sage.png'
+import sam from '../assets/img/job_images/Samurai.png'
+import sch from '../assets/img/job_images/Scholar.png'
+import smn from '../assets/img/job_images/Summoner.png'
+import vpr from '../assets/img/job_images/Viper.png'
+import war from '../assets/img/job_images/Warrior.png'
+import whm from '../assets/img/job_images/WhiteMage.png'
+
 export const FLOOR_1 = [
   Slot.BRACELET,
   Slot.EARRINGS,
@@ -89,91 +112,91 @@ export const SLOT_INFO: Record<
 
 export const JobInfo: Record<Jobs, { name?: string; icon?: string }> = {
   AST: {
-    icon: '/img/job_images/Astrologian.png',
+    icon: ast,
     name: 'Astrologian',
   },
   BLM: {
-    icon: '/img/job_images/BlackMage.png',
+    icon: blm,
     name: 'Black Mage',
   },
   BLU: {
-    icon: '/img/job_images/BlueMage.png',
+    icon: blu,
     name: 'Blue Mage',
   },
   BRD: {
-    icon: '/img/job_images/Bard.png',
+    icon: brd,
     name: 'Bard',
   },
   DNC: {
-    icon: '/img/job_images/Dancer.png',
+    icon: dnc,
     name: 'Dancer',
   },
   DRG: {
-    icon: '/img/job_images/Dragoon.png',
+    icon: drg,
     name: 'Dragoon',
   },
   DRK: {
-    icon: '/img/job_images/DarkKnight.png',
+    icon: drk,
     name: 'Dark Knight',
   },
   GMG: {
-    icon: '/img/job_images/GreenMage.png',
-    name: 'Green Mage',
+    icon: pct,
+    name: 'Pictomancer',
   },
   GNB: {
-    icon: '/img/job_images/Gunbreaker.png',
+    icon: gnb,
     name: 'Gunbreaker',
   },
   MCH: {
-    icon: '/img/job_images/Machinist.png',
+    icon: mch,
     name: 'Machinist',
   },
   MNK: {
-    icon: '/img/job_images/Monk.png',
+    icon: mnk,
     name: 'Monk',
   },
   NIN: {
-    icon: '/img/job_images/Ninja.png',
+    icon: nin,
     name: 'Ninja',
   },
   PLD: {
-    icon: '/img/job_images/Paladin.png',
+    icon: pld,
     name: 'Paladin',
   },
   RDM: {
-    icon: '/img/job_images/RedMage.png',
+    icon: rdm,
     name: 'Red Mage',
   },
   RPR: {
-    icon: '/img/job_images/Reaper.png',
+    icon: rpr,
     name: 'Reaper',
   },
   SAM: {
-    icon: '/img/job_images/Samurai.png',
+    icon: sam,
     name: 'Samurai',
   },
   SCH: {
-    icon: '/img/job_images/Scholar.png',
+    icon: sch,
     name: 'Scholar',
   },
   SGE: {
-    icon: '/img/job_images/Sage.png',
+    icon: sge,
     name: 'Sage',
   },
   SMN: {
-    icon: '/img/job_images/Summoner.png',
+    icon: smn,
     name: 'Summoner',
   },
   VPR: {
-    icon: '/img/job_images/Viper.png',
+    icon: vpr,
     name: 'Viper',
   },
   WAR: {
-    icon: '/img/job_images/Warrior.png',
+    icon: war,
     name: 'Warrior',
   },
   WHM: {
-    icon: '/img/job_images/WhiteMage.png',
+    icon: whm,
     name: 'White Mage',
   },
 }

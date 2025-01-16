@@ -4,6 +4,9 @@ import { Page } from './Components/layout/Page'
 import { HomePage } from './Components/home/HomePage'
 import { LoginRedirect } from './Components/login/LoginRedirect'
 import { LoggedInPage } from './Components/login/LoggedInPage'
+import { AddCharacterPage } from './Components/AddCharacter/AddCharacterPage'
+import { GearSetList } from './Components/GearSet/GearSetList'
+import { SiteProvider } from './Components/context/SiteContext'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +22,12 @@ const router = createBrowserRouter([
       {
         element: <LoggedInPage />,
         path: '/user'
+      }, {
+        path: '/add-character',
+        element: <AddCharacterPage />
+      }, {
+        element: <GearSetList />,
+        path: '/gear-sets'
       }
     ],
     element: <Page />,
@@ -30,7 +39,9 @@ const router = createBrowserRouter([
 export function App() {
   return (
     <>
+      <SiteProvider>
       <RouterProvider router={router} />
+      </SiteProvider>
     </>
   )
 }

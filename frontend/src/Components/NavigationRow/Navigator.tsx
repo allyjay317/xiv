@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Color } from "../../utils/colorSchemes";
 import { HEADER_HEIGHT } from "../../utils/constants";
 import { Type } from "../common/Type";
-import { useSiteContext } from "../SiteContext";
+import { useSiteContext } from "../context/SiteContext";
 import { LoginButton } from "./LoginButton";
 import { NavigationButton } from "./NavigationButton";
 import { Button } from "../common/Button";
@@ -55,7 +55,7 @@ export const Navigator = () => {
         <Link style={{ textDecoration: 'none' }} to="/add-character">
           <Button label="Add Character" onClick={() => {}} />
         </Link>
-        <Link style={{ textDecoration: 'none' }} to="/">
+        <Link style={{ textDecoration: 'none' }} to="/gear-sets">
           <Button label="Gear Sets" />
         </Link>
         <Link style={{ textDecoration: 'none' }} to="/gear-planner">

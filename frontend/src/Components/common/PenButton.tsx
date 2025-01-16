@@ -1,3 +1,8 @@
+import penButton from '../../assets/img/edit-pen-icon.svg'
+import {ReactSVG} from 'react-svg'
+import { Color } from '../../utils/colorSchemes'
+
+
 export function PenButton({ onClick }: { onClick: () => void }) {
   return (
     <div
@@ -10,7 +15,9 @@ export function PenButton({ onClick }: { onClick: () => void }) {
         width: '16px',
       }}
     >
-      <img alt="edit job" src="/img/edit-pen-icon.svg" />
+      <ReactSVG src={penButton} style={{
+        'fill': Color.fg1
+      }}  />
     </div>
   )
 }
