@@ -1,0 +1,38 @@
+import { useMemo } from 'react'
+import { useSiteContext } from '../context/SiteContext'
+import { Type } from '../common/Type'
+import { Table } from './Table'
+import { getStats } from '../../utils/utils'
+
+
+export function Stats() {
+  const { characters, currentlySelectedCharacter } = useSiteContext()
+
+  const gearSets = useMemo(() => {
+    if (!currentlySelectedCharacter) return []
+    return characters[currentlySelectedCharacter]?.gearSets
+  }, [characters, currentlySelectedCharacter])
+
+  const tableData = useMemo(() => {
+    return getStats(gearSets)
+  }, [gearSets])
+  return (
+    <div>
+      <Type bold size="L">
+        Remaining
+      </Type>
+      <div
+        style={{
+          alignContent: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Table rows={tableData.floor1} title="Floor 1" />
+        <Table rows={tableData.floor2} title="Floor 2" />
+        <Table rows={tableData.floor3} title="Floor 3" />
+        <Table rows={tableData.floor4} title="Floor 4" />
+      </div>
+    </div>
+  )
+}

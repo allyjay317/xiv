@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate, useSearchParams } from "react-router"
-import { useSiteContext } from "../SiteContext"
+import { useSiteContext } from "../context/SiteContext"
 
 
 

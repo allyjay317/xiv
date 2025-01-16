@@ -1,4 +1,5 @@
-import { useSiteContext } from "../SiteContext"
+import { Type } from "../common/Type"
+import { useSiteContext } from "../context/SiteContext"
 
 
 
@@ -7,6 +8,6 @@ export const LoggedInPage = () => {
 
     return userInfo ? (
     <div>
-        <div>Welcome {userInfo.username}</div>
+        <Type size="M">Welcome {userInfo.username}</Type>
     </div>) : <></>
 }

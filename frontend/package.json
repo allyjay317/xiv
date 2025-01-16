@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@types/node": "^22.10.5",
     "axios": "^1.7.9",
     "discord-api-types": "^0.37.115",
@@ -17,7 +19,9 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^7.1.1",
-    "react-router-dom": "^7.1.1"
+    "react-router-dom": "^7.1.1",
+    "react-svg": "^16.2.0",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.13.5",

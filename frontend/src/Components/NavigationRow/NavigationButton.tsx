@@ -1,5 +1,5 @@
-import { NavigateFunction, useNavigate } from "react-router";
-import { useSiteContext } from "../SiteContext";
+import { useNavigate } from "react-router";
+import { HEADER_HEIGHT } from "../../utils/constants";
 
 const style = {
   cursor: "pointer",
@@ -11,7 +11,7 @@ const style = {
   maxHeight: '24px'
 };
 
-type BaseNavigationButtonProps = {label: string}
+type BaseNavigationButtonProps = {label: string, color?: string}
 
 type AnchorNavigationProps = BaseNavigationButtonProps & {
   type: "anchor";
@@ -65,12 +65,14 @@ function TextButton({label, onClick}: (LinkNavigationProps | AnchorNavigationPro
   );
 }
 
-function IconButton({label, src, onClick}: IconNavigationProps & {onClick: VoidFunction}){
+function IconButton({label, color, src, onClick}: IconNavigationProps & {onClick: VoidFunction}){
   return (
       <img src={src} style={{
         borderRadius: '50%',
         cursor: 'pointer',
-        border: '4px solid white'
+        border: `4px solid ${color || 'white'}`,
+        height: `${HEADER_HEIGHT - 16}px`,
+        width: `${HEADER_HEIGHT - 16}px`
       }} onClick={onClick} aria-label={label}/>
   )
 }
