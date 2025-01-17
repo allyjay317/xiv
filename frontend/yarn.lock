@@ -1683,6 +1683,11 @@ react-router@7.1.1, react-router@^7.1.1:
     set-cookie-parser "^2.6.0"
     turbo-stream "2.4.0"
 
+react-spinners@^0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/react-spinners/-/react-spinners-0.15.0.tgz#bb9536a3839ab4e1513bb98847d79cc1fc930b93"
+  integrity sha512-ZO3/fNB9Qc+kgpG3SfdlMnvTX6LtLmTnOogb3W6sXIaU/kZ1ydEViPfZ06kSOaEsor58C/tzXw2wROGQu3X2pA==
+
 react-svg@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-16.2.0.tgz#c51183b9deb3fdf0e83617977e69d7a2ffa8f34f"

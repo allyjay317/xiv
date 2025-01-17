@@ -21,21 +21,11 @@ export function Sidebar() {
     if (!userInfo) return null
     const name = (
       <Type bold size="M">
-        {userInfo.Name}
+        {userInfo.name}
       </Type>
     )
-    const title = <Type size="S">{userInfo.Title[`Name_${language}`]}</Type>
-    if (userInfo.TitleTop)
-      return (
-        <>
-          {title} {name}
-        </>
-      )
-    return (
-      <>
-        {name} {title}
-      </>
-    )
+
+    return name
   }, [userInfo, language])
 
   return (
@@ -58,7 +48,7 @@ export function Sidebar() {
           {info}
           <img
             alt="Character Portrait"
-            src={userInfo.Portrait}
+            src={userInfo.portrait}
             style={{ width: `${SIDEBAR_WIDTH - 30}px` }}
           />
           <Stats />
