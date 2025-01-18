@@ -1,4 +1,5 @@
 
+import { API_REQUEST_RESULT } from "../../utils/constants";
 import { CharacterInfo, SiteValues } from "./types";
 
 export const defaultValues: SiteValues = {
@@ -7,14 +8,14 @@ export const defaultValues: SiteValues = {
     logOut: () => {},
     logIn: () => {},
     characters: {},
-    addCharacter: async () => "",
+    addCharacter: async () => API_REQUEST_RESULT.SUCCESS,
     updateGearPiece: () => {},
     deleteGearSet: () => {},
     addGearSet: () => {},
     currentlySelectedCharacter: undefined,
     updateGearSet: () => {},
     setCurrentlySelectedCharacter: () => {},
-    verifyCharacter: () => {}
+    verifyCharacter: async () => API_REQUEST_RESULT.SUCCESS
   };
 
   export const testUser: CharacterInfo = {

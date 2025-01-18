@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useCallback, useState } from "react"
 import { CharacterInfo } from "./types"
+import { API_REQUEST_RESULT } from "../../utils/constants"
 
 const apiUrl = import.meta.env.VITE_SERVER_URL
 
@@ -15,7 +16,7 @@ export function useCharacters(id: string | null){
     const addCharacter = useCallback(
         async (newId: string) => {
             if(characters[newId]){
-                return "Already Exists"
+                return API_REQUEST_RESULT.ALREADY_EXISTS
             }
           try {
             const res = await axios.post(`${apiUrl}/character`, {
@@ -34,7 +35,7 @@ export function useCharacters(id: string | null){
                 if(!currentlySelectedCharacter){
                   setCurrentlySelectedCharacter(newId)
                 }
-                return 'Success'
+                return API_REQUEST_RESULT.SUCCESS
             
             
           } catch (e) {
@@ -60,9 +61,9 @@ export function useCharacters(id: string | null){
                     }
                   }
                 setCharacters(newCharacters)
-                return "Success"
+                return API_REQUEST_RESULT.SUCCESS
               } else {
-                return "Failure"
+                return API_REQUEST_RESULT.FAILURE
               }
         } catch(error){
             return error as Error

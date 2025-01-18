@@ -26,13 +26,15 @@ export function Button({
   label,
   onClick,
   style,
+  state
 }: {
   label: string
   onClick?: () => void
   style?: React.CSSProperties
+  state?: 'default' | 'disabled'
 }) {
   return (
-    <ButtonContainer onClick={onClick} style={style}>
+    <ButtonContainer onClick={onClick} style={{...style, color: state === 'disabled' ? Color.bg3 : style?.color ?? Color.fg1, cursor: state === 'disabled' ? 'none' : 'pointer'}}>
       {label}
     </ButtonContainer>
   )

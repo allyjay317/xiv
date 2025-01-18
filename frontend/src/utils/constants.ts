@@ -26,6 +26,12 @@ import vpr from '../assets/img/job_images/Viper.png'
 import war from '../assets/img/job_images/Warrior.png'
 import whm from '../assets/img/job_images/WhiteMage.png'
 
+export enum API_REQUEST_RESULT {
+  SUCCESS = "Success",
+  FAILURE = "Failure",
+  ALREADY_EXISTS = "Already Exists"
+}
+
 export const FLOOR_1 = [
   Slot.BRACELET,
   Slot.EARRINGS,

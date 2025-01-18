@@ -4,14 +4,26 @@ import { Type } from "../common/Type";
 import { CharacterInfo } from "../context/types";
 import { useSiteContext } from "../context/SiteContext";
 import {v4 as uuidv4 } from 'uuid'
+import { useState } from "react";
+import { API_REQUEST_RESULT } from "../../utils/constants";
+import ClipLoader from 'react-spinners/ClipLoader'
+import { Color } from "../../utils/colorSchemes";
 
 export function Character({character}: {character: CharacterInfo}){
     const {verifyCharacter} = useSiteContext()
     const {verified} = character
     const verifyPhrase = `xiv-${uuidv4()}`
+    const [isLoading, setLoading] = useState(false)
+    const [error, setError] = useState<null | string>(null)
 
-    const onVerify = () => {
-        verifyCharacter(`${character.info.id}`, verifyPhrase)
+    const onVerify = async () => {
+        setError(null)
+        setLoading(true)
+        const res = await verifyCharacter(`${character.info.id}`, verifyPhrase)
+        if(res === API_REQUEST_RESULT.FAILURE){
+            setError("Failed to Verify")
+        }
+        setLoading(false)
     }
 
     return (
@@ -23,8 +35,12 @@ export function Character({character}: {character: CharacterInfo}){
                 />
                 {!verified && 
                 <>
-                    <Type size="S">Place `{verifyPhrase}` in your bio to verify</Type>
+                    <Type size="S">Place</Type>
+                    <Type size="S">{verifyPhrase}</Type>
+                    <Type size="S">in your bio to verify</Type>
                     <Button label='verify' onClick={onVerify} />
+                    <ClipLoader color={Color.fg1} loading={isLoading} />
+                    <Type size="S" color='red'>{error}</Type>
                 </>}
               </div>
             )

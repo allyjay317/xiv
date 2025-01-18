@@ -1,3 +1,4 @@
+import { API_REQUEST_RESULT } from "../../utils/constants";
 import { GearPiece, GearSet, Slot } from "../../utils/types";
 import { XIVUserInfo } from "../common/Type";
 import { UserInfo } from "../types";
@@ -11,7 +12,7 @@ export type SiteValues = {
   logIn: (discordInfo: any) => void;
   avatar?: string
   characters: Record<string, CharacterInfo>
-  addCharacter: (newId: string) => Promise<string | Error>
+  addCharacter: (newId: string) => Promise<API_REQUEST_RESULT | Error>
   updateGearPiece: ({
     id,
     slot,
@@ -26,6 +27,6 @@ export type SiteValues = {
   currentlySelectedCharacter: string | undefined
   updateGearSet: (gearSet: GearSet) => void
   setCurrentlySelectedCharacter: (id: string) => void
-  verifyCharacter: (lodestoneId: string, verifyPhrase: string) => Promise<string | Error>
+  verifyCharacter: (lodestoneId: string, verifyPhrase: string) => Promise<API_REQUEST_RESULT | Error>
 };
 
