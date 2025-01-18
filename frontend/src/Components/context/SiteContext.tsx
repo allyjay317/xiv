@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { UserInfo } from "../types";
-import { defaultValues, testUser } from "./constants";
+import { defaultValues } from "./constants";
 import { CharacterInfo } from "./types";
 import { GearPiece, GearSet, Slot } from "../../utils/types";
+import { XIVUserInfo } from "../common/Type";
+import { useCharacters } from "./useCharacters";
 
 const SiteContext = React.createContext(defaultValues);
 const apiUrl = import.meta.env.VITE_SERVER_URL
@@ -20,31 +22,10 @@ export const SiteProvider = (props: any) => {
   const [userInfo, setUserInfo] = useState<undefined | UserInfo>();
   const isLoggedIn = !!id
 
-  const [characters, setCharacters] = useState<
-    Record<string, CharacterInfo>
-  >({})
+  const {
+    characters, setCharacters, addCharacter, verifyCharacter, currentlySelectedCharacter, setCurrentlySelectedCharacter
+  } = useCharacters(id)
 
-  const [currentlySelectedCharacter, setCurrentlySelectedCharacter] = useState<
-    string | undefined
-  >()
-
-  const addCharacter = useCallback(
-    async (id: string) => {
-      try {
-        setCharacters({
-          ...characters,
-          [id]: testUser,
-          })
-        if(!currentlySelectedCharacter){
-          setCurrentlySelectedCharacter(id)
-        }
-        return 'Success'
-      } catch (e) {
-        return e as Error
-      }
-    },
-    [characters]
-  )
 
   const addGearSet = useCallback(
     (gearSet: GearSet) => {
@@ -122,7 +103,17 @@ export const SiteProvider = (props: any) => {
           id
         }
       }).then((info) => {
-        setUserInfo(info.data as UserInfo);
+        const {data: {characters, ...uInfo}} = info
+        setUserInfo(uInfo as UserInfo);
+        const newCharacters: Record<string, CharacterInfo> = {};
+        (characters as XIVUserInfo[]).forEach((c:XIVUserInfo) => {
+          newCharacters[c.id] = {
+            info: c,
+            gearSets: [],
+            verified: true,
+          }
+        })
+        setCharacters(newCharacters)
       }).catch(e => {
         console.log(e)
       });
@@ -149,6 +140,7 @@ export const SiteProvider = (props: any) => {
         logIn,
         characters,
         addCharacter,
+        verifyCharacter,
         updateGearPiece,
         addGearSet,
         deleteGearSet,

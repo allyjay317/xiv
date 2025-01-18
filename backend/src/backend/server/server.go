@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/alyjay/xiv/character"
 	"github.com/alyjay/xiv/user"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -21,6 +22,8 @@ func main() {
 	router.HandleFunc("/user", user.GetUser).Methods("GET")
 	// router.HandleFunc("/users", user.CreateUser).Methods("POST")
 	router.HandleFunc("/login", user.LoginUser).Methods("GET")
+	router.HandleFunc("/character", character.SearchCharacter).Methods("POST")
+	router.HandleFunc("/character/verify", character.VerifyCharacter).Methods("POST")
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173", "web.postman.co"},

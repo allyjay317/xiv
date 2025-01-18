@@ -13,7 +13,7 @@ export function CharacterSelector() {
   const characterOptions = useMemo(() => {
     const options = Object.keys(characters).map(key => {
       return {
-        label: characters[key].info.Name,
+        label: characters[key].info.name,
         value: key,
       }
     })

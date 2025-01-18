@@ -49,21 +49,8 @@ export function Type({
 }
 
 export type XIVUserInfo = {
-  Avatar: string
-  Bio: string
-  DC: DataCenter
-  Gender: number
-  ID: number
-  Name: string
-  Portrait: string
-  Server: Server
-  Title: {
-    ID: number
-    Icon: string
-    Name_de: string
-    Name_en: string
-    Name_fr: string
-    Name_ja: string
-  }
-  TitleTop: boolean
+  avatar: string
+  id: number
+  name: string
+  portrait: string
 }
