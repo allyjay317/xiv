@@ -78,7 +78,10 @@ function Row<T>({ columns, row }: { row: T; columns: TCol<T>[] }) {
             <td key={String(column)}>
               <Type size="XS" style={{ whiteSpace: 'pre-line' }}>
                 <pre>
-                  {JSON.stringify(row[column.key] as Record<any, any>, null, 2)}
+                  {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  JSON.stringify(row[column.key] as Record<string, any>, null, 2)
+                  }
                 </pre>
               </Type>
             </td>

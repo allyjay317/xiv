@@ -2,9 +2,9 @@ import { v1 as uuid } from 'uuid'
 
 import { GearSetContainer } from './GearSetContainer'
 import { Header } from './Header'
-import { useSiteContext } from '../context/SiteContext'
 import { Jobs } from '../../utils/types'
 import { gearSet } from '../Fixtures/GearSet'
+import { useSiteContext } from '../context/useSiteContext'
 
 export function GearSetList() {
   const { addGearSet, characters, currentlySelectedCharacter, deleteGearSet } =

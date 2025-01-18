@@ -42,7 +42,7 @@ export function useCharacters(id: string | null){
             return e as Error
           }
         },
-        [characters]
+        [characters, currentlySelectedCharacter, id]
       )
     
       const verifyCharacter = useCallback(async (lodestoneId: string, verifyPhrase: string) => {
@@ -70,7 +70,7 @@ export function useCharacters(id: string | null){
         }
           
         
-      }, [id])
+      }, [id, characters])
 
       return {
         characters, setCharacters, addCharacter, verifyCharacter, currentlySelectedCharacter, setCurrentlySelectedCharacter

@@ -3,35 +3,13 @@ import { Link } from "react-router-dom";
 import { Color } from "../../utils/colorSchemes";
 import { HEADER_HEIGHT } from "../../utils/constants";
 import { Type } from "../common/Type";
-import { useSiteContext } from "../context/SiteContext";
 import { LoginButton } from "./LoginButton";
-import { NavigationButton } from "./NavigationButton";
 import { Button } from "../common/Button";
-import { Select } from "../common/Select";
 
 
 
 export const Navigator = () => {
-  const {userInfo} = useSiteContext()
   const loginURI = import.meta.env.VITE_LOGIN_URI
-  
-  // return (
-  //   <div style={{
-  //     display: "flex",
-  //     backgroundColor: userInfo?.banner_color || 'white',
-  //     width: "100%",
-  //     height: HEADER_HEIGHT,
-  //     top: 0
-  //   }} >
-      
-  //     <div style={{ flexGrow: 2, justifySelf: "baseline" }}>
-  //       <NavigationButton label="Home" type="button" action="/" />
-  //     </div>
-  //     <div style={{display: 'flex'}}>
-  //       <LoginButton loginURI={loginURI} />
-  //     </div>
-  //   </div>
-  // );
 
   return (
     <div

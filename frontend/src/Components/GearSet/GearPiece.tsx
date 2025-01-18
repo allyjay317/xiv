@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react'
 import { SourceSelector } from './SourceSelector'
 import { Color } from '../../utils/colorSchemes'
 import { GearPiece, GearSource, Slot } from '../../utils/types'
-import { useSiteContext } from '../context/SiteContext'
 import { SLOT_INFO } from '../../utils/constants'
 import { Type } from '../common/Type'
 import { Checkbox } from '../common/Checkbox'
@@ -14,6 +13,7 @@ import rOneImg from '../../assets/img/gear_sources/book1.png'
 import rTwoImg from '../../assets/img/gear_sources/book2.png'
 import rThreeImg from '../../assets/img/gear_sources/book3.png'
 import rFourImg from '../../assets/img/gear_sources/book4.png'
+import { useSiteContext } from '../context/useSiteContext'
 
 const GearPieceContainer = styled.div({
   backgroundColor: Color.bg2,
@@ -69,9 +69,9 @@ export function GearPieceDisplay({
   }, [slot])
 
   const imageSource = useMemo(() => {
-    if (gearPiece.source === 'tomestone')
+    if (gearPiece.source === GearSource.TOME)
       return tomeImg
-    if (gearPiece.source === 'raid') {
+    if (gearPiece.source === GearSource.RAID) {
       return raidSourceImage
     }
     return 's'
@@ -122,7 +122,7 @@ export function GearPieceDisplay({
               }}
               value={gearPiece.have}
             />
-            {gearPiece.source === 'tomestone' && (
+            {gearPiece.source === GearSource.TOME && (
               <Checkbox
                 label="Aug"
                 onChange={isChecked => {

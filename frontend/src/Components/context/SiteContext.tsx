@@ -1,21 +1,18 @@
 import axios from "axios";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { UserInfo } from "../types";
-import { defaultValues } from "./constants";
 import { CharacterInfo } from "./types";
 import { GearPiece, GearSet, Slot } from "../../utils/types";
 import { XIVUserInfo } from "../common/Type";
 import { useCharacters } from "./useCharacters";
+import { SiteContext } from "./useSiteContext";
 
-const SiteContext = React.createContext(defaultValues);
+
 const apiUrl = import.meta.env.VITE_SERVER_URL
 
-export const useSiteContext = () => {
-  const context = useContext(SiteContext);
-  return context;
-};
 
-export const SiteProvider = (props: any) => {
+
+export const SiteProvider = (props: {children: React.ReactNode}) => {
   const [id, setId] = useState<string | null>(
     localStorage.getItem("id")
   );
@@ -118,7 +115,7 @@ export const SiteProvider = (props: any) => {
         console.log(e)
       });
     }
-  }, [id]);
+  }, [id, setCharacters, userInfo]);
 
   const logOut = () => {
     localStorage.removeItem("id");

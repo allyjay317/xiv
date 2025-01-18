@@ -9,7 +9,7 @@ export type SiteValues = {
   isLoggedIn: boolean;
   userInfo?: UserInfo;
   logOut: () => void;
-  logIn: (discordInfo: any) => void;
+  logIn: (id: string) => void;
   avatar?: string
   characters: Record<string, CharacterInfo>
   addCharacter: (newId: string) => Promise<API_REQUEST_RESULT | Error>

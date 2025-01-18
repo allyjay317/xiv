@@ -1,7 +1,7 @@
 import { JobInfo } from "../../utils/constants"
 import { GearSet, Jobs } from "../../utils/types"
 import { Select } from "../common/Select"
-import { useSiteContext } from "../context/SiteContext"
+import { useSiteContext } from "../context/useSiteContext"
 
 
 export function JobSelector({ gearSet }: { gearSet: GearSet }) {

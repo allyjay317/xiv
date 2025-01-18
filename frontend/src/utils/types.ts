@@ -19,10 +19,11 @@ export enum UpgradeItem {
 }
 
 export enum GearSource {
-  RAID = 'raid',
-  CRAFTED = 'crafted',
-  TOME = 'tomestone',
-  OTHER = 'other',
+  RAID = 0,
+  CRAFTED = 1,
+  TOME = 2,
+  CHAOTIC = 3,
+  ULTIMATE = 4
 }
 
 export type GearPiece = {
@@ -102,7 +103,7 @@ export enum Jobs {
   SMN = 'SMN',
   BLU = 'BLU',
   VPR = 'VPR',
-  GMG = 'GMG',
+  PCT = 'PCT',
 }
 
 export enum Language {

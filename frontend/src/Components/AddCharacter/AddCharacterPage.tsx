@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
 
 import { Button } from '../common/Button'
-import { useSiteContext } from '../context/SiteContext'
 import { Character } from './Character'
 import { API_REQUEST_RESULT } from '../../utils/constants'
 import { Type } from '../common/Type'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Color } from '../../utils/colorSchemes'
+import { useSiteContext } from '../context/useSiteContext'
 
 export function AddCharacterPage() {
   const [characterId, setCharacterId] = useState('')

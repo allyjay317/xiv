@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { Color } from '../../utils/colorSchemes'
-import { DataCenter, Server } from '../../utils/types'
 
 
 export function Type({

@@ -1,5 +1,5 @@
 import { baseStats, SLOT_INFO } from "./constants"
-import { GearSet, Slot, UpgradeItem } from "./types"
+import { GearSet, GearSource, Slot, UpgradeItem } from "./types"
 
 
 type StringMap<IDS extends string> = {
@@ -17,9 +17,9 @@ export function getStats(gearSets: GearSet[]) {
       const name: keyof typeof data = (
         slot === Slot.RING2 ? Slot.RING1 : slot
       ) as keyof typeof data
-      if (item.source === 'raid') {
+      if (item.source === GearSource.RAID) {
         data[name].raid += item.have ? 0 : 1
-      } else if (item.source === 'tomestone') {
+      } else if (item.source === GearSource.TOME) {
         data[name].tomestone += item.have ? 0 : 1
         if (!item.augmented) {
           const floor = SLOT_INFO[slot as Slot].floor
