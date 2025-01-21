@@ -114,11 +114,6 @@ export const SLOT_INFO: Record<
     floor: 4,
     tomeCost: 500,
   },
-  Offhand: {
-    bookCost: 8,
-    floor: 4,
-    tomeCost: 500
-  }
 }
 
 export const JobInfo: Record<Jobs, { name?: string; icon?: string }> = {
