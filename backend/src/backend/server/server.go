@@ -7,6 +7,7 @@ import (
 	"github.com/alyjay/xiv/character"
 	"github.com/alyjay/xiv/gearset"
 	"github.com/alyjay/xiv/user"
+	database "github.com/alyjay/xivdb"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
@@ -19,6 +20,8 @@ func init() {
 }
 
 func main() {
+	database.Migrate()
+
 	router := mux.NewRouter()
 	router.HandleFunc("/user", user.GetUser).Methods("GET")
 	// router.HandleFunc("/users", user.CreateUser).Methods("POST")
