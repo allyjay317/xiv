@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/alyjay/xiv/character"
+	"github.com/alyjay/xiv/gearset"
 	"github.com/alyjay/xiv/user"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -24,10 +25,15 @@ func main() {
 	router.HandleFunc("/login", user.LoginUser).Methods("GET")
 	router.HandleFunc("/character", character.SearchCharacter).Methods("POST")
 	router.HandleFunc("/character/verify", character.VerifyCharacter).Methods("POST")
+	router.HandleFunc("/gearset/{characterId}", gearset.AddGearSet).Methods("POST")
+	router.HandleFunc("/gearset/{characterId}/{id}", gearset.UpdateGearSet).Methods("PATCH")
+	router.HandleFunc("/gearset/{characterId}/{id}", gearset.DeleteGearSet).Methods("DELETE")
+	router.HandleFunc("/gearset/{characterId}", gearset.GetGearSets).Methods("GET")
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173", "web.postman.co"},
 		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"},
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", c.Handler(router)))

@@ -1,21 +1,20 @@
-import axios from "axios";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+import React, { useCallback, useEffect, useState } from "react";
 import { UserInfo } from "../types";
-import { defaultValues } from "./constants";
 import { CharacterInfo } from "./types";
 import { GearPiece, GearSet, Slot } from "../../utils/types";
 import { XIVUserInfo } from "../common/Type";
 import { useCharacters } from "./useCharacters";
+import { SiteContext } from "./useSiteContext";
+import { API_REQUEST_RESULT } from "../../utils/constants";
+import { NEW_GEARSET } from "./constants";
 
-const SiteContext = React.createContext(defaultValues);
+
 const apiUrl = import.meta.env.VITE_SERVER_URL
 
-export const useSiteContext = () => {
-  const context = useContext(SiteContext);
-  return context;
-};
 
-export const SiteProvider = (props: any) => {
+
+export const SiteProvider = (props: {children: React.ReactNode}) => {
   const [id, setId] = useState<string | null>(
     localStorage.getItem("id")
   );
@@ -25,6 +24,48 @@ export const SiteProvider = (props: any) => {
   const {
     characters, setCharacters, addCharacter, verifyCharacter, currentlySelectedCharacter, setCurrentlySelectedCharacter
   } = useCharacters(id)
+
+  const saveGearSet = useCallback(async (gearSet: GearSet, cId?: string) => {
+    if(!currentlySelectedCharacter) return API_REQUEST_RESULT.FAILURE
+    try{
+      let res: AxiosResponse
+      const newGearSet = {
+        id,
+        name: gearSet.name,
+        job: Number(gearSet.job),
+        items: gearSet.items
+      
+    }
+    const character = characters[currentlySelectedCharacter]
+      if(gearSet.id === NEW_GEARSET){
+        res = await axios.post(`${apiUrl}/gearset/${cId ?? currentlySelectedCharacter}`, newGearSet)
+        if(res.status === 201){
+          const character = characters[cId ?? currentlySelectedCharacter]
+          setCharacters({
+            ...characters,
+            [cId ?? currentlySelectedCharacter]: {
+              ...character,
+              gearSets: [...character.gearSets.filter(gs => gs.id !== NEW_GEARSET), {...gearSet, id: res.data.id, modified: false}]
+            }
+          })
+        }
+      } else {
+        res = await axios.patch(`${apiUrl}/gearset/${currentlySelectedCharacter}/${gearSet.id}`, newGearSet)
+        setCharacters({
+          ...characters,
+          [cId ?? currentlySelectedCharacter]: {
+            ...character,
+            gearSets: character.gearSets.map(gs => gs.id === gearSet.id ? {...gearSet, modified: false} : gs)
+          }
+        })
+      }
+      return API_REQUEST_RESULT.SUCCESS
+    }
+    catch(e){
+      return e as Error
+    }
+    
+  }, [currentlySelectedCharacter, id, characters, setCharacters])
 
 
   const addGearSet = useCallback(
@@ -43,9 +84,11 @@ export const SiteProvider = (props: any) => {
   )
 
   const deleteGearSet = useCallback(
-    (id: string) => {
+    async (id: string) => {
       if (!currentlySelectedCharacter) return
       const gearSets = characters[currentlySelectedCharacter].gearSets || []
+      debugger
+      await axios.delete(`${apiUrl}/gearset/${currentlySelectedCharacter}/${id}`)
       setCharacters({
         ...characters,
         [currentlySelectedCharacter]: {
@@ -67,7 +110,7 @@ export const SiteProvider = (props: any) => {
           ...characters[currentlySelectedCharacter],
           gearSets: gearSets.map(gs => {
             if (gs.id === gearSet.id) {
-              return gearSet
+              return {...gearSet, modified: true}
             }
             return gs
           }),
@@ -118,7 +161,7 @@ export const SiteProvider = (props: any) => {
         console.log(e)
       });
     }
-  }, [id]);
+  }, [id, setCharacters, userInfo]);
 
   const logOut = () => {
     localStorage.removeItem("id");
@@ -149,6 +192,7 @@ export const SiteProvider = (props: any) => {
         setCurrentlySelectedCharacter: (id: string) => {
           setCurrentlySelectedCharacter(id)
         },
+        saveGearSet
       }}
     >
       {props.children}

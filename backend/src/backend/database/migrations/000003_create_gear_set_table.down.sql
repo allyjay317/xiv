@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS gear_sets

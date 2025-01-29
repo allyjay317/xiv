@@ -1,15 +1,15 @@
 export enum Slot {
-  HEAD = 'Head',
-  BODY = 'Body',
-  HANDS = 'Hands',
-  LEGS = 'Legs',
-  FEET = 'Feet',
-  EARRINGS = 'Earrings',
-  NECKLACE = 'Necklace',
-  BRACELET = 'Bracelet',
-  RING1 = 'Ring1',
-  RING2 = 'Ring2',
-  WEAPON = 'Weapon',
+  HEAD,
+  BODY,
+  HANDS,
+  LEGS,
+  FEET,
+  EARRINGS,
+  NECKLACE,
+  BRACELET,
+  RING1,
+  RING2,
+  WEAPON,
 }
 
 export enum UpgradeItem {
@@ -19,10 +19,11 @@ export enum UpgradeItem {
 }
 
 export enum GearSource {
-  RAID = 'raid',
-  CRAFTED = 'crafted',
-  TOME = 'tomestone',
-  OTHER = 'other',
+  RAID = 0,
+  CRAFTED = 1,
+  TOME = 2,
+  CHAOTIC = 3,
+  ULTIMATE = 4
 }
 
 export type GearPiece = {
@@ -35,7 +36,8 @@ export type GearSet = {
   id: string
   name: string
   job: Jobs
-  items: { [key in Slot]: GearPiece }
+  items: Record<Slot, GearPiece>
+  modified: boolean
 }
 
 export enum DataCenter {
@@ -81,28 +83,28 @@ export enum Gender {
 }
 
 export enum Jobs {
-  WHM = 'WHM',
-  SCH = 'SCH',
-  AST = 'AST',
-  SGE = 'SGE',
-  PLD = 'PLD',
-  WAR = 'WAR',
-  DRK = 'DRK',
-  GNB = 'GNB',
-  MNK = 'MNK',
-  DRG = 'DRG',
-  NIN = 'NIN',
-  SAM = 'SAM',
-  RPR = 'RPR',
-  BRD = 'BRD',
-  MCH = 'MCH',
-  DNC = 'DNC',
-  RDM = 'RDM',
-  BLM = 'BLM',
-  SMN = 'SMN',
-  BLU = 'BLU',
-  VPR = 'VPR',
-  GMG = 'GMG',
+  WHM,
+  SCH,
+  AST,
+  SGE,
+  PLD,
+  WAR,
+  DRK,
+  GNB,
+  MNK,
+  DRG,
+  NIN,
+  SAM,
+  RPR,
+  BRD,
+  MCH,
+  DNC,
+  RDM,
+  BLM,
+  SMN,
+  BLU,
+  VPR,
+  PCT,
 }
 
 export enum Language {

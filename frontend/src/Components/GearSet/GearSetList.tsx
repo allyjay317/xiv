@@ -1,10 +1,9 @@
-import { v1 as uuid } from 'uuid'
-
 import { GearSetContainer } from './GearSetContainer'
 import { Header } from './Header'
-import { useSiteContext } from '../context/SiteContext'
 import { Jobs } from '../../utils/types'
 import { gearSet } from '../Fixtures/GearSet'
+import { useSiteContext } from '../context/useSiteContext'
+import { NEW_GEARSET } from '../context/constants'
 
 export function GearSetList() {
   const { addGearSet, characters, currentlySelectedCharacter, deleteGearSet } =
@@ -20,7 +19,7 @@ export function GearSetList() {
         onAdd={(job: Jobs) => {
           addGearSet({
             ...gearSet,
-            id: uuid(),
+            id: NEW_GEARSET,
             job,
           })
         }}

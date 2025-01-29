@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useSiteContext } from '../context/SiteContext'
 import { GearSet } from '../../utils/types'
 import { Type } from '../common/Type'
 import { Color } from '../../utils/colorSchemes'
 import { PenButton } from '../common/PenButton'
+import { useSiteContext } from '../context/useSiteContext'
 
 export function Name({ gearSet }: { gearSet: GearSet }) {
   const [isEditingName, setIsEditingName] = useState(false)

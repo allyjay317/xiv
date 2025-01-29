@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { useSiteContext } from '../context/SiteContext'
 import { Type } from '../common/Type'
 import { Table } from './Table'
 import { getStats } from '../../utils/utils'
+import { useSiteContext } from '../context/useSiteContext'
 
 
 export function Stats() {

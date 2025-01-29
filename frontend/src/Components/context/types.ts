@@ -9,7 +9,7 @@ export type SiteValues = {
   isLoggedIn: boolean;
   userInfo?: UserInfo;
   logOut: () => void;
-  logIn: (discordInfo: any) => void;
+  logIn: (id: string) => void;
   avatar?: string
   characters: Record<string, CharacterInfo>
   addCharacter: (newId: string) => Promise<API_REQUEST_RESULT | Error>
@@ -28,5 +28,6 @@ export type SiteValues = {
   updateGearSet: (gearSet: GearSet) => void
   setCurrentlySelectedCharacter: (id: string) => void
   verifyCharacter: (lodestoneId: string, verifyPhrase: string) => Promise<API_REQUEST_RESULT | Error>
+  saveGearSet: (gearSet: GearSet, cId?: string) => Promise<API_REQUEST_RESULT | Error>
 };
 
