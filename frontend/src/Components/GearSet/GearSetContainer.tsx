@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { ComponentProps } from 'react'
+import { ComponentProps, useMemo } from 'react'
 
 import { GearPieceDisplay } from './GearPiece'
 import { Job } from './Job'
@@ -9,6 +9,8 @@ import { JobInfo } from '../../utils/constants'
 import { Color } from '../../utils/colorSchemes'
 import { Button } from '../common/Button'
 import { useSiteContext } from '../context/useSiteContext'
+import { MenuButton } from '../common/MenuButton'
+import { NEW_GEARSET } from '../context/constants'
 
 const Column = styled.div`
   display: flex;
@@ -32,13 +34,24 @@ export function GearSetContainer({
   onDelete: (id: string) => void
 }) {
   const jobInfo = JobInfo[gearSet.job as Jobs]
-  const {saveGearSet} = useSiteContext()
+  
+  const {characters, saveGearSet, currentlySelectedCharacter} = useSiteContext()
 
   const onSave = () => {
     saveGearSet(gearSet)
   }
 
   const GearPiece = withId(gearSet.id)
+
+  const characterItems = useMemo(() => {
+    return Object.keys(characters).filter(c => c !== currentlySelectedCharacter).map(c => {
+      return {
+        label: characters[c].info.name,
+        onClick: () => saveGearSet({...gearSet, id: NEW_GEARSET}, `${characters[c].info.id}`)
+        
+      }
+    })
+  }, [characters])
 
   return (
     <div>
@@ -61,9 +74,12 @@ export function GearSetContainer({
             display: 'flex'
           }}
         >
-        <Button label='Save' onClick={onSave} />
-          <Button label='X' onClick={() => onDelete(gearSet.id)} />
+        {gearSet.modified && <Button label='Save' onClick={onSave} state={gearSet.modified ? 'default' : 'disabled'}/>}
           
+          <MenuButton direction='right' width='10px' label=':' onClick={() => {}} menuItems={[
+            {label: 'Delete', onClick: () => onDelete(gearSet.id)}, 
+            {label: <MenuButton label='Copy to Another Character' menuItems={characterItems} direction='right' />, onClick: () => {}}
+            ]}  />
         </div>
         
         <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>

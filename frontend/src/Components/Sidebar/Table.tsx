@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Slot, UpgradeItem } from '../../utils/types'
 import { Type } from '../common/Type'
+import { SLOT_INFO } from '../../utils/constants'
 
 
 type Row = {
@@ -18,7 +19,7 @@ export function Table({ rows, title }: { title: string; rows: Row[] }) {
       return (
         <tr key={row.slot}>
           <td>
-            <Type size="XS">{row.slot}</Type>
+            <Type size="XS">{SLOT_INFO[row.slot].name}</Type>
           </td>
           <td>
             <Type size="XS">{row.raid}</Type>

@@ -17,5 +17,6 @@ export const gearSet: GearSet = {
     [Slot.WEAPON]: { augmented: false, have: false, source: GearSource.RAID },
   },
   job: Jobs.RPR,
-  name: 'Anabasios',
+  name: 'New Gear Set',
+  modified: true,
 }

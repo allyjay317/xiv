@@ -25,7 +25,7 @@ export const SiteProvider = (props: {children: React.ReactNode}) => {
     characters, setCharacters, addCharacter, verifyCharacter, currentlySelectedCharacter, setCurrentlySelectedCharacter
   } = useCharacters(id)
 
-  const saveGearSet = useCallback(async (gearSet: GearSet) => {
+  const saveGearSet = useCallback(async (gearSet: GearSet, cId?: string) => {
     if(!currentlySelectedCharacter) return API_REQUEST_RESULT.FAILURE
     try{
       let res: AxiosResponse
@@ -36,21 +36,27 @@ export const SiteProvider = (props: {children: React.ReactNode}) => {
         items: gearSet.items
       
     }
+    const character = characters[currentlySelectedCharacter]
       if(gearSet.id === NEW_GEARSET){
-        res = await axios.post(`${apiUrl}/gearset/${currentlySelectedCharacter}`, newGearSet)
+        res = await axios.post(`${apiUrl}/gearset/${cId ?? currentlySelectedCharacter}`, newGearSet)
         if(res.status === 201){
-          const character = characters[currentlySelectedCharacter]
+          const character = characters[cId ?? currentlySelectedCharacter]
           setCharacters({
             ...characters,
-            [currentlySelectedCharacter]: {
+            [cId ?? currentlySelectedCharacter]: {
               ...character,
-              gearSets: [...character.gearSets.filter(gs => gs.id !== NEW_GEARSET), {...gearSet, id: res.data.id}]
+              gearSets: [...character.gearSets.filter(gs => gs.id !== NEW_GEARSET), {...gearSet, id: res.data.id, modified: false}]
             }
           })
         }
       } else {
-        res = await axios.patch(`${apiUrl}/gearset/${currentlySelectedCharacter}/${gearSet.id}`, newGearSet, {
-          
+        res = await axios.patch(`${apiUrl}/gearset/${currentlySelectedCharacter}/${gearSet.id}`, newGearSet)
+        setCharacters({
+          ...characters,
+          [cId ?? currentlySelectedCharacter]: {
+            ...character,
+            gearSets: character.gearSets.map(gs => gs.id === gearSet.id ? {...gearSet, modified: false} : gs)
+          }
         })
       }
       return API_REQUEST_RESULT.SUCCESS
@@ -104,7 +110,7 @@ export const SiteProvider = (props: {children: React.ReactNode}) => {
           ...characters[currentlySelectedCharacter],
           gearSets: gearSets.map(gs => {
             if (gs.id === gearSet.id) {
-              return gearSet
+              return {...gearSet, modified: true}
             }
             return gs
           }),

@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import { SourceSelector } from './SourceSelector'
 import { Color } from '../../utils/colorSchemes'
 import { GearPiece, GearSource, Slot } from '../../utils/types'
-import { SLOT_INFO } from '../../utils/constants'
+import { PIECE_SIZE, SLOT_INFO } from '../../utils/constants'
 import { Type } from '../common/Type'
 import { Checkbox } from '../common/Checkbox'
 
@@ -13,6 +13,9 @@ import rOneImg from '../../assets/img/gear_sources/book1.png'
 import rTwoImg from '../../assets/img/gear_sources/book2.png'
 import rThreeImg from '../../assets/img/gear_sources/book3.png'
 import rFourImg from '../../assets/img/gear_sources/book4.png'
+import ultimateSourceImage from '../../assets/img/gear_sources/ultimate.png'
+import chaoticSourceImage from '../../assets/img/gear_sources/FFXIV_Chaotic_Icon.webp'
+import craftedSourceImage from '../../assets/img/gear_sources/crafted.webp'
 import { useSiteContext } from '../context/useSiteContext'
 
 const GearPieceContainer = styled.div({
@@ -38,8 +41,6 @@ const SlotText = styled.div({
   textAlign: 'left',
   width: '100px',
 })
-
-const PIECE_SIZE = '40px'
 
 export function GearPieceDisplay({
   gearPiece,
@@ -69,12 +70,20 @@ export function GearPieceDisplay({
   }, [slot])
 
   const imageSource = useMemo(() => {
-    if (gearPiece.source === GearSource.TOME)
-      return tomeImg
-    if (gearPiece.source === GearSource.RAID) {
-      return raidSourceImage
+    switch(gearPiece.source){
+      case GearSource.TOME:
+        return tomeImg
+      case GearSource.RAID:
+        return raidSourceImage
+      case GearSource.CHAOTIC:
+        return chaoticSourceImage
+      case GearSource.ULTIMATE:
+        return ultimateSourceImage
+      case GearSource.CRAFTED:
+        return craftedSourceImage
+      default:
+        return 's'
     }
-    return 's'
   }, [gearPiece.source, raidSourceImage])
 
   const changeSource = (source: GearSource) => {
@@ -88,6 +97,9 @@ export function GearPieceDisplay({
     setIsEditing(false)
   }
 
+  const isLeftSide = useMemo(() => 
+    [Slot.BODY, Slot.FEET, Slot.HANDS, Slot.HEAD, Slot.HEAD].includes(slot), [slot])
+
   return (
     <GearPieceContainer>
       <GearPieceInner>
@@ -97,7 +109,7 @@ export function GearPieceDisplay({
           </Type>
         </SlotText>
         {isEditing ? (
-          <SourceSelector onClick={changeSource} raidImage={raidSourceImage} />
+          <SourceSelector onClick={changeSource} raidImage={raidSourceImage} isWeapon={slot === Slot.WEAPON} isLeftSide={isLeftSide} />
         ) : (
           <>
             <div

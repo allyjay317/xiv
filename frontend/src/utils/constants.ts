@@ -275,3 +275,5 @@ export const baseStats = {
     tomestone: 0,
   },
 }
+
+export const PIECE_SIZE = '40px'

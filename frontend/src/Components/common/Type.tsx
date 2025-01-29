@@ -9,6 +9,7 @@ export function Type({
   inline,
   size,
   style,
+  onClick
 }: {
   children: React.ReactNode
   inline?: boolean
@@ -16,6 +17,7 @@ export function Type({
   size: 'S' | 'M' | 'L' | 'XS'
   bold?: boolean
   color?: string
+  onClick?: VoidFunction
 }) {
   const fontSize = useMemo(() => {
     if (size === 'XS') return '12px'
@@ -34,6 +36,7 @@ export function Type({
         fontSize,
         ...style,
       }}
+      onClick={onClick}
     >
       {children}
     </span>
@@ -41,6 +44,7 @@ export function Type({
     <div
       className="type"
       style={{ color: color || Color.fg1, fontFamily, fontSize, ...style }}
+      onClick={onClick}
     >
       {children}
     </div>
