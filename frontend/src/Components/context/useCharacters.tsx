@@ -44,6 +44,27 @@ export function useCharacters(id: string | null){
         },
         [characters, currentlySelectedCharacter, id]
       )
+
+      const onChangeCharacter = useCallback(async (characterId: string) => {
+        if(!characterId){
+          setCurrentlySelectedCharacter(undefined)
+          return
+        }
+        try {
+          const res = await axios.get(`${apiUrl}/gearset/${characterId}`)
+          console.log(res)
+          setCharacters({
+            ...characters,
+            [characterId]: {
+              ...characters[characterId],
+              gearSets: res.data
+            }
+          })
+          setCurrentlySelectedCharacter(characterId)
+        } catch(e){
+          console.log(e)
+        }
+      }, [characters])
     
       const verifyCharacter = useCallback(async (lodestoneId: string, verifyPhrase: string) => {
         const res = await axios.post(`${apiUrl}/character/verify`, {
@@ -73,6 +94,6 @@ export function useCharacters(id: string | null){
       }, [id, characters])
 
       return {
-        characters, setCharacters, addCharacter, verifyCharacter, currentlySelectedCharacter, setCurrentlySelectedCharacter
+        characters, setCharacters, addCharacter, verifyCharacter, currentlySelectedCharacter, setCurrentlySelectedCharacter: onChangeCharacter
       }
 }

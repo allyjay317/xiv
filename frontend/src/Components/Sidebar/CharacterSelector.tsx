@@ -11,6 +11,7 @@ export function CharacterSelector() {
   } = useSiteContext()
 
   const characterOptions = useMemo(() => {
+    debugger
     const options = Object.keys(characters).map(key => {
       return {
         label: characters[key].info.name,

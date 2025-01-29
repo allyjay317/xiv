@@ -28,8 +28,7 @@ export const SiteProvider = (props: {children: React.ReactNode}) => {
   const saveGearSet = useCallback(async (gearSet: GearSet) => {
     if(!currentlySelectedCharacter) return API_REQUEST_RESULT.FAILURE
     try{
-      debugger
-      let res: AxiosResponse<any, any>
+      let res: AxiosResponse
       const newGearSet = {
         id,
         name: gearSet.name,
@@ -39,7 +38,6 @@ export const SiteProvider = (props: {children: React.ReactNode}) => {
     }
       if(gearSet.id === NEW_GEARSET){
         res = await axios.post(`${apiUrl}/gearset/${currentlySelectedCharacter}`, newGearSet)
-        debugger
         if(res.status === 201){
           const character = characters[currentlySelectedCharacter]
           setCharacters({
@@ -61,7 +59,7 @@ export const SiteProvider = (props: {children: React.ReactNode}) => {
       return e as Error
     }
     
-  }, [currentlySelectedCharacter, id])
+  }, [currentlySelectedCharacter, id, characters, setCharacters])
 
 
   const addGearSet = useCallback(

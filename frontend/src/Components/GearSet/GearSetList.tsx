@@ -1,5 +1,3 @@
-import { v1 as uuid } from 'uuid'
-
 import { GearSetContainer } from './GearSetContainer'
 import { Header } from './Header'
 import { Jobs } from '../../utils/types'
