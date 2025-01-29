@@ -184,5 +184,17 @@ func UpdateGearSet(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteGearSet(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
 
+	db, err := database.GetDb(w)
+	if err != nil {
+		return
+	}
+
+	_, err = db.Exec(`DELETE FROM gear_sets WHERE id = $1`, id)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusAccepted)
 }

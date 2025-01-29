@@ -78,9 +78,11 @@ export const SiteProvider = (props: {children: React.ReactNode}) => {
   )
 
   const deleteGearSet = useCallback(
-    (id: string) => {
+    async (id: string) => {
       if (!currentlySelectedCharacter) return
       const gearSets = characters[currentlySelectedCharacter].gearSets || []
+      debugger
+      await axios.delete(`${apiUrl}/gearset/${currentlySelectedCharacter}/${id}`)
       setCharacters({
         ...characters,
         [currentlySelectedCharacter]: {
