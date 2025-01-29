@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { UserInfo } from "../types";
 import { CharacterInfo } from "./types";
@@ -6,6 +6,8 @@ import { GearPiece, GearSet, Slot } from "../../utils/types";
 import { XIVUserInfo } from "../common/Type";
 import { useCharacters } from "./useCharacters";
 import { SiteContext } from "./useSiteContext";
+import { API_REQUEST_RESULT } from "../../utils/constants";
+import { NEW_GEARSET } from "./constants";
 
 
 const apiUrl = import.meta.env.VITE_SERVER_URL
@@ -22,6 +24,44 @@ export const SiteProvider = (props: {children: React.ReactNode}) => {
   const {
     characters, setCharacters, addCharacter, verifyCharacter, currentlySelectedCharacter, setCurrentlySelectedCharacter
   } = useCharacters(id)
+
+  const saveGearSet = useCallback(async (gearSet: GearSet) => {
+    if(!currentlySelectedCharacter) return API_REQUEST_RESULT.FAILURE
+    try{
+      debugger
+      let res: AxiosResponse<any, any>
+      const newGearSet = {
+        id,
+        name: gearSet.name,
+        job: Number(gearSet.job),
+        items: gearSet.items
+      
+    }
+      if(gearSet.id === NEW_GEARSET){
+        res = await axios.post(`${apiUrl}/gearset/${currentlySelectedCharacter}`, newGearSet)
+        debugger
+        if(res.status === 201){
+          const character = characters[currentlySelectedCharacter]
+          setCharacters({
+            ...characters,
+            [currentlySelectedCharacter]: {
+              ...character,
+              gearSets: [...character.gearSets.filter(gs => gs.id !== NEW_GEARSET), {...gearSet, id: res.data.id}]
+            }
+          })
+        }
+      } else {
+        res = await axios.patch(`${apiUrl}/gearset/${currentlySelectedCharacter}/${gearSet.id}`, newGearSet, {
+          
+        })
+      }
+      return API_REQUEST_RESULT.SUCCESS
+    }
+    catch(e){
+      return e as Error
+    }
+    
+  }, [currentlySelectedCharacter, id])
 
 
   const addGearSet = useCallback(
@@ -146,6 +186,7 @@ export const SiteProvider = (props: {children: React.ReactNode}) => {
         setCurrentlySelectedCharacter: (id: string) => {
           setCurrentlySelectedCharacter(id)
         },
+        saveGearSet
       }}
     >
       {props.children}

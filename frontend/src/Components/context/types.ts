@@ -28,5 +28,6 @@ export type SiteValues = {
   updateGearSet: (gearSet: GearSet) => void
   setCurrentlySelectedCharacter: (id: string) => void
   verifyCharacter: (lodestoneId: string, verifyPhrase: string) => Promise<API_REQUEST_RESULT | Error>
+  saveGearSet: (gearSet: GearSet) => Promise<API_REQUEST_RESULT | Error>
 };
 

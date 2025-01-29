@@ -15,7 +15,8 @@ export const defaultValues: SiteValues = {
     currentlySelectedCharacter: undefined,
     updateGearSet: () => {},
     setCurrentlySelectedCharacter: () => {},
-    verifyCharacter: async () => API_REQUEST_RESULT.SUCCESS
+    verifyCharacter: async () => API_REQUEST_RESULT.SUCCESS,
+    saveGearSet: async () => API_REQUEST_RESULT.SUCCESS
   };
 
   export const testUser: CharacterInfo = {
@@ -28,3 +29,5 @@ export const defaultValues: SiteValues = {
     },
     verified: false
 }
+
+export const NEW_GEARSET = "NEW"

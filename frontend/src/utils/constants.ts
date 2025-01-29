@@ -42,74 +42,88 @@ export const FLOOR_1 = [
 
 export const SLOT_INFO: Record<
   Slot | UpgradeItem,
-  { floor: 1 | 2 | 3 | 4; tomeCost: number; bookCost: number }
+  { floor: 1 | 2 | 3 | 4; tomeCost: number; bookCost: number, name: string }
 > = {
-  Body: {
+  [Slot.BODY]: {
+    name: "Body",
     bookCost: 6,
     floor: 3,
     tomeCost: 825,
   },
-  Bracelet: {
+  [Slot.BRACELET]: {
+    name: "Bracelet",
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
   },
   Brine: {
+    name: "Brine",
     bookCost: 4,
     floor: 3,
     tomeCost: 0,
   },
-  Earrings: {
+  [Slot.EARRINGS]: {
+    name: "Earrings",
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
   },
-  Feet: {
+  [Slot.FEET]: {
+    name: "Feet",
     bookCost: 4,
     floor: 2,
     tomeCost: 495,
   },
-  Hands: {
+  [Slot.HANDS]: {
+    name: "Hands",
     bookCost: 4,
     floor: 2,
     tomeCost: 495,
   },
-  Head: {
+  [Slot.HEAD]: {
+    name: "Head",
     bookCost: 4,
     floor: 2,
     tomeCost: 495,
   },
-  Legs: {
+  [Slot.LEGS]: {
+    name: "Legs",
     bookCost: 6,
     floor: 3,
     tomeCost: 825,
   },
-  Necklace: {
+  [Slot.NECKLACE]: {
+    name: "Necklace",
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
   },
-  Ring1: {
+  [Slot.RING1]: {
+    name: "Ring",
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
   },
-  Ring2: {
+  [Slot.RING2]: {
+    name: "Ring",
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
   },
   Shine: {
+    name: "Shine",
     bookCost: 3,
     floor: 2,
     tomeCost: 0,
   },
   Twine: {
+    name: "Twine",
     bookCost: 4,
     floor: 3,
     tomeCost: 0,
   },
-  Weapon: {
+  [Slot.WEAPON]: {
+    name: "Weapon",
     bookCost: 8,
     floor: 4,
     tomeCost: 500,
@@ -117,91 +131,91 @@ export const SLOT_INFO: Record<
 }
 
 export const JobInfo: Record<Jobs, { name?: string; icon?: string }> = {
-  AST: {
+  [Jobs.AST]: {
     icon: ast,
     name: 'Astrologian',
   },
-  BLM: {
+  [Jobs.BLM]: {
     icon: blm,
     name: 'Black Mage',
   },
-  BLU: {
+  [Jobs.BLU]: {
     icon: blu,
     name: 'Blue Mage',
   },
-  BRD: {
+  [Jobs.BRD]: {
     icon: brd,
     name: 'Bard',
   },
-  DNC: {
+  [Jobs.DNC]: {
     icon: dnc,
     name: 'Dancer',
   },
-  DRG: {
+  [Jobs.DRG]: {
     icon: drg,
     name: 'Dragoon',
   },
-  DRK: {
+  [Jobs.DRK]: {
     icon: drk,
     name: 'Dark Knight',
   },
-  PCT: {
+  [Jobs.PCT]: {
     icon: pct,
     name: 'Pictomancer',
   },
-  GNB: {
+  [Jobs.GNB]: {
     icon: gnb,
     name: 'Gunbreaker',
   },
-  MCH: {
+  [Jobs.MCH]: {
     icon: mch,
     name: 'Machinist',
   },
-  MNK: {
+  [Jobs.MNK]: {
     icon: mnk,
     name: 'Monk',
   },
-  NIN: {
+  [Jobs.NIN]: {
     icon: nin,
     name: 'Ninja',
   },
-  PLD: {
+  [Jobs.PLD]: {
     icon: pld,
     name: 'Paladin',
   },
-  RDM: {
+  [Jobs.RDM]: {
     icon: rdm,
     name: 'Red Mage',
   },
-  RPR: {
+  [Jobs.RPR]: {
     icon: rpr,
     name: 'Reaper',
   },
-  SAM: {
+  [Jobs.SAM]: {
     icon: sam,
     name: 'Samurai',
   },
-  SCH: {
+  [Jobs.SCH]: {
     icon: sch,
     name: 'Scholar',
   },
-  SGE: {
+  [Jobs.SGE]: {
     icon: sge,
     name: 'Sage',
   },
-  SMN: {
+  [Jobs.SMN]: {
     icon: smn,
     name: 'Summoner',
   },
-  VPR: {
+  [Jobs.VPR]: {
     icon: vpr,
     name: 'Viper',
   },
-  WAR: {
+  [Jobs.WAR]: {
     icon: war,
     name: 'Warrior',
   },
-  WHM: {
+  [Jobs.WHM]: {
     icon: whm,
     name: 'White Mage',
   },

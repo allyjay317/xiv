@@ -6,6 +6,7 @@ import { JobInfo } from '../../utils/constants'
 
 export function Header({ onAdd }: { onAdd: (job: Jobs) => void }) {
   const [isSetCreatorOpen, setIsSetCreatorOpen] = useState(false)
+  
   return (
     <div
       style={{
@@ -27,7 +28,8 @@ export function Header({ onAdd }: { onAdd: (job: Jobs) => void }) {
         }}
       />
       {isSetCreatorOpen &&
-        Object.keys(Jobs).map(job => {
+        Object.keys(Jobs).filter(k => !isNaN(Number(k))).map(j => {
+          const job = j as unknown as Jobs
           return (
             <div
               key={JobInfo[job as Jobs].name}
@@ -37,8 +39,8 @@ export function Header({ onAdd }: { onAdd: (job: Jobs) => void }) {
               }}
             >
               <img
-                alt={`Add new ${JobInfo[job as Jobs].name} gearset`}
-                src={JobInfo[job as Jobs].icon}
+                alt={`Add new ${JobInfo[job].name} gearset`}
+                src={JobInfo[job].icon}
                 style={{ cursor: 'pointer', height: '50px', width: '50px' }}
               />
             </div>

@@ -93,7 +93,7 @@ export function GearPieceDisplay({
       <GearPieceInner>
         <SlotText>
           <Type color={Color.fg1} inline size="S">
-            {slot}
+            {SLOT_INFO[slot].name}
           </Type>
         </SlotText>
         {isEditing ? (

@@ -1,20 +1,20 @@
-import { GearSet, GearSource, Jobs } from "../../utils/types";
+import { GearSet, GearSource, Jobs, Slot } from "../../utils/types";
 
 
 export const gearSet: GearSet = {
   id: '1',
   items: {
-    Body: { augmented: false, have: false, source: GearSource.RAID },
-    Bracelet: { augmented: false, have: false, source: GearSource.RAID },
-    Earrings: { augmented: false, have: false, source: GearSource.TOME },
-    Feet: { augmented: false, have: false, source: GearSource.RAID },
-    Hands: { augmented: false, have: false, source: GearSource.TOME },
-    Head: { augmented: false, have: false, source: GearSource.TOME },
-    Legs: { augmented: false, have: false, source: GearSource.TOME },
-    Necklace: { augmented: false, have: false, source: GearSource.RAID },
-    Ring1: { augmented: false, have: false, source: GearSource.TOME },
-    Ring2: { augmented: false, have: false, source: GearSource.TOME },
-    Weapon: { augmented: false, have: false, source: GearSource.RAID },
+    [Slot.BODY]: { augmented: false, have: false, source: GearSource.RAID },
+    [Slot.BRACELET]: { augmented: false, have: false, source: GearSource.RAID },
+    [Slot.EARRINGS]: { augmented: false, have: false, source: GearSource.TOME },
+    [Slot.FEET]: { augmented: false, have: false, source: GearSource.RAID },
+    [Slot.HANDS]: { augmented: false, have: false, source: GearSource.TOME },
+    [Slot.HEAD]: { augmented: false, have: false, source: GearSource.TOME },
+    [Slot.LEGS]: { augmented: false, have: false, source: GearSource.TOME },
+    [Slot.NECKLACE]: { augmented: false, have: false, source: GearSource.RAID },
+    [Slot.RING1]: { augmented: false, have: false, source: GearSource.TOME },
+    [Slot.RING2]: { augmented: false, have: false, source: GearSource.TOME },
+    [Slot.WEAPON]: { augmented: false, have: false, source: GearSource.RAID },
   },
   job: Jobs.RPR,
   name: 'Anabasios',
