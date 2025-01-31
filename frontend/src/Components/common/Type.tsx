@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Color } from '../../utils/colorSchemes'
+import { getSize } from './utils'
 
 
 export function Type({
@@ -19,12 +20,9 @@ export function Type({
   color?: string
   onClick?: VoidFunction
 }) {
-  const fontSize = useMemo(() => {
-    if (size === 'XS') return '12px'
-    if (size === 'S') return '16px'
-    if (size === 'M') return '24px'
-    if (size === 'L') return '32px'
-  }, [size])
+  const fontSize = useMemo(
+    () => getSize(size)
+    , [size])
 
   const fontFamily = bold ? 'FFXIVBold' : 'FFXIV'
 

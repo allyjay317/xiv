@@ -26,13 +26,10 @@ export const Navigator = () => {
         width: '100%',
       }}
     >
-      <Type bold size="L" style={{ flexGrow: 1 }}>
+      <Type bold size="L" inline style={{ flexGrow: 1, textAlign: 'left' }}>
         FFXIV Gear Planner
       </Type>
-      <div style={{ display: 'flex' }}>
-        <Link style={{ textDecoration: 'none' }} to="/add-character">
-          <Button label="Add Character" onClick={() => {}} />
-        </Link>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         <Link style={{ textDecoration: 'none' }} to="/gear-sets">
           <Button label="Gear Sets" />
         </Link>

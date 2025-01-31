@@ -76,7 +76,7 @@ export function GearSetContainer({
         >
         {gearSet.modified && <Button label='Save' onClick={onSave} state={gearSet.modified ? 'default' : 'disabled'}/>}
           
-          <MenuButton direction='right' width='10px' label=':' onClick={() => {}} menuItems={[
+          <MenuButton direction='right' width='10px' label=':' menuItems={[
             {label: 'Delete', onClick: () => onDelete(gearSet.id)}, 
             {label: <MenuButton label='Copy to Another Character' menuItems={characterItems} direction='right' />, onClick: () => {}}
             ]}  />
@@ -88,7 +88,7 @@ export function GearSetContainer({
             src={jobInfo.icon}
             style={{ height: '70px', width: '70px' }}
           />
-          <div>
+          <div style={{display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-start'}}>
             <Name gearSet={gearSet} />
             <Job gearSet={gearSet} />
           </div>
