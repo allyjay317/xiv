@@ -1,10 +1,10 @@
 
 import { Link } from "react-router-dom";
-import { Color } from "../../utils/colorSchemes";
-import { HEADER_HEIGHT } from "../../utils/constants";
-import { Type } from "../common/Type";
+import { Color } from "../../../utils/colorSchemes";
+import { HEADER_HEIGHT } from "../../../utils/constants";
+import { Type } from "../../common/Type";
 import { LoginButton } from "./LoginButton";
-import { Button } from "../common/Button";
+import { Button } from "../../common/Button";
 
 
 

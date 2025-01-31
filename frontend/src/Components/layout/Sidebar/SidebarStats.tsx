@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { Type } from '../common/Type'
+import { Type } from '../../common/Type'
 import { Table } from './Table'
-import { getStats } from '../../utils/utils'
-import { useSiteContext } from '../context/useSiteContext'
+import { getStats } from '../../../utils/utils'
+import { useSiteContext } from '../../context/useSiteContext'
 
 
 export function Stats() {
