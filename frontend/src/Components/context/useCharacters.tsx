@@ -53,11 +53,15 @@ export function useCharacters(id: string | null){
         try {
           const res = await axios.get(`${apiUrl}/gearset/${characterId}`)
           console.log(res)
+          let {data} = res
+          if(!data){
+            data = []
+          }
           setCharacters({
             ...characters,
             [characterId]: {
               ...characters[characterId],
-              gearSets: res.data
+              gearSets: data
             }
           })
           setCurrentlySelectedCharacter(characterId)
