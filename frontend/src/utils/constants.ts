@@ -29,7 +29,8 @@ import whm from '../assets/img/job_images/WhiteMage.png'
 export enum API_REQUEST_RESULT {
   SUCCESS = "Success",
   FAILURE = "Failure",
-  ALREADY_EXISTS = "Already Exists"
+  ALREADY_EXISTS = "Already Exists",
+  NOT_LOGGED_IN = "Not Logged In"
 }
 
 export const FLOOR_1 = [
