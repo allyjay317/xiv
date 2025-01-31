@@ -7,6 +7,7 @@ import { Type } from '../common/Type'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Color } from '../../utils/colorSchemes'
 import { useSiteContext } from '../context/useSiteContext'
+import { TextInput } from '../common/TextInput'
 
 export function AddCharacterPage() {
   const [characterId, setCharacterId] = useState('')
@@ -32,14 +33,13 @@ export function AddCharacterPage() {
 
   return (
     <div>
-      <div style={{display: 'flex'}}>
-      <input
-        onChange={e => setCharacterId(e.target.value)}
-        type="text"
+      <div style={{display: 'flex', width: '200px', gap: '16px', alignItems: 'center'}}>
+      <TextInput
+        onChange={e => setCharacterId(e)}
         value={characterId}
       />
       <Button
-        label="Add Character"
+        label="+"
         onClick={onAddCharacter}
         state={isLoading ? 'disabled' : 'default'}
       />

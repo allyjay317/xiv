@@ -4,6 +4,7 @@ import { Type } from '../common/Type'
 import { Color } from '../../utils/colorSchemes'
 import { PenButton } from '../common/PenButton'
 import { useSiteContext } from '../context/useSiteContext'
+import { TextInput } from '../common/TextInput'
 
 export function Name({ gearSet }: { gearSet: GearSet }) {
   const [isEditingName, setIsEditingName] = useState(false)
@@ -12,25 +13,26 @@ export function Name({ gearSet }: { gearSet: GearSet }) {
   const [name, setName] = useState(gearSet.name)
 
   return (
-    <Type bold color={Color.fg1} size="L">
+      <>
       {isEditingName ? (
-        <>
-          <input
+        <div style={{display: 'flex', alignItems: 'center', width: '100%'}}>
+          <TextInput
             onBlur={() => {
               updateGearSet({ ...gearSet, name })
               setIsEditingName(false)
             }}
-            onChange={e => setName(e.target.value)}
+            onChange={e => setName(e)}
             value={name}
+            size='M'
           />
           <PenButton onClick={() => setIsEditingName(!isEditingName)} />
-        </>
+        </div>
       ) : (
-        <>
-          {gearSet.name}
+        <div style={{display: 'flex', alignItems: 'center'}}>
+        <Type bold color={Color.fg1} size="L">{gearSet.name}</Type>
           <PenButton onClick={() => setIsEditingName(!isEditingName)} />
-        </>
+        </div>
       )}
-    </Type>
+    </>
   )
 }

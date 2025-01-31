@@ -27,6 +27,7 @@ const GearPieceContainer = styled.div({
   position: 'relative',
   textAlign: 'left',
   width: '250px',
+  height: '48px'
 })
 
 const GearPieceInner = styled.div({
@@ -34,11 +35,13 @@ const GearPieceInner = styled.div({
   display: 'flex',
   gap: '8px',
   justifyContent: 'flex-start',
+  height: '100%'
 })
 
 const SlotText = styled.div({
   justifySelf: 'flex-start',
   textAlign: 'left',
+  alignSelf: 'center',
   width: '100px',
 })
 

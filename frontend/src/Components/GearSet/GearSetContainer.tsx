@@ -88,7 +88,7 @@ export function GearSetContainer({
             src={jobInfo.icon}
             style={{ height: '70px', width: '70px' }}
           />
-          <div>
+          <div style={{display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-start'}}>
             <Name gearSet={gearSet} />
             <Job gearSet={gearSet} />
           </div>
