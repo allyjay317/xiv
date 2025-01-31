@@ -9,7 +9,7 @@ import { Color } from '../../utils/colorSchemes'
 import { useSiteContext } from '../context/useSiteContext'
 import { TextInput } from '../common/TextInput'
 
-export function AddCharacterPage() {
+export function CharacterPanel() {
   const [characterId, setCharacterId] = useState('')
   const { addCharacter, characters } = useSiteContext()
   const [isLoading, setIsLoading] = useState(false)

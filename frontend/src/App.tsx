@@ -3,10 +3,9 @@ import './App.css'
 import { Page } from './Components/layout/Page'
 import { HomePage } from './Components/home/HomePage'
 import { LoginRedirect } from './Components/login/LoginRedirect'
-import { LoggedInPage } from './Components/login/LoggedInPage'
-import { AddCharacterPage } from './Components/AddCharacter/AddCharacterPage'
 import { GearSetList } from './Components/GearSet/GearSetList'
 import { SiteProvider } from './Components/context/SiteContext'
+import { UserPage } from './Components/User/User'
 
 const router = createBrowserRouter([
   {
@@ -20,11 +19,8 @@ const router = createBrowserRouter([
         path: '/login'
       },
       {
-        element: <LoggedInPage />,
+        element: <UserPage />,
         path: '/user'
-      }, {
-        path: '/add-character',
-        element: <AddCharacterPage />
       }, {
         element: <GearSetList />,
         path: '/gear-sets'

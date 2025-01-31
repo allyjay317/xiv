@@ -3,7 +3,7 @@ import { Button } from "../common/Button";
 import { Type } from "../common/Type";
 import { CharacterInfo } from "../context/types";
 import {v4 as uuidv4 } from 'uuid'
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { API_REQUEST_RESULT } from "../../utils/constants";
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Color } from "../../utils/colorSchemes";
@@ -12,7 +12,9 @@ import { useSiteContext } from "../context/useSiteContext";
 export function Character({character}: {character: CharacterInfo}){
     const {verifyCharacter} = useSiteContext()
     const {verified} = character
-    const verifyPhrase = `xiv-${uuidv4()}`
+    const verifyPhrase = useMemo(() => {
+      return `xiv-${uuidv4()}`
+    }, [])
     const [isLoading, setLoading] = useState(false)
     const [error, setError] = useState<null | string>(null)
 

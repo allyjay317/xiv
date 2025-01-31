@@ -17,11 +17,11 @@ async function getUserInfo(id: string) {
     throw new Error("Info not retrieved");
   }
   const {
-    data: { characters, ...userInfo },
+    data: { characters: rawCharacters, ...userInfo },
   } = res;
   const newCharacters: Record<string, CharacterInfo> = {};
-  (characters as XIVUserInfo[]).forEach((c: XIVUserInfo) => {
-    characters[c.id] = {
+  (rawCharacters as XIVUserInfo[]).forEach((c: XIVUserInfo) => {
+    newCharacters[c.id] = {
       info: c,
       gearSets: [],
       verified: true,

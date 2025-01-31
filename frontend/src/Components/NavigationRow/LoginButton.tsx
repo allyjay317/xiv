@@ -1,24 +1,38 @@
+import { useNavigate } from "react-router";
 import { Button } from "../common/Button";
+import { MenuButton } from "../common/MenuButton";
 import { useSiteContext } from "../context/useSiteContext";
 
-import { NavigationButton } from "./NavigationButton";
-
-export function LoginButton({loginURI}: {loginURI: string}){
-    const {isLoggedIn, logOut, userInfo} = useSiteContext()
-    return isLoggedIn && userInfo ? (
-      <>
-        <NavigationButton action="/user" label="User Page"  type="icon" src={`https://cdn.discordapp.com/avatars/${userInfo.discord_id}/${userInfo.avatar}`} color={userInfo.accent_color} />
-        <Button
-          onClick={logOut}
-          label="logout"
-        />
-      </>
-    ) : (
-      <>
-          <Button label="Login" onClick={() => {
-            window.open(loginURI, '_self');
-          }} />
-      </>
-    )
+export function LoginButton({ loginURI }: { loginURI: string }) {
+  const { isLoggedIn, logOut, userInfo } = useSiteContext();
+  const navigate = useNavigate();
+  return isLoggedIn && userInfo ? (
+    <MenuButton
+      label="User"
+      menuItems={[
+        {
+          label: "Characters",
+          onClick: () => {
+            navigate("/user");
+          },
+        },
+        { label: "Logout", onClick: logOut },
+      ]}
+      direction="down"
+      config={{
+        type: "icon",
+        img: `https://cdn.discordapp.com/avatars/${userInfo.discord_id}/${userInfo.avatar}`,
+        color: userInfo.accent_color,
+      }}
+    />
+  ) : (
+    <>
+      <Button
+        label="Login"
+        onClick={() => {
+          window.open(loginURI, "_self");
+        }}
+      />
+    </>
+  );
 }
-
