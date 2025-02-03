@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import { Slot, UpgradeItem } from '../../utils/types'
-import { Type } from '../common/Type'
-import { SLOT_INFO } from '../../utils/constants'
+import { Slot, UpgradeItem } from '../../../utils/types'
+import { Type } from '../../common/Type'
+import { SLOT_INFO } from '../../../utils/constants'
 
 
 type Row = {

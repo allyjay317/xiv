@@ -1,7 +1,7 @@
 import { GearSetContainer } from './GearSetContainer'
 import { Header } from './Header'
 import { Jobs } from '../../utils/types'
-import { gearSet } from '../Fixtures/GearSet'
+import { gearSet } from '../../Fixtures/GearSet'
 import { useSiteContext } from '../context/useSiteContext'
 import { NEW_GEARSET } from '../context/constants'
 

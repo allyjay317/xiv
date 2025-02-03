@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
-import { Button } from "../common/Button";
-import { MenuButton } from "../common/MenuButton";
-import { useSiteContext } from "../context/useSiteContext";
+import { Button } from "../../common/Button";
+import { MenuButton } from "../../common/MenuButton";
+import { useSiteContext } from "../../context/useSiteContext";
 
 export function LoginButton({ loginURI }: { loginURI: string }) {
   const { isLoggedIn, logOut, userInfo } = useSiteContext();

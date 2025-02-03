@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 import { Type } from '../common/Type'
 import { Color } from '../../utils/colorSchemes'
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '../../utils/constants'
-import { CharacterSelector } from '../Sidebar/CharacterSelector'
-import { Stats } from '../Sidebar/SidebarStats'
+import { CharacterSelector } from './Sidebar/CharacterSelector'
+import { Stats } from './Sidebar/SidebarStats'
 import { useSiteContext } from '../context/useSiteContext'
 
 

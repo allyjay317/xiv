@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { Select } from '../common/Select'
-import { useSiteContext } from '../context/useSiteContext'
+import { Select } from '../../common/Select'
+import { useSiteContext } from '../../context/useSiteContext'
 
 
 export function CharacterSelector() {

@@ -1,4 +1,4 @@
-import { GearSet, GearSource, Jobs, Slot } from "../../utils/types";
+import { GearSet, GearSource, Jobs, Slot } from "../utils/types";
 
 
 export const gearSet: GearSet = {

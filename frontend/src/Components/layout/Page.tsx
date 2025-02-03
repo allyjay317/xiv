@@ -1,5 +1,5 @@
 
-import { Navigator } from '../NavigationRow/Navigator';
+import { Navigator } from './NavigationRow/Navigator';
 import { Sidebar } from "./Sidebar";
 import { PageContent } from "./PageContent";
 
