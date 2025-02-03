@@ -113,3 +113,5 @@ export enum Language {
   FR = 'fr',
   JA = 'ja',
 }
+
+export type Size = "S" | "M" | "L" | "XS"

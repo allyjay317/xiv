@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Color } from '../../utils/colorSchemes'
 import { getSize } from './utils'
+import { Size } from '../../utils/types'
 
 
 export function Type({
@@ -15,7 +16,7 @@ export function Type({
   children: React.ReactNode
   inline?: boolean
   style?: React.CSSProperties
-  size: 'S' | 'M' | 'L' | 'XS'
+  size: Size
   bold?: boolean
   color?: string
   onClick?: VoidFunction

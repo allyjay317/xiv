@@ -1,4 +1,6 @@
-export function getSize(size: 'S' | 'M' | 'L' | 'XS'){
+import { Size } from "../../utils/types"
+
+export function getSize(size: Size){
     
         if (size === 'XS') return 12
         if (size === 'S') return 16
