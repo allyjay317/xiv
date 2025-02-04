@@ -16,10 +16,6 @@ const router = createBrowserRouter([
         path: '/'
       },
       {
-        element: <LoginRedirect />,
-        path: '/login'
-      },
-      {
         element: <UserPage />,
         path: '/user'
       }, {
@@ -33,7 +29,11 @@ const router = createBrowserRouter([
     element: <Page />,
     errorElement: <Page />,
     path: '/'
-  }
+  },
+  {
+    element: <LoginRedirect />,
+    path: '/login'
+  },
 ])
 
 export function App() {

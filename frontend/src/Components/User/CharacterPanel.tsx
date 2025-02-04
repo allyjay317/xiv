@@ -4,7 +4,7 @@ import { Button } from '../common/Button'
 import { Character } from './Character'
 import { API_REQUEST_RESULT } from '../../utils/constants'
 import { Type } from '../common/Type'
-import ClipLoader from 'react-spinners/ClipLoader'
+import Spinner from 'react-spinners/BarLoader'
 import { Color } from '../../utils/colorSchemes'
 import { useSiteContext } from '../context/useSiteContext'
 import { TextInput } from '../common/TextInput'
@@ -43,10 +43,10 @@ export function CharacterPanel() {
         onClick={onAddCharacter}
         state={isLoading ? 'disabled' : 'default'}
       />
-      <ClipLoader color={Color.fg1} loading={isLoading} />
+      <Spinner color={Color.fg1} loading={isLoading} />
       </div>
       {error && <Type color='red' size="S">{error}</Type>}
-      <div style={{display: 'flex', gap: '32px', margin: '32px'}}>
+      <div style={{display: 'flex', gap: '32px', margin: '32px', flexWrap: 'wrap'}}>
       {charas.map(c => {
         return <Character character={c} />
       })}

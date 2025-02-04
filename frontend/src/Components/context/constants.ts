@@ -12,11 +12,13 @@ export const defaultValues: SiteValues = {
     updateGearPiece: () => {},
     deleteGearSet: () => {},
     addGearSet: () => {},
-    currentlySelectedCharacter: undefined,
+    selectedCharacter: undefined,
     updateGearSet: () => {},
-    setCurrentlySelectedCharacter: () => {},
+    setselectedCharacter: () => {},
     verifyCharacter: async () => API_REQUEST_RESULT.SUCCESS,
-    saveGearSet: async () => API_REQUEST_RESULT.SUCCESS
+    saveGearSet: async () => API_REQUEST_RESULT.SUCCESS,
+    deleteCharacter: async () => API_REQUEST_RESULT.SUCCESS,
+    updateCharacter: async () => API_REQUEST_RESULT.SUCCESS
   };
 
   export const testUser: CharacterInfo = {

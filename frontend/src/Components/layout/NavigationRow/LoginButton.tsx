@@ -20,7 +20,7 @@ export function LoginButton({ loginURI }: { loginURI: string }) {
       ]}
       direction="down"
       config={{
-        type: "icon",
+        type: "img",
         img: `https://cdn.discordapp.com/avatars/${userInfo.discord_id}/${userInfo.avatar}`,
         color: userInfo.accent_color,
       }}

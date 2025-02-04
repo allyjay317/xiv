@@ -6,12 +6,12 @@ import { useSiteContext } from '../../context/useSiteContext'
 
 
 export function Stats() {
-  const { characters, currentlySelectedCharacter } = useSiteContext()
+  const { characters, selectedCharacter } = useSiteContext()
 
   const gearSets = useMemo(() => {
-    if (!currentlySelectedCharacter) return []
-    return characters[currentlySelectedCharacter]?.gearSets
-  }, [characters, currentlySelectedCharacter])
+    if (!selectedCharacter) return []
+    return characters[selectedCharacter]?.gearSets
+  }, [characters, selectedCharacter])
 
   const tableData = useMemo(() => {
     return getStats(gearSets)

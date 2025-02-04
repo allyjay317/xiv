@@ -35,7 +35,7 @@ export function GearSetContainer({
 }) {
   const jobInfo = JobInfo[gearSet.job as Jobs]
   
-  const {characters, saveGearSet, currentlySelectedCharacter} = useSiteContext()
+  const {characters, saveGearSet, selectedCharacter} = useSiteContext()
 
   const onSave = () => {
     saveGearSet(gearSet)
@@ -44,7 +44,7 @@ export function GearSetContainer({
   const GearPiece = withId(gearSet.id)
 
   const characterItems = useMemo(() => {
-    return Object.keys(characters).filter(c => c !== currentlySelectedCharacter).map(c => {
+    return Object.keys(characters).filter(c => c !== selectedCharacter).map(c => {
       return {
         label: characters[c].info.name,
         onClick: () => saveGearSet({...gearSet, id: NEW_GEARSET}, `${characters[c].info.id}`)
