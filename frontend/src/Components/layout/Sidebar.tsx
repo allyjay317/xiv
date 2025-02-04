@@ -9,12 +9,12 @@ import { useSiteContext } from '../context/useSiteContext'
 
 export function Sidebar() {
 
-  const { characters, currentlySelectedCharacter } = useSiteContext()
+  const { characters, selectedCharacter } = useSiteContext()
 
   const userInfo = useMemo(() => {
-    if (!currentlySelectedCharacter) return null
-    return characters[currentlySelectedCharacter].info
-  }, [currentlySelectedCharacter, characters])
+    if (!selectedCharacter) return null
+    return characters[selectedCharacter].info
+  }, [selectedCharacter, characters])
 
   const info = useMemo(() => {
     if (!userInfo) return null

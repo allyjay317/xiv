@@ -10,7 +10,7 @@ import { Color } from "../../utils/colorSchemes";
 import { useSiteContext } from "../context/useSiteContext";
 
 export function Character({character}: {character: CharacterInfo}){
-    const {verifyCharacter} = useSiteContext()
+    const {verifyCharacter, deleteCharacter, updateCharacter} = useSiteContext()
     const {verified} = character
     const verifyPhrase = useMemo(() => {
       return `xiv-${uuidv4()}`
@@ -28,6 +28,27 @@ export function Character({character}: {character: CharacterInfo}){
         setLoading(false)
     }
 
+    const onDelete = async () => {
+      setError(null)
+      setLoading(true)
+      const res = await deleteCharacter(character.info.id)
+      if(res === API_REQUEST_RESULT.FAILURE){
+        setError("Failed to Delete")
+      }
+      setLoading(false)
+    }
+
+    const onUpdate = async () => {
+      setError(null)
+      setLoading(true)
+      const res = await updateCharacter(character.info.id)
+      debugger
+      if(res === API_REQUEST_RESULT.FAILURE){
+        setError("Failed to update")
+      }
+      setLoading(false)
+    }
+
     return (
               <div key={character.info.id} style={{display: 'flex', flexDirection: 'column', width: '200px', alignItems: 'center', gap: '4px', margin: '8px', padding: '8px'}}>
                 <Type size="S">{character.info.name}</Type>
@@ -35,15 +56,20 @@ export function Character({character}: {character: CharacterInfo}){
                   alt={`${character.info.name}'s Avatar`}
                   src={character.info.avatar}
                 />
-                {!verified && 
+                {!verified ? 
                 <>
                     <Type size="S">Place</Type>
                     <Type size="S">{verifyPhrase}</Type>
                     <Type size="S">in your bio to verify</Type>
                     <Button label='verify' onClick={onVerify} />
-                    <ClipLoader color={Color.fg1} loading={isLoading} />
+                    
                     <Type size="S" color='red'>{error}</Type>
-                </>}
+                </> : <div style={{display: 'flex'}}>
+                  <Button label='Update' onClick={onUpdate} />
+                  <Button label='Delete' onClick={onDelete} />
+                </div>}
+                <ClipLoader color={Color.fg1} loading={isLoading} />
+                {error}
               </div>
             )
 }

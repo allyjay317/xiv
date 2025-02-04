@@ -3,12 +3,15 @@ import { CharacterInfo } from "./types";
 import { API_REQUEST_RESULT } from "../../utils/constants";
 import { characters as apiCharacters } from "../../api/characters";
 import { gearsets } from "../../api/gearset";
+import { GearSet } from "../../utils/types";
+
+const gsSort = (a: GearSet, b: GearSet) => a.id.localeCompare(b.id)
 
 export function useCharacters(id: string | null) {
   const [characters, setCharacters] = useState<Record<string, CharacterInfo>>(
     {}
   );
-  const [currentlySelectedCharacter, setCurrentlySelectedCharacter] = useState<
+  const [selectedCharacter, setselectedCharacter] = useState<
     string | undefined
   >();
 
@@ -30,21 +33,21 @@ export function useCharacters(id: string | null) {
             verified: false,
           },
         });
-        if (!currentlySelectedCharacter) {
-          setCurrentlySelectedCharacter(newId);
+        if (!selectedCharacter) {
+          setselectedCharacter(newId);
         }
         return API_REQUEST_RESULT.SUCCESS;
       } catch (e) {
         return e as Error;
       }
     },
-    [characters, currentlySelectedCharacter, id]
+    [characters, selectedCharacter, id]
   );
 
   const onChangeCharacter = useCallback(
-    async (characterId: string) => {
+    async (characterId?: string) => {
       if (!characterId) {
-        setCurrentlySelectedCharacter(undefined);
+        setselectedCharacter(undefined);
         return;
       }
       try {
@@ -53,10 +56,10 @@ export function useCharacters(id: string | null) {
           ...characters,
           [characterId]: {
             ...characters[characterId],
-            gearSets: data,
+            gearSets: data.sort(gsSort),
           },
         });
-        setCurrentlySelectedCharacter(characterId);
+        setselectedCharacter(characterId);
       } catch (e) {
         console.log(e);
       }
@@ -90,12 +93,96 @@ export function useCharacters(id: string | null) {
     [id, characters]
   );
 
+  const deleteCharacter = useCallback(
+    async (characterId: number) => {
+      try {
+        await apiCharacters.deleteCharacter({character_id: characterId})
+        setselectedCharacter(undefined)
+        const v = Object.entries(characters).filter(([cId]) => cId !== ""+characterId)
+        const newCharacters: Record<string, CharacterInfo> = {}
+        v.forEach(([i, v]) => {
+          newCharacters[i] = v
+        })
+        setCharacters(newCharacters)
+        return API_REQUEST_RESULT.SUCCESS
+      } catch (e) {
+        console.error(e)
+        return API_REQUEST_RESULT.FAILURE
+      }
+      
+    }, [characters]
+  )
+
+  const updateCharacter = useCallback(
+    async (characterId: number) => {
+      try {
+        const res = await apiCharacters.updateCharacter(characterId)
+        const chara = characters[characterId]
+        setCharacters({...characters, [characterId]: {
+          ...chara,
+          info: res
+        }})
+        return API_REQUEST_RESULT.SUCCESS
+       } catch (e){
+        return API_REQUEST_RESULT.FAILURE
+       }
+    }, [characters]
+  )
+
+  const loadCharacters = useCallback(async (newCharacters: Record<string, CharacterInfo>) => {
+    const ids = Object.keys(newCharacters)
+    const oldIds = Object.keys(characters)
+    const promises: Promise<[string, GearSet[]]>[] = []
+    const nc: Record<string, CharacterInfo> = {
+      ...newCharacters
+    }
+    ids.forEach(i => {
+      if(!oldIds.includes(i)){
+        promises.push(new Promise(async (resolve, reject) => {
+          try{
+            const res = await gearsets.getGearsets(i)
+            resolve([i, res])
+          } catch(e) {
+            reject(e)
+          }
+        }))
+      }
+    })
+    const res = await Promise.all(promises)
+    res.forEach(([i, r]) => {
+      nc[i] = {
+        ...newCharacters[i],
+        gearSets: r.sort(gsSort)
+      }
+    })
+    setCharacters(nc)
+  }, [])
+
+  const onSetCharacters = useCallback(async (newCharacters: Record<string, CharacterInfo>) => {
+    const ids = Object.keys(newCharacters)
+    const nc: Record<string, CharacterInfo> = {}
+    ids.forEach(i => {
+      const newGearSets = newCharacters[i].gearSets.sort(gsSort)
+      nc[i] = {
+        ...newCharacters[i],
+        gearSets: newGearSets
+
+      }
+    })
+    setCharacters(nc)
+  }, [])
+
+  
+
   return {
     characters,
-    setCharacters,
+    setCharacters: onSetCharacters,
+    loadCharacters,
     addCharacter,
     verifyCharacter,
-    currentlySelectedCharacter,
-    setCurrentlySelectedCharacter: onChangeCharacter,
+    selectedCharacter,
+    setselectedCharacter: onChangeCharacter,
+    deleteCharacter,
+    updateCharacter
   };
 }

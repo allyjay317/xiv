@@ -5,11 +5,13 @@ import { HEADER_HEIGHT } from "../../../utils/constants";
 import { Type } from "../../common/Type";
 import { LoginButton } from "./LoginButton";
 import { Button } from "../../common/Button";
+import { useSiteContext } from "../../context/useSiteContext";
 
 
 
 export const Navigator = () => {
   const loginURI = import.meta.env.VITE_LOGIN_URI
+  const {isLoggedIn} = useSiteContext()
 
   return (
     <div
@@ -30,7 +32,7 @@ export const Navigator = () => {
         FFXIV Gear Planner
       </Type>
       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        <Link style={{ textDecoration: 'none' }} to="/gear-sets">
+       {isLoggedIn && (<> <Link style={{ textDecoration: 'none' }} to="/gear-sets">
           <Button label="Gear Sets" />
         </Link>
         <Link style={{ textDecoration: 'none' }} to="/gear-planner">
@@ -38,7 +40,7 @@ export const Navigator = () => {
         </Link>
         <Link style={{ textDecoration: 'none' }} to="/stats">
           <Button label="Stats" onClick={() => {}} />
-        </Link>
+        </Link></>)}
         <LoginButton loginURI={loginURI} />
       </div>
 

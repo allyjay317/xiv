@@ -6,11 +6,11 @@ import { useSiteContext } from '../context/useSiteContext'
 import { NEW_GEARSET } from '../context/constants'
 
 export function GearSetList() {
-  const { addGearSet, characters, currentlySelectedCharacter, deleteGearSet } =
+  const { addGearSet, characters, selectedCharacter, deleteGearSet } =
     useSiteContext()
 
-  const gearSets = currentlySelectedCharacter
-    ? characters[currentlySelectedCharacter]?.gearSets
+  const gearSets = selectedCharacter
+    ? characters[selectedCharacter]?.gearSets
     : []
 
   return (

@@ -18,13 +18,16 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
     setCharacters,
     addCharacter,
     verifyCharacter,
-    currentlySelectedCharacter,
-    setCurrentlySelectedCharacter,
+    selectedCharacter,
+    setselectedCharacter,
+    loadCharacters,
+    deleteCharacter,
+    updateCharacter,
   } = useCharacters(id);
 
   const saveGearSet = useCallback(
     async (gearSet: GearSet, cId?: string) => {
-      if (!currentlySelectedCharacter) return API_REQUEST_RESULT.FAILURE;
+      if (!selectedCharacter) return API_REQUEST_RESULT.FAILURE;
       if (!id) return API_REQUEST_RESULT.NOT_LOGGED_IN;
       try {
         const newGearSet = {
@@ -34,7 +37,7 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
           items: gearSet.items,
         };
 
-        const characterId = cId ?? currentlySelectedCharacter;
+        const characterId = cId ?? selectedCharacter;
         const character = characters[characterId];
         const gearSets = character.gearSets.filter(
           (gs) => gs.id !== gearSet.id
@@ -64,34 +67,34 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
         return e as Error;
       }
     },
-    [currentlySelectedCharacter, id, characters, setCharacters]
+    [selectedCharacter, id, characters, setCharacters]
   );
 
   const addGearSet = useCallback(
     (gearSet: GearSet) => {
-      if (!currentlySelectedCharacter) return;
-      const gearSets = characters[currentlySelectedCharacter].gearSets || [];
+      if (!selectedCharacter) return;
+      const gearSets = characters[selectedCharacter].gearSets || [];
       setCharacters({
         ...characters,
-        [currentlySelectedCharacter]: {
-          ...characters[currentlySelectedCharacter],
+        [selectedCharacter]: {
+          ...characters[selectedCharacter],
           gearSets: [...gearSets, gearSet],
         },
       });
     },
-    [characters, currentlySelectedCharacter, setCharacters]
+    [characters, selectedCharacter, setCharacters]
   );
 
   const deleteGearSet = useCallback(
     async (id: string) => {
-      if (!currentlySelectedCharacter) return;
-      const gearSets = characters[currentlySelectedCharacter].gearSets || [];
+      if (!selectedCharacter) return;
+      const gearSets = characters[selectedCharacter].gearSets || [];
       try {
-        await gearsets.deleteGearSet(currentlySelectedCharacter, id);
+        await gearsets.deleteGearSet(selectedCharacter, id);
         setCharacters({
           ...characters,
-          [currentlySelectedCharacter]: {
-            ...characters[currentlySelectedCharacter],
+          [selectedCharacter]: {
+            ...characters[selectedCharacter],
             gearSets: gearSets.filter((gs) => gs.id !== id),
           },
         });
@@ -99,17 +102,17 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
         return API_REQUEST_RESULT.FAILURE;
       }
     },
-    [characters, currentlySelectedCharacter, setCharacters]
+    [characters, selectedCharacter, setCharacters]
   );
 
   const updateGearSet = useCallback(
     (gearSet: GearSet) => {
-      if (!currentlySelectedCharacter) return;
-      const gearSets = characters[currentlySelectedCharacter].gearSets || [];
+      if (!selectedCharacter) return;
+      const gearSets = characters[selectedCharacter].gearSets || [];
       setCharacters({
         ...characters,
-        [currentlySelectedCharacter]: {
-          ...characters[currentlySelectedCharacter],
+        [selectedCharacter]: {
+          ...characters[selectedCharacter],
           gearSets: gearSets.map((gs) => {
             if (gs.id === gearSet.id) {
               return { ...gearSet, modified: true };
@@ -119,13 +122,13 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
         },
       });
     },
-    [characters, currentlySelectedCharacter, setCharacters]
+    [characters, selectedCharacter, setCharacters]
   );
 
   const updateGearPiece = useCallback(
     ({ id, slot, value }: { id: string; slot: Slot; value: GearPiece }) => {
-      if (!currentlySelectedCharacter) return;
-      const gearSets = characters[currentlySelectedCharacter].gearSets || [];
+      if (!selectedCharacter) return;
+      const gearSets = characters[selectedCharacter].gearSets || [];
       const gearSetValue = gearSets.find((gs) => gs.id === id);
       if (!gearSetValue) {
         return;
@@ -136,8 +139,9 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
       };
       updateGearSet(newGearSet);
     },
-    [characters, currentlySelectedCharacter, updateGearSet]
+    [characters, selectedCharacter, updateGearSet]
   );
+
 
   useEffect(() => {
     if (id && !userInfo) {
@@ -145,7 +149,7 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
         .getUserInfo(id)
         .then((data) => {
           setUserInfo(data.userInfo);
-          setCharacters(data.characters);
+          loadCharacters(data.characters);
         })
         .catch((e) => {
           console.log(e);
@@ -156,6 +160,8 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
   const logOut = () => {
     localStorage.removeItem("id");
     setUserInfo(undefined);
+    setselectedCharacter(undefined)
+    setCharacters({})
     setId(null);
   };
 
@@ -177,12 +183,14 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
         updateGearPiece,
         addGearSet,
         deleteGearSet,
-        currentlySelectedCharacter,
+        selectedCharacter,
         updateGearSet,
-        setCurrentlySelectedCharacter: (id: string) => {
-          setCurrentlySelectedCharacter(id);
+        setselectedCharacter: (id: string) => {
+          setselectedCharacter(id);
         },
         saveGearSet,
+        deleteCharacter,
+        updateCharacter
       }}
     >
       {props.children}

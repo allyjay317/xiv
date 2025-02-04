@@ -24,10 +24,12 @@ export type SiteValues = {
   }) => void
   addGearSet: (gearSet: GearSet) => void
   deleteGearSet: (id: string) => void
-  currentlySelectedCharacter: string | undefined
+  selectedCharacter: string | undefined
   updateGearSet: (gearSet: GearSet) => void
-  setCurrentlySelectedCharacter: (id: string) => void
+  setselectedCharacter: (id: string) => void
   verifyCharacter: (lodestoneId: string, verifyPhrase: string) => Promise<API_REQUEST_RESULT | Error>
   saveGearSet: (gearSet: GearSet, cId?: string) => Promise<API_REQUEST_RESULT | Error>
+  deleteCharacter: (characterId: number) => Promise<API_REQUEST_RESULT | Error>
+  updateCharacter: (characterId: number) => Promise<API_REQUEST_RESULT | Error>
 };
 

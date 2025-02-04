@@ -6,14 +6,14 @@ import { useSiteContext } from '../../context/useSiteContext'
 export function CharacterSelector() {
   const {
     characters,
-    currentlySelectedCharacter,
-    setCurrentlySelectedCharacter,
+    selectedCharacter,
+    setselectedCharacter,
   } = useSiteContext()
 
   const characterOptions = useMemo(() => {
     const options = Object.keys(characters).map(key => {
       return {
-        label: characters[key].info.name,
+        label: characters[key]?.info.name,
         value: key,
       }
     })
@@ -23,9 +23,9 @@ export function CharacterSelector() {
   return (
     <div>
       <Select
-        onChange={value => setCurrentlySelectedCharacter(value)}
+        onChange={value => setselectedCharacter(value)}
         options={characterOptions}
-        value={currentlySelectedCharacter}
+        value={selectedCharacter}
       />
     </div>
   )
