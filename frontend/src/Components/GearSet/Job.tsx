@@ -5,7 +5,7 @@ import { GearSet, Jobs } from '../../utils/types'
 import { JobInfo } from '../../utils/constants'
 import { Type } from '../common/Type'
 import { Color } from '../../utils/colorSchemes'
-import { PenButton } from '../common/PenButton'
+import { IconButton } from '../common/IconButton'
 
 export function Job({ gearSet }: { gearSet: GearSet }) {
   const [isEditingJob, setIsEditingJob] = useState(false)
@@ -16,12 +16,12 @@ export function Job({ gearSet }: { gearSet: GearSet }) {
       {isEditingJob ? (
         <>
           <JobSelector gearSet={gearSet} />
-          <PenButton onClick={() => setIsEditingJob(!isEditingJob)} />
+          <IconButton onClick={() => setIsEditingJob(!isEditingJob)} icon='pen' />
         </>
       ) : (
         <>
           {jobInfo.name}
-          <PenButton onClick={() => setIsEditingJob(!isEditingJob)} />
+          <IconButton onClick={() => setIsEditingJob(!isEditingJob)} icon='pen' />
         </>
       )}
     </Type>

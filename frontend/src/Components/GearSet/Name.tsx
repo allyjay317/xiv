@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { GearSet } from '../../utils/types'
 import { Type } from '../common/Type'
 import { Color } from '../../utils/colorSchemes'
-import { PenButton } from '../common/PenButton'
+import { IconButton } from '../common/IconButton'
 import { useSiteContext } from '../context/useSiteContext'
 import { TextInput } from '../common/TextInput'
 
@@ -25,12 +25,12 @@ export function Name({ gearSet }: { gearSet: GearSet }) {
             value={name}
             size='M'
           />
-          <PenButton onClick={() => setIsEditingName(!isEditingName)} />
+          <IconButton onClick={() => setIsEditingName(!isEditingName)} icon='pen' />
         </div>
       ) : (
         <div style={{display: 'flex', alignItems: 'center'}}>
         <Type bold color={Color.fg1} size="L">{gearSet.name}</Type>
-          <PenButton onClick={() => setIsEditingName(!isEditingName)} />
+          <IconButton onClick={() => setIsEditingName(!isEditingName)} icon='pen' />
         </div>
       )}
     </>

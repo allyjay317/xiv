@@ -1,16 +1,25 @@
 import { useMemo, useState } from "react";
 import { Button } from "./Button";
-import { IconButton } from "./IconButton";
+import { ImgButton } from "./ImgButton";
+import { Icon, IconButton } from "./IconButton";
 
 type TButton = {
   type: "button";
 };
 
-type TIconButton = {
-  type: "icon";
+type TImgButton = {
+  type: "img";
   img: string;
   color: string;
 };
+
+type TIconButton = {
+  type: 'icon'
+  icon: Icon
+  color: string
+}
+
+type ButtonConfig = TButton | TImgButton | TIconButton
 
 export function MenuButton({
   label,
@@ -32,7 +41,7 @@ export function MenuButton({
   direction?: "up" | "down" | "left" | "right";
   width?: string;
   menuWidth?: string;
-  config?: TButton | TIconButton;
+  config?: ButtonConfig
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -72,20 +81,27 @@ export function MenuButton({
             style={style}
           />
         );
-      case "icon":
+      case "img":
         return (
-          <IconButton
+          <ImgButton
             label="User Menu"
             color={config.color}
             src={config.img}
             onClick={() => setIsOpen(!isOpen)}
           />
         );
+      case "icon":
+        return (
+          <IconButton
+            onClick={() => setIsOpen(!isOpen)}
+            icon={config.icon}
+            />
+        )
     }
   }, [config.type, isOpen, state, width, style, label, setIsOpen]);
 
   return (
-    <div style={{ position: "relative", display: "inline-block" }}>
+    <div style={{ position: "relative", display: "inline-block" }} onBlur={() => setIsOpen(false)} tabIndex={1}>
       {Component}
       {isOpen && (
         <>
