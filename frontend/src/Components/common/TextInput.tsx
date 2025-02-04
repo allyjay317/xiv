@@ -1,9 +1,6 @@
 import styled from "@emotion/styled";
-import {css} from '@emotion/react'
 import { Color } from "../../utils/colorSchemes";
 import { getSize } from "./utils";
-import { useState } from "react";
-import { Size } from "../../utils/types";
 
 
 const Input = styled.input`
