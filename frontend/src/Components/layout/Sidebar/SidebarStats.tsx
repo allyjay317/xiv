@@ -4,7 +4,6 @@ import { Table } from './Table'
 import { getStats } from '../../../utils/utils'
 import { useSiteContext } from '../../context/useSiteContext'
 
-
 export function Stats() {
   const { characters, selectedCharacter } = useSiteContext()
 

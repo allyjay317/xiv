@@ -3,7 +3,6 @@ import { Slot, UpgradeItem } from '../../../utils/types'
 import { Type } from '../../common/Type'
 import { SLOT_INFO } from '../../../utils/constants'
 
-
 type Row = {
   slot: Slot | UpgradeItem
   raid: number
@@ -12,7 +11,7 @@ type Row = {
 
 export function Table({ rows, title }: { title: string; rows: Row[] }) {
   const rowDisplay = useMemo(() => {
-    return rows.map(row => {
+    return rows.map((row) => {
       if (row.raid === 0 && row.tomestone === 0) {
         return null
       }
@@ -34,7 +33,7 @@ export function Table({ rows, title }: { title: string; rows: Row[] }) {
 
   const hasRows = useMemo(() => {
     return (
-      rowDisplay.filter(rd => {
+      rowDisplay.filter((rd) => {
         return rd !== null
       }).length > 0
     )

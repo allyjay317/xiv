@@ -1,9 +1,7 @@
 import styled from '@emotion/styled'
 import { Color } from '../../utils/colorSchemes'
 
-
 const Checkmark = styled.input`
- 
   appearance: none;
   margin: 0;
 
@@ -18,7 +16,7 @@ const Checkmark = styled.input`
   display: grid;
   place-content: center;
   &:before {
-    content: "";
+    content: '';
     width: 0.65em;
     height: 0.65em;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
@@ -71,7 +69,7 @@ export function Checkbox({
       <span style={{ marginTop: '4px' }}>
         <Checkmark
           checked={value}
-          onChange={e => onChange(e.target.checked)}
+          onChange={(e) => onChange(e.target.checked)}
           type="checkbox"
         />
       </span>

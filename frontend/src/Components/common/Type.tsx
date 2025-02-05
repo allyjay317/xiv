@@ -3,7 +3,6 @@ import { Color } from '../../utils/colorSchemes'
 import { getSize } from './utils'
 import { Size } from '../../utils/types'
 
-
 export function Type({
   bold,
   children,
@@ -11,7 +10,7 @@ export function Type({
   inline,
   size,
   style,
-  onClick
+  onClick,
 }: {
   children: React.ReactNode
   inline?: boolean
@@ -21,9 +20,7 @@ export function Type({
   color?: string
   onClick?: VoidFunction
 }) {
-  const fontSize = useMemo(
-    () => getSize(size)
-    , [size])
+  const fontSize = useMemo(() => getSize(size), [size])
 
   const fontFamily = bold ? 'FFXIVBold' : 'FFXIV'
 

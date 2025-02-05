@@ -27,10 +27,10 @@ import war from '../assets/img/job_images/Warrior.png'
 import whm from '../assets/img/job_images/WhiteMage.png'
 
 export enum API_REQUEST_RESULT {
-  SUCCESS = "Success",
-  FAILURE = "Failure",
-  ALREADY_EXISTS = "Already Exists",
-  NOT_LOGGED_IN = "Not Logged In"
+  SUCCESS = 'Success',
+  FAILURE = 'Failure',
+  ALREADY_EXISTS = 'Already Exists',
+  NOT_LOGGED_IN = 'Not Logged In',
 }
 
 export const FLOOR_1 = [
@@ -43,88 +43,88 @@ export const FLOOR_1 = [
 
 export const SLOT_INFO: Record<
   Slot | UpgradeItem,
-  { floor: 1 | 2 | 3 | 4; tomeCost: number; bookCost: number, name: string }
+  { floor: 1 | 2 | 3 | 4; tomeCost: number; bookCost: number; name: string }
 > = {
   [Slot.BODY]: {
-    name: "Body",
+    name: 'Body',
     bookCost: 6,
     floor: 3,
     tomeCost: 825,
   },
   [Slot.BRACELET]: {
-    name: "Bracelet",
+    name: 'Bracelet',
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
   },
   Brine: {
-    name: "Brine",
+    name: 'Brine',
     bookCost: 4,
     floor: 3,
     tomeCost: 0,
   },
   [Slot.EARRINGS]: {
-    name: "Earrings",
+    name: 'Earrings',
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
   },
   [Slot.FEET]: {
-    name: "Feet",
+    name: 'Feet',
     bookCost: 4,
     floor: 2,
     tomeCost: 495,
   },
   [Slot.HANDS]: {
-    name: "Hands",
+    name: 'Hands',
     bookCost: 4,
     floor: 2,
     tomeCost: 495,
   },
   [Slot.HEAD]: {
-    name: "Head",
+    name: 'Head',
     bookCost: 4,
     floor: 2,
     tomeCost: 495,
   },
   [Slot.LEGS]: {
-    name: "Legs",
+    name: 'Legs',
     bookCost: 6,
     floor: 3,
     tomeCost: 825,
   },
   [Slot.NECKLACE]: {
-    name: "Necklace",
+    name: 'Necklace',
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
   },
   [Slot.RING1]: {
-    name: "Ring",
+    name: 'Ring',
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
   },
   [Slot.RING2]: {
-    name: "Ring",
+    name: 'Ring',
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
   },
   Shine: {
-    name: "Shine",
+    name: 'Shine',
     bookCost: 3,
     floor: 2,
     tomeCost: 0,
   },
   Twine: {
-    name: "Twine",
+    name: 'Twine',
     bookCost: 4,
     floor: 3,
     tomeCost: 0,
   },
   [Slot.WEAPON]: {
-    name: "Weapon",
+    name: 'Weapon',
     bookCost: 8,
     floor: 4,
     tomeCost: 500,

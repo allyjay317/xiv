@@ -1,17 +1,17 @@
-import { useMemo, useState } from "react";
-import { Button } from "./Button";
-import { ImgButton } from "./ImgButton";
-import { Icon, IconButton } from "./IconButton";
+import { useMemo, useState } from 'react'
+import { Button } from './Button'
+import { ImgButton } from './ImgButton'
+import { Icon, IconButton } from './IconButton'
 
 type TButton = {
-  type: "button";
-};
+  type: 'button'
+}
 
 type TImgButton = {
-  type: "img";
-  img: string;
-  color: string;
-};
+  type: 'img'
+  img: string
+  color: string
+}
 
 type TIconButton = {
   type: 'icon'
@@ -26,52 +26,52 @@ export function MenuButton({
   style,
   state,
   menuItems,
-  direction = "up",
-  width = "100px",
-  menuWidth = "100px",
-  config = { type: "button" },
+  direction = 'up',
+  width = '100px',
+  menuWidth = '100px',
+  config = { type: 'button' },
 }: {
-  label: string;
-  style?: React.CSSProperties;
-  state?: "default" | "disabled";
+  label: string
+  style?: React.CSSProperties
+  state?: 'default' | 'disabled'
   menuItems: Array<{
-    label: string | React.ReactNode;
-    onClick: VoidFunction;
-  }>;
-  direction?: "up" | "down" | "left" | "right";
-  width?: string;
-  menuWidth?: string;
+    label: string | React.ReactNode
+    onClick: VoidFunction
+  }>
+  direction?: 'up' | 'down' | 'left' | 'right'
+  width?: string
+  menuWidth?: string
   config?: ButtonConfig
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const menuStyles: React.CSSProperties = useMemo(() => {
     switch (direction) {
-      case "down":
+      case 'down':
         return {
           bottom: -48 * menuItems.length,
-        };
-      case "left":
+        }
+      case 'left':
         return {
           left: `-${menuWidth}`,
           top: 0,
-        };
-      case "right":
+        }
+      case 'right':
         return {
           right: `-${menuWidth}`,
           top: 0,
-        };
-      case "up":
+        }
+      case 'up':
         return {
           top: -48 * menuItems.length,
-          flexDirection: "column-reverse",
-        };
+          flexDirection: 'column-reverse',
+        }
     }
-  }, [direction]);
+  }, [direction])
 
   const Component = useMemo(() => {
     switch (config.type) {
-      case "button":
+      case 'button':
         return (
           <Button
             label={label}
@@ -80,8 +80,8 @@ export function MenuButton({
             width={width}
             style={style}
           />
-        );
-      case "img":
+        )
+      case 'img':
         return (
           <ImgButton
             label="User Menu"
@@ -89,60 +89,61 @@ export function MenuButton({
             src={config.img}
             onClick={() => setIsOpen(!isOpen)}
           />
-        );
-      case "icon":
+        )
+      case 'icon':
         return (
-          <IconButton
-            onClick={() => setIsOpen(!isOpen)}
-            icon={config.icon}
-            />
+          <IconButton onClick={() => setIsOpen(!isOpen)} icon={config.icon} />
         )
     }
-  }, [config.type, isOpen, state, width, style, label, setIsOpen]);
+  }, [config.type, isOpen, state, width, style, label, setIsOpen])
 
   return (
-    <div style={{ position: "relative", display: "inline-block" }} onBlur={() => setIsOpen(false)} tabIndex={1}>
+    <div
+      style={{ position: 'relative', display: 'inline-block' }}
+      onBlur={() => setIsOpen(false)}
+      tabIndex={1}
+    >
       {Component}
       {isOpen && (
         <>
           <div
             style={{
-              position: "absolute",
-              backgroundColor: "white",
+              position: 'absolute',
+              backgroundColor: 'white',
               width: menuWidth,
-              zIndex: "200",
-              display: "flex",
-              flexDirection: "column",
+              zIndex: '200',
+              display: 'flex',
+              flexDirection: 'column',
               ...menuStyles,
             }}
             color="white"
           >
             {menuItems.map((mi) => {
-              if (typeof mi.label === "string") {
+              if (typeof mi.label === 'string') {
                 return (
                   <Button
                     label={mi.label}
                     onClick={mi.onClick}
                     width={menuWidth}
                   />
-                );
+                )
               } else {
                 return (
                   <div
                     onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      mi.onClick();
+                      e.stopPropagation()
+                      e.preventDefault()
+                      mi.onClick()
                     }}
                   >
                     {mi.label}
                   </div>
-                );
+                )
               }
             })}
           </div>
         </>
       )}
     </div>
-  );
+  )
 }

@@ -27,7 +27,7 @@ const GearPieceContainer = styled.div({
   position: 'relative',
   textAlign: 'left',
   width: '250px',
-  height: '48px'
+  height: '48px',
 })
 
 const GearPieceInner = styled.div({
@@ -35,7 +35,7 @@ const GearPieceInner = styled.div({
   display: 'flex',
   gap: '8px',
   justifyContent: 'flex-start',
-  height: '100%'
+  height: '100%',
 })
 
 const SlotText = styled.div({
@@ -60,7 +60,7 @@ export function GearPieceDisplay({
 
   const raidSourceImage = useMemo(() => {
     const floor = SLOT_INFO[slot].floor
-    switch(floor){
+    switch (floor) {
       case 1:
         return rOneImg
       case 2:
@@ -73,7 +73,7 @@ export function GearPieceDisplay({
   }, [slot])
 
   const imageSource = useMemo(() => {
-    switch(gearPiece.source){
+    switch (gearPiece.source) {
       case GearSource.TOME:
         return tomeImg
       case GearSource.RAID:
@@ -100,8 +100,11 @@ export function GearPieceDisplay({
     setIsEditing(false)
   }
 
-  const isLeftSide = useMemo(() => 
-    [Slot.BODY, Slot.FEET, Slot.HANDS, Slot.HEAD, Slot.HEAD].includes(slot), [slot])
+  const isLeftSide = useMemo(
+    () =>
+      [Slot.BODY, Slot.FEET, Slot.HANDS, Slot.HEAD, Slot.HEAD].includes(slot),
+    [slot],
+  )
 
   return (
     <GearPieceContainer>
@@ -112,7 +115,12 @@ export function GearPieceDisplay({
           </Type>
         </SlotText>
         {isEditing ? (
-          <SourceSelector onClick={changeSource} raidImage={raidSourceImage} isWeapon={slot === Slot.WEAPON} isLeftSide={isLeftSide} />
+          <SourceSelector
+            onClick={changeSource}
+            raidImage={raidSourceImage}
+            isWeapon={slot === Slot.WEAPON}
+            isLeftSide={isLeftSide}
+          />
         ) : (
           <>
             <div
@@ -128,7 +136,7 @@ export function GearPieceDisplay({
             </div>
             <Checkbox
               label="Have"
-              onChange={isChecked => {
+              onChange={(isChecked) => {
                 updateGearPiece({
                   id,
                   slot,
@@ -140,7 +148,7 @@ export function GearPieceDisplay({
             {gearPiece.source === GearSource.TOME && (
               <Checkbox
                 label="Aug"
-                onChange={isChecked => {
+                onChange={(isChecked) => {
                   updateGearPiece({
                     id,
                     slot,

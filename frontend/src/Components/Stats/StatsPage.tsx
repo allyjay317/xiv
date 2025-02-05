@@ -1,5 +1,5 @@
-import { RemainingCostsTable } from "./RemainingCostsTable";
+import { RemainingCostsTable } from './RemainingCostsTable'
 
-export function StatsPage(){
-    return <RemainingCostsTable />
+export function StatsPage() {
+  return <RemainingCostsTable />
 }

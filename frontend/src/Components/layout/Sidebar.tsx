@@ -6,9 +6,7 @@ import { CharacterSelector } from './Sidebar/CharacterSelector'
 import { Stats } from './Sidebar/SidebarStats'
 import { useSiteContext } from '../context/useSiteContext'
 
-
 export function Sidebar() {
-
   const { characters, selectedCharacter } = useSiteContext()
 
   const userInfo = useMemo(() => {

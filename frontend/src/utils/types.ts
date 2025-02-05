@@ -23,7 +23,7 @@ export enum GearSource {
   CRAFTED = 1,
   TOME = 2,
   CHAOTIC = 3,
-  ULTIMATE = 4
+  ULTIMATE = 4,
 }
 
 export type GearPiece = {
@@ -114,4 +114,4 @@ export enum Language {
   JA = 'ja',
 }
 
-export type Size = "S" | "M" | "L" | "XS"
+export type Size = 'S' | 'M' | 'L' | 'XS'
