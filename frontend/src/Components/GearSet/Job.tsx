@@ -16,12 +16,18 @@ export function Job({ gearSet }: { gearSet: GearSet }) {
       {isEditingJob ? (
         <>
           <JobSelector gearSet={gearSet} />
-          <IconButton onClick={() => setIsEditingJob(!isEditingJob)} icon='pen' />
+          <IconButton
+            onClick={() => setIsEditingJob(!isEditingJob)}
+            icon="pen"
+          />
         </>
       ) : (
         <>
           {jobInfo.name}
-          <IconButton onClick={() => setIsEditingJob(!isEditingJob)} icon='pen' />
+          <IconButton
+            onClick={() => setIsEditingJob(!isEditingJob)}
+            icon="pen"
+          />
         </>
       )}
     </Type>

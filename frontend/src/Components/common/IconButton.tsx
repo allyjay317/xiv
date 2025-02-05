@@ -1,19 +1,29 @@
-
 import { Color } from '../../utils/colorSchemes'
-import {BsFillPencilFill, BsCheck, BsThreeDotsVertical, BsPlusCircle, BsXCircle} from 'react-icons/bs'
+import {
+  BsFillPencilFill,
+  BsCheck,
+  BsThreeDotsVertical,
+  BsPlusCircle,
+  BsXCircle,
+} from 'react-icons/bs'
 
 const icons = {
-  'pen': BsFillPencilFill,
-  'check': BsCheck,
-  'menu': BsThreeDotsVertical,
-  'plus': BsPlusCircle,
-  'cancel': BsXCircle
+  pen: BsFillPencilFill,
+  check: BsCheck,
+  menu: BsThreeDotsVertical,
+  plus: BsPlusCircle,
+  cancel: BsXCircle,
 }
 
 export type Icon = keyof typeof icons
 
-
-export function IconButton({ onClick, icon }: { onClick: () => void, icon: Icon }) {
+export function IconButton({
+  onClick,
+  icon,
+}: {
+  onClick: () => void
+  icon: Icon
+}) {
   const Component = icons[icon]
   return (
     <div

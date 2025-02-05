@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { defaultValues } from "./constants";
+import React, { useContext } from 'react'
+import { defaultValues } from './constants'
 
-export const SiteContext = React.createContext(defaultValues);
+export const SiteContext = React.createContext(defaultValues)
 
 export const useSiteContext = () => {
-  const context = useContext(SiteContext);
-  return context;
-};
+  const context = useContext(SiteContext)
+  return context
+}

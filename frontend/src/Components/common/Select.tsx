@@ -1,5 +1,4 @@
-import { Color } from "../../utils/colorSchemes"
-
+import { Color } from '../../utils/colorSchemes'
 
 export type Option = {
   label: string | undefined
@@ -17,7 +16,7 @@ export function Select({
 }) {
   return (
     <select
-      onChange={e => onChange(e.target.value)}
+      onChange={(e) => onChange(e.target.value)}
       style={{
         backgroundColor: Color.bg1,
         border: '1px solid #ccc',
@@ -33,7 +32,7 @@ export function Select({
       }}
       value={value}
     >
-      {options.map(option => {
+      {options.map((option) => {
         return (
           <option key={option.value} value={option.value}>
             {option.label ?? value}

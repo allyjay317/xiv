@@ -1,17 +1,14 @@
-
-import { Link } from "react-router-dom";
-import { Color } from "../../../utils/colorSchemes";
-import { HEADER_HEIGHT } from "../../../utils/constants";
-import { Type } from "../../common/Type";
-import { LoginButton } from "./LoginButton";
-import { Button } from "../../common/Button";
-import { useSiteContext } from "../../context/useSiteContext";
-
-
+import { Link } from 'react-router-dom'
+import { Color } from '../../../utils/colorSchemes'
+import { HEADER_HEIGHT } from '../../../utils/constants'
+import { Type } from '../../common/Type'
+import { LoginButton } from './LoginButton'
+import { Button } from '../../common/Button'
+import { useSiteContext } from '../../context/useSiteContext'
 
 export const Navigator = () => {
   const loginURI = import.meta.env.VITE_LOGIN_URI
-  const {isLoggedIn} = useSiteContext()
+  const { isLoggedIn } = useSiteContext()
 
   return (
     <div
@@ -32,19 +29,22 @@ export const Navigator = () => {
         FFXIV Gear Planner
       </Type>
       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-       {isLoggedIn && (<> <Link style={{ textDecoration: 'none' }} to="/gear-sets">
-          <Button label="Gear Sets" />
-        </Link>
-        <Link style={{ textDecoration: 'none' }} to="/gear-planner">
-          <Button label="Gear Planner" onClick={() => {}} />
-        </Link>
-        <Link style={{ textDecoration: 'none' }} to="/stats">
-          <Button label="Stats" onClick={() => {}} />
-        </Link></>)}
+        {isLoggedIn && (
+          <>
+            {' '}
+            <Link style={{ textDecoration: 'none' }} to="/gear-sets">
+              <Button label="Gear Sets" />
+            </Link>
+            <Link style={{ textDecoration: 'none' }} to="/gear-planner">
+              <Button label="Gear Planner" onClick={() => {}} />
+            </Link>
+            <Link style={{ textDecoration: 'none' }} to="/stats">
+              <Button label="Stats" onClick={() => {}} />
+            </Link>
+          </>
+        )}
         <LoginButton loginURI={loginURI} />
       </div>
-
-      
     </div>
   )
-};
+}

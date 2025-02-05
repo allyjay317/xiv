@@ -20,7 +20,7 @@ const Column = styled.div`
 
 function withId(id: string) {
   return function GearPiece(
-    props: Omit<ComponentProps<typeof GearPieceDisplay>, 'id'>
+    props: Omit<ComponentProps<typeof GearPieceDisplay>, 'id'>,
   ) {
     return <GearPieceDisplay {...props} id={id} />
   }
@@ -34,8 +34,8 @@ export function GearSetContainer({
   onDelete: (id: string) => void
 }) {
   const jobInfo = JobInfo[gearSet.job as Jobs]
-  
-  const {characters, saveGearSet, selectedCharacter} = useSiteContext()
+
+  const { characters, saveGearSet, selectedCharacter } = useSiteContext()
 
   const onSave = () => {
     saveGearSet(gearSet)
@@ -44,13 +44,18 @@ export function GearSetContainer({
   const GearPiece = withId(gearSet.id)
 
   const characterItems = useMemo(() => {
-    return Object.keys(characters).filter(c => c !== selectedCharacter).map(c => {
-      return {
-        label: characters[c].info.name,
-        onClick: () => saveGearSet({...gearSet, id: NEW_GEARSET}, `${characters[c].info.id}`)
-        
-      }
-    })
+    return Object.keys(characters)
+      .filter((c) => c !== selectedCharacter)
+      .map((c) => {
+        return {
+          label: characters[c].info.name,
+          onClick: () =>
+            saveGearSet(
+              { ...gearSet, id: NEW_GEARSET },
+              `${characters[c].info.id}`,
+            ),
+        }
+      })
   }, [characters])
 
   return (
@@ -71,34 +76,67 @@ export function GearSetContainer({
             position: 'absolute',
             right: '32px',
             top: '32px',
-            display: 'flex'
+            display: 'flex',
           }}
         >
-        {gearSet.modified && <Button label='Save' onClick={onSave} state={gearSet.modified ? 'default' : 'disabled'}/>}
-          
-          <MenuButton direction='right' width='10px' label=':' menuItems={[
-            {label: 'Delete', onClick: () => onDelete(gearSet.id)}, 
-            {label: <MenuButton label='Copy to Another Character' menuItems={characterItems} direction='right' />, onClick: () => {}}
-            ]}  />
+          {gearSet.modified && (
+            <Button
+              label="Save"
+              onClick={onSave}
+              state={gearSet.modified ? 'default' : 'disabled'}
+            />
+          )}
+
+          <MenuButton
+            direction="right"
+            width="10px"
+            label=":"
+            menuItems={[
+              { label: 'Delete', onClick: () => onDelete(gearSet.id) },
+              {
+                label: (
+                  <MenuButton
+                    label="Copy to Another Character"
+                    menuItems={characterItems}
+                    direction="right"
+                  />
+                ),
+                onClick: () => {},
+              },
+            ]}
+          />
         </div>
-        
+
         <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
           <img
             alt="job icon"
             src={jobInfo.icon}
             style={{ height: '70px', width: '70px' }}
           />
-          <div style={{display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-start'}}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px',
+              alignItems: 'flex-start',
+            }}
+          >
             <Name gearSet={gearSet} />
             <Job gearSet={gearSet} />
           </div>
         </div>
         <div style={{ display: 'flex', gap: '16px' }}>
           <Column>
-            <GearPiece gearPiece={gearSet.items[Slot.WEAPON]} slot={Slot.WEAPON} />
+            <GearPiece
+              gearPiece={gearSet.items[Slot.WEAPON]}
+              slot={Slot.WEAPON}
+            />
             <GearPiece gearPiece={gearSet.items[Slot.HEAD]} slot={Slot.HEAD} />
             <GearPiece gearPiece={gearSet.items[Slot.BODY]} slot={Slot.BODY} />
-            <GearPiece gearPiece={gearSet.items[Slot.HANDS]} slot={Slot.HANDS} />
+            <GearPiece
+              gearPiece={gearSet.items[Slot.HANDS]}
+              slot={Slot.HANDS}
+            />
             <GearPiece gearPiece={gearSet.items[Slot.LEGS]} slot={Slot.LEGS} />
             <GearPiece gearPiece={gearSet.items[Slot.FEET]} slot={Slot.FEET} />
           </Column>
@@ -115,8 +153,14 @@ export function GearSetContainer({
               gearPiece={gearSet.items[Slot.BRACELET]}
               slot={Slot.BRACELET}
             />
-            <GearPiece gearPiece={gearSet.items[Slot.RING1]} slot={Slot.RING1} />
-            <GearPiece gearPiece={gearSet.items[Slot.RING2]} slot={Slot.RING2} />
+            <GearPiece
+              gearPiece={gearSet.items[Slot.RING1]}
+              slot={Slot.RING1}
+            />
+            <GearPiece
+              gearPiece={gearSet.items[Slot.RING2]}
+              slot={Slot.RING2}
+            />
           </Column>
         </div>
       </div>

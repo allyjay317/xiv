@@ -1,6 +1,5 @@
-import { baseStats, SLOT_INFO } from "./constants"
-import { GearSet, GearSource, Slot, UpgradeItem } from "./types"
-
+import { baseStats, SLOT_INFO } from './constants'
+import { GearSet, GearSource, Slot, UpgradeItem } from './types'
 
 type StringMap<IDS extends string> = {
   [ID in IDS]: string
@@ -12,10 +11,10 @@ export function createTypeMap<T extends string>(map: StringMap<T>) {
 
 export function getStats(gearSets: GearSet[]) {
   const data = structuredClone(baseStats)
-  gearSets.forEach(gs => {
+  gearSets.forEach((gs) => {
     Object.entries(gs.items).forEach(([slot, item]) => {
       const name: keyof typeof data = (
-        parseInt(slot) === Slot.RING2 ? Slot.RING1 : slot as unknown as Slot
+        parseInt(slot) === Slot.RING2 ? Slot.RING1 : (slot as unknown as Slot)
       ) as keyof typeof data
       if (item.source === GearSource.RAID) {
         data[name].raid += item.have ? 0 : 1

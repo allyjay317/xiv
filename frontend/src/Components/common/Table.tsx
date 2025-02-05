@@ -1,49 +1,49 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState } from 'react'
 
-import { Type } from "./Type";
-import styled from "@emotion/styled";
-import { Color } from "../../utils/colorSchemes";
-import { Button } from "./Button";
-import { Size } from "../../utils/types";
+import { Type } from './Type'
+import styled from '@emotion/styled'
+import { Color } from '../../utils/colorSchemes'
+import { Button } from './Button'
+import { Size } from '../../utils/types'
 
 const Column = styled.td`
   border: 1px solid ${Color.fg1};
   width: 100px;
   text-align: center;
-`;
+`
 
-type TColType = "string" | "number" | "boolean" | "date" | "object" | "name";
+type TColType = 'string' | 'number' | 'boolean' | 'date' | 'object' | 'name'
 
 type TCol<T> = {
-  key: keyof T;
-  label: string;
-  type?: TColType;
-};
+  key: keyof T
+  label: string
+  type?: TColType
+}
 
 export function Table<T>({
   columns,
   rows,
   title,
-  size = "XS",
+  size = 'XS',
   pivot: iPivot = false,
 }: {
-  columns: Array<TCol<T>>;
-  title: string;
-  rows: T[];
+  columns: Array<TCol<T>>
+  title: string
+  rows: T[]
   size?: Size
-  pivot?: boolean;
+  pivot?: boolean
 }) {
-  const [pivot, setPivot] = useState(iPivot);
+  const [pivot, setPivot] = useState(iPivot)
 
   return (
     <>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <Type bold size="M" style={{ flexGrow: 2 }}>
           {title}
         </Type>
         <Button label="Pivot" onClick={() => setPivot(!pivot)} />
       </div>
-      <table style={{ width: "100%" }}>
+      <table style={{ width: '100%' }}>
         {pivot ? (
           <>
             {columns.map((c, i) => {
@@ -54,17 +54,17 @@ export function Table<T>({
                       key={c.label}
                       value={c.label}
                       size={size}
-                      type={c.type === "name" ? c.type : "string"}
+                      type={c.type === 'name' ? c.type : 'string'}
                     />
                   ) : (
                     <th />
                   )}
                   {rows.map((r) => {
-                    const h = r[columns[i].key];
+                    const h = r[columns[i].key]
                     return i === 0 ? (
                       <Cell
                         key={c.label}
-                        type={c.type === "name" ? c.type : "string"}
+                        type={c.type === 'name' ? c.type : 'string'}
                         value={h}
                         size={size}
                         header
@@ -76,10 +76,10 @@ export function Table<T>({
                         value={h}
                         type={columns[i].type}
                       />
-                    );
+                    )
                   })}
                 </tr>
-              );
+              )
             })}
           </>
         ) : (
@@ -100,23 +100,23 @@ export function Table<T>({
         )}
       </table>
     </>
-  );
+  )
 }
 
 type DefaultCellProps = {
-  key: string;
+  key: string
   size: Size
-  header?: boolean;
-};
+  header?: boolean
+}
 
 function Wrapper({
   header,
   children,
 }: {
-  header: boolean;
-  children: React.ReactNode;
+  header: boolean
+  children: React.ReactNode
 }) {
-  return header ? <th>{children}</th> : <Column>{children}</Column>;
+  return header ? <th>{children}</th> : <Column>{children}</Column>
 }
 
 function BooleanCell({
@@ -127,9 +127,9 @@ function BooleanCell({
 }: DefaultCellProps & { value: boolean }) {
   return (
     <Wrapper header={header} key={key}>
-      <Type size={size}>{value ? "TRUE" : "FALSE"}</Type>
+      <Type size={size}>{value ? 'TRUE' : 'FALSE'}</Type>
     </Wrapper>
-  );
+  )
 }
 
 function NumberCell({
@@ -142,7 +142,7 @@ function NumberCell({
     <Wrapper header={header} key={key}>
       <Type size={size}>{String(value)}</Type>
     </Wrapper>
-  );
+  )
 }
 
 function StringCell({
@@ -155,12 +155,12 @@ function StringCell({
     <Wrapper header={header} key={key}>
       <Type size={size}>{value}</Type>
     </Wrapper>
-  );
+  )
 }
 
 function NameCell({ value, ...props }: DefaultCellProps & { value: string }) {
-  const name = value.split(" ");
-  return <StringCell {...props} value={`${name[0]} ${name[1][0]}.`} />;
+  const name = value.split(' ')
+  return <StringCell {...props} value={`${name[0]} ${name[1][0]}.`} />
 }
 
 function DateCell({
@@ -173,7 +173,7 @@ function DateCell({
     <Wrapper header={header} key={key}>
       <Type size={size}>{(value as Date).toISOString()}</Type>
     </Wrapper>
-  );
+  )
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -185,32 +185,32 @@ function ObjectCell({
 }: DefaultCellProps & { value: Record<string, any> }) {
   return (
     <Wrapper header={header} key={key}>
-      <Type size={size} style={{ whiteSpace: "pre-line" }}>
+      <Type size={size} style={{ whiteSpace: 'pre-line' }}>
         <pre>{JSON.stringify(value, null, 2)}</pre>
       </Type>
     </Wrapper>
-  );
+  )
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Cell({
-  type = "string",
+  type = 'string',
   value,
   ...props
 }: DefaultCellProps & { value: any; type?: TColType }) {
   switch (type) {
-    case "boolean":
-      return <BooleanCell {...props} value={value as boolean} />;
-    case "number":
-      return <NumberCell {...props} value={value as number} />;
-    case "name":
-      return <NameCell {...props} value={value as string} />;
-    case "string":
-      return <StringCell {...props} value={value as string} />;
-    case "date":
-      return <DateCell {...props} value={value as Date} />;
-    case "object":
-      return <ObjectCell {...props} value={value as Record<string, any>} />;
+    case 'boolean':
+      return <BooleanCell {...props} value={value as boolean} />
+    case 'number':
+      return <NumberCell {...props} value={value as number} />
+    case 'name':
+      return <NameCell {...props} value={value as string} />
+    case 'string':
+      return <StringCell {...props} value={value as string} />
+    case 'date':
+      return <DateCell {...props} value={value as Date} />
+    case 'object':
+      return <ObjectCell {...props} value={value as Record<string, any>} />
   }
 }
 
@@ -219,12 +219,12 @@ function Row<T>({
   row,
   size,
 }: {
-  row: T;
-  columns: TCol<T>[];
+  row: T
+  columns: TCol<T>[]
   size: Size
 }) {
   const renderCells = useMemo(() => {
-    const cells = [];
+    const cells = []
     for (const column of columns) {
       cells.push(
         <Cell
@@ -232,11 +232,11 @@ function Row<T>({
           size={size}
           value={row[column.key]}
           type={column.type}
-        />
-      );
+        />,
+      )
     }
 
-    return cells;
-  }, [columns, row]);
-  return <tr>{renderCells.map((cell) => cell)}</tr>;
+    return cells
+  }, [columns, row])
+  return <tr>{renderCells.map((cell) => cell)}</tr>
 }

@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { UserInfo } from "../types";
-import { GearPiece, GearSet, Slot } from "../../utils/types";
-import { useCharacters } from "./useCharacters";
-import { SiteContext } from "./useSiteContext";
-import { API_REQUEST_RESULT } from "../../utils/constants";
-import { NEW_GEARSET } from "./constants";
-import { gearsets } from "../../api/gearset";
-import { users } from "../../api/user";
+import React, { useCallback, useEffect, useState } from 'react'
+import { UserInfo } from '../types'
+import { GearPiece, GearSet, Slot } from '../../utils/types'
+import { useCharacters } from './useCharacters'
+import { SiteContext } from './useSiteContext'
+import { API_REQUEST_RESULT } from '../../utils/constants'
+import { NEW_GEARSET } from './constants'
+import { gearsets } from '../../api/gearset'
+import { users } from '../../api/user'
 
 export const SiteProvider = (props: { children: React.ReactNode }) => {
-  const [id, setId] = useState<string | null>(localStorage.getItem("id"));
-  const [userInfo, setUserInfo] = useState<undefined | UserInfo>();
-  const isLoggedIn = !!id;
+  const [id, setId] = useState<string | null>(localStorage.getItem('id'))
+  const [userInfo, setUserInfo] = useState<undefined | UserInfo>()
+  const isLoggedIn = !!id
 
   const {
     characters,
@@ -23,36 +23,34 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
     loadCharacters,
     deleteCharacter,
     updateCharacter,
-  } = useCharacters(id);
+  } = useCharacters(id)
 
   const saveGearSet = useCallback(
     async (gearSet: GearSet, cId?: string) => {
-      if (!selectedCharacter) return API_REQUEST_RESULT.FAILURE;
-      if (!id) return API_REQUEST_RESULT.NOT_LOGGED_IN;
+      if (!selectedCharacter) return API_REQUEST_RESULT.FAILURE
+      if (!id) return API_REQUEST_RESULT.NOT_LOGGED_IN
       try {
         const newGearSet = {
           id,
           name: gearSet.name,
           job: Number(gearSet.job),
           items: gearSet.items,
-        };
+        }
 
-        const characterId = cId ?? selectedCharacter;
-        const character = characters[characterId];
-        const gearSets = character.gearSets.filter(
-          (gs) => gs.id !== gearSet.id
-        );
+        const characterId = cId ?? selectedCharacter
+        const character = characters[characterId]
+        const gearSets = character.gearSets.filter((gs) => gs.id !== gearSet.id)
 
         if (gearSet.id === NEW_GEARSET) {
           const { id: gsId } = await gearsets.createGearSet(
             characterId,
-            newGearSet
-          );
-          gearSet.id = gsId;
-          gearSets.push({ ...gearSet, modified: false });
+            newGearSet,
+          )
+          gearSet.id = gsId
+          gearSets.push({ ...gearSet, modified: false })
         } else {
-          await gearsets.updateGearSet(characterId, gearSet.id, newGearSet);
-          gearSets.push({ ...gearSet, modified: false });
+          await gearsets.updateGearSet(characterId, gearSet.id, newGearSet)
+          gearSets.push({ ...gearSet, modified: false })
         }
 
         setCharacters({
@@ -61,114 +59,113 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
             ...character,
             gearSets,
           },
-        });
-        return API_REQUEST_RESULT.SUCCESS;
+        })
+        return API_REQUEST_RESULT.SUCCESS
       } catch (e) {
-        return e as Error;
+        return e as Error
       }
     },
-    [selectedCharacter, id, characters, setCharacters]
-  );
+    [selectedCharacter, id, characters, setCharacters],
+  )
 
   const addGearSet = useCallback(
     (gearSet: GearSet) => {
-      if (!selectedCharacter) return;
-      const gearSets = characters[selectedCharacter].gearSets || [];
+      if (!selectedCharacter) return
+      const gearSets = characters[selectedCharacter].gearSets || []
       setCharacters({
         ...characters,
         [selectedCharacter]: {
           ...characters[selectedCharacter],
           gearSets: [...gearSets, gearSet],
         },
-      });
+      })
     },
-    [characters, selectedCharacter, setCharacters]
-  );
+    [characters, selectedCharacter, setCharacters],
+  )
 
   const deleteGearSet = useCallback(
     async (id: string) => {
-      if (!selectedCharacter) return;
-      const gearSets = characters[selectedCharacter].gearSets || [];
+      if (!selectedCharacter) return
+      const gearSets = characters[selectedCharacter].gearSets || []
       try {
-        await gearsets.deleteGearSet(selectedCharacter, id);
+        await gearsets.deleteGearSet(selectedCharacter, id)
         setCharacters({
           ...characters,
           [selectedCharacter]: {
             ...characters[selectedCharacter],
             gearSets: gearSets.filter((gs) => gs.id !== id),
           },
-        });
+        })
       } catch (e) {
-        return API_REQUEST_RESULT.FAILURE;
+        return API_REQUEST_RESULT.FAILURE
       }
     },
-    [characters, selectedCharacter, setCharacters]
-  );
+    [characters, selectedCharacter, setCharacters],
+  )
 
   const updateGearSet = useCallback(
     (gearSet: GearSet) => {
-      if (!selectedCharacter) return;
-      const gearSets = characters[selectedCharacter].gearSets || [];
+      if (!selectedCharacter) return
+      const gearSets = characters[selectedCharacter].gearSets || []
       setCharacters({
         ...characters,
         [selectedCharacter]: {
           ...characters[selectedCharacter],
           gearSets: gearSets.map((gs) => {
             if (gs.id === gearSet.id) {
-              return { ...gearSet, modified: true };
+              return { ...gearSet, modified: true }
             }
-            return gs;
+            return gs
           }),
         },
-      });
+      })
     },
-    [characters, selectedCharacter, setCharacters]
-  );
+    [characters, selectedCharacter, setCharacters],
+  )
 
   const updateGearPiece = useCallback(
     ({ id, slot, value }: { id: string; slot: Slot; value: GearPiece }) => {
-      if (!selectedCharacter) return;
-      const gearSets = characters[selectedCharacter].gearSets || [];
-      const gearSetValue = gearSets.find((gs) => gs.id === id);
+      if (!selectedCharacter) return
+      const gearSets = characters[selectedCharacter].gearSets || []
+      const gearSetValue = gearSets.find((gs) => gs.id === id)
       if (!gearSetValue) {
-        return;
+        return
       }
       const newGearSet: GearSet = {
         ...gearSetValue,
         items: { ...gearSetValue.items, [slot]: value },
-      };
-      updateGearSet(newGearSet);
+      }
+      updateGearSet(newGearSet)
     },
-    [characters, selectedCharacter, updateGearSet]
-  );
-
+    [characters, selectedCharacter, updateGearSet],
+  )
 
   useEffect(() => {
     if (id && !userInfo) {
       users
         .getUserInfo(id)
         .then((data) => {
-          setUserInfo(data.userInfo);
-          loadCharacters(data.characters);
+          setUserInfo(data.userInfo)
+          loadCharacters(data.characters)
         })
         .catch((e) => {
-          console.log(e);
-        });
+          console.log(e)
+        })
     }
-  }, [id, setCharacters, userInfo]);
+  }, [id, setCharacters, userInfo])
 
   const logOut = () => {
-    localStorage.removeItem("id");
-    setUserInfo(undefined);
+    localStorage.removeItem('id')
+    setUserInfo(undefined)
     setselectedCharacter(undefined)
     setCharacters({})
-    setId(null);
-  };
+    setId(null)
+  }
 
   const logIn = (id: string) => {
-    localStorage.setItem("id", id);
-    setId(id);
-  };
+    localStorage.setItem('id', id)
+    setId(id)
+  }
 
   return (
     <SiteContext.Provider
@@ -186,14 +183,14 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
         selectedCharacter,
         updateGearSet,
         setselectedCharacter: (id: string) => {
-          setselectedCharacter(id);
+          setselectedCharacter(id)
         },
         saveGearSet,
         deleteCharacter,
-        updateCharacter
+        updateCharacter,
       }}
     >
       {props.children}
     </SiteContext.Provider>
-  );
-};
+  )
+}

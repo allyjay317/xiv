@@ -13,26 +13,28 @@ const router = createBrowserRouter([
     children: [
       {
         element: <HomePage />,
-        path: '/'
+        path: '/',
       },
       {
         element: <UserPage />,
-        path: '/user'
-      }, {
+        path: '/user',
+      },
+      {
         element: <GearSetList />,
-        path: '/gear-sets'
-      }, {
+        path: '/gear-sets',
+      },
+      {
         element: <StatsPage />,
-        path: '/stats'
-      }
+        path: '/stats',
+      },
     ],
     element: <Page />,
     errorElement: <Page />,
-    path: '/'
+    path: '/',
   },
   {
     element: <LoginRedirect />,
-    path: '/login'
+    path: '/login',
   },
 ])
 
@@ -40,7 +42,7 @@ export function App() {
   return (
     <>
       <SiteProvider>
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
       </SiteProvider>
     </>
   )

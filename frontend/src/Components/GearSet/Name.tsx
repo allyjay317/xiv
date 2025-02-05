@@ -13,24 +13,32 @@ export function Name({ gearSet }: { gearSet: GearSet }) {
   const [name, setName] = useState(gearSet.name)
 
   return (
-      <>
+    <>
       {isEditingName ? (
-        <div style={{display: 'flex', alignItems: 'center', width: '100%'}}>
+        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
           <TextInput
             onBlur={() => {
               updateGearSet({ ...gearSet, name })
               setIsEditingName(false)
             }}
-            onChange={e => setName(e)}
+            onChange={(e) => setName(e)}
             value={name}
-            size='M'
+            size="M"
           />
-          <IconButton onClick={() => setIsEditingName(!isEditingName)} icon='pen' />
+          <IconButton
+            onClick={() => setIsEditingName(!isEditingName)}
+            icon="pen"
+          />
         </div>
       ) : (
-        <div style={{display: 'flex', alignItems: 'center'}}>
-        <Type bold color={Color.fg1} size="L">{gearSet.name}</Type>
-          <IconButton onClick={() => setIsEditingName(!isEditingName)} icon='pen' />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Type bold color={Color.fg1} size="L">
+            {gearSet.name}
+          </Type>
+          <IconButton
+            onClick={() => setIsEditingName(!isEditingName)}
+            icon="pen"
+          />
         </div>
       )}
     </>

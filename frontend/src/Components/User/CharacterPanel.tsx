@@ -16,40 +16,55 @@ export function CharacterPanel() {
   const [error, setError] = useState<null | string>(null)
 
   const charas = useMemo(() => {
-    return Object.keys(characters).map(id => characters[id])
+    return Object.keys(characters).map((id) => characters[id])
   }, [characters])
 
   const onAddCharacter = async () => {
     setIsLoading(true)
     setError(null)
     const res = await addCharacter(characterId)
-    if(res === API_REQUEST_RESULT.SUCCESS){
+    if (res === API_REQUEST_RESULT.SUCCESS) {
       setCharacterId('')
     } else {
-      setError("Failed to Add Character Id")
+      setError('Failed to Add Character Id')
     }
     setIsLoading(false)
   }
 
   return (
     <div>
-      <div style={{display: 'flex', width: '200px', gap: '16px', alignItems: 'center'}}>
-      <TextInput
-        onChange={e => setCharacterId(e)}
-        value={characterId}
-      />
-      <Button
-        label="+"
-        onClick={onAddCharacter}
-        state={isLoading ? 'disabled' : 'default'}
-      />
-      <Spinner color={Color.fg1} loading={isLoading} />
+      <div
+        style={{
+          display: 'flex',
+          width: '200px',
+          gap: '16px',
+          alignItems: 'center',
+        }}
+      >
+        <TextInput onChange={(e) => setCharacterId(e)} value={characterId} />
+        <Button
+          label="+"
+          onClick={onAddCharacter}
+          state={isLoading ? 'disabled' : 'default'}
+        />
+        <Spinner color={Color.fg1} loading={isLoading} />
       </div>
-      {error && <Type color='red' size="S">{error}</Type>}
-      <div style={{display: 'flex', gap: '32px', margin: '32px', flexWrap: 'wrap'}}>
-      {charas.map(c => {
-        return <Character character={c} />
-      })}
+      {error && (
+        <Type color="red" size="S">
+          {error}
+        </Type>
+      )}
+      <div
+        style={{
+          display: 'flex',
+          gap: '32px',
+          margin: '32px',
+          flexWrap: 'wrap',
+        }}
+      >
+        {charas.map((c) => {
+          return <Character character={c} />
+        })}
       </div>
     </div>
   )

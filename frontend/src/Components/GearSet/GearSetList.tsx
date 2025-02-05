@@ -33,7 +33,7 @@ export function GearSetList() {
           margin: '16px',
         }}
       >
-        {gearSets.map(set => (
+        {gearSets.map((set) => (
           <GearSetContainer
             key={set.id}
             gearSet={set}
