@@ -7,7 +7,13 @@ import { Type } from '../common/Type'
 import { Color } from '../../utils/colorSchemes'
 import { IconButton } from '../common/IconButton'
 
-export function Job({ gearSet }: { gearSet: GearSet }) {
+export function Job({
+  gearSet,
+  editable,
+}: {
+  gearSet: GearSet
+  editable: boolean
+}) {
   const [isEditingJob, setIsEditingJob] = useState(false)
 
   const jobInfo = JobInfo[gearSet.job as Jobs]
@@ -24,10 +30,12 @@ export function Job({ gearSet }: { gearSet: GearSet }) {
       ) : (
         <>
           {jobInfo.name}
-          <IconButton
-            onClick={() => setIsEditingJob(!isEditingJob)}
-            icon="pen"
-          />
+          {editable && (
+            <IconButton
+              onClick={() => setIsEditingJob(!isEditingJob)}
+              icon="pen"
+            />
+          )}
         </>
       )}
     </Type>

@@ -6,7 +6,15 @@ import { IconButton } from '../common/IconButton'
 import { useSiteContext } from '../context/useSiteContext'
 import { TextInput } from '../common/TextInput'
 
-export function Name({ gearSet }: { gearSet: GearSet }) {
+export function Name({
+  gearSet,
+  compact,
+  editable,
+}: {
+  gearSet: GearSet
+  compact: boolean
+  editable: boolean
+}) {
   const [isEditingName, setIsEditingName] = useState(false)
 
   const { updateGearSet } = useSiteContext()
@@ -23,7 +31,7 @@ export function Name({ gearSet }: { gearSet: GearSet }) {
             }}
             onChange={(e) => setName(e)}
             value={name}
-            size="M"
+            size={compact ? 'XS' : 'M'}
           />
           <IconButton
             onClick={() => setIsEditingName(!isEditingName)}
@@ -32,13 +40,15 @@ export function Name({ gearSet }: { gearSet: GearSet }) {
         </div>
       ) : (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Type bold color={Color.fg1} size="L">
+          <Type bold color={Color.fg1} size={compact ? 'S' : 'L'}>
             {gearSet.name}
           </Type>
-          <IconButton
-            onClick={() => setIsEditingName(!isEditingName)}
-            icon="pen"
-          />
+          {editable && (
+            <IconButton
+              onClick={() => setIsEditingName(!isEditingName)}
+              icon="pen"
+            />
+          )}
         </div>
       )}
     </>

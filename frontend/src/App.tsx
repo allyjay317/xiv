@@ -7,6 +7,7 @@ import { GearSetList } from './Components/GearSet/GearSetList'
 import { SiteProvider } from './Components/context/SiteContext'
 import { UserPage } from './Components/User/UserPage'
 import { StatsPage } from './Components/Stats/StatsPage'
+import { GearPlannerPage } from './Components/gear-planner/GearPlannerPage'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
         path: '/gear-sets',
       },
       {
+        element: <GearPlannerPage />,
+        path: '/gear-planner',
+      },
+      {
         element: <StatsPage />,
         path: '/stats',
       },
@@ -35,6 +40,10 @@ const router = createBrowserRouter([
   {
     element: <LoginRedirect />,
     path: '/login',
+  },
+  {
+    element: <div>ERROR hi</div>,
+    path: '/error',
   },
 ])
 

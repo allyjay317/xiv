@@ -49,11 +49,13 @@ export function Checkbox({
   onChange,
   style,
   value,
+  direction = 'column',
 }: {
-  label: string
+  label?: string
   value: boolean
   onChange: (isChecked: boolean) => void
   style?: React.CSSProperties
+  direction?: 'column' | 'row'
 }) {
   return (
     <span
@@ -61,11 +63,12 @@ export function Checkbox({
         alignItems: 'center',
         color: Color.fg1,
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: direction,
+        gap: direction === 'row' ? 8 : 0,
         ...style,
       }}
     >
-      {label}
+      {label && <span style={{ flexGrow: 2, textAlign: 'left' }}>{label}</span>}
       <span style={{ marginTop: '4px' }}>
         <Checkmark
           checked={value}
