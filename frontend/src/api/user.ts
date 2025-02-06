@@ -22,7 +22,7 @@ async function getUserInfo(id: string) {
   const newCharacters: Record<string, CharacterInfo> = {}
   const characters = rawCharacters as XIVUserInfo[]
 
-  characters.forEach((c: XIVUserInfo) => {
+  characters?.forEach((c: XIVUserInfo) => {
     newCharacters[c.id] = {
       info: c,
       gearSets: [],
