@@ -6,41 +6,61 @@ import { IconButton } from '../common/IconButton'
 import { useSiteContext } from '../context/useSiteContext'
 import { TextInput } from '../common/TextInput'
 
-export function Name({ gearSet }: { gearSet: GearSet }) {
+export function Name({
+  gearSet,
+  compact,
+  editable,
+}: {
+  gearSet: GearSet
+  compact: boolean
+  editable: boolean
+}) {
   const [isEditingName, setIsEditingName] = useState(false)
 
   const { updateGearSet } = useSiteContext()
   const [name, setName] = useState(gearSet.name)
 
+  const onConfirm = () => {
+    updateGearSet({ ...gearSet, name })
+    setIsEditingName(false)
+  }
+
   return (
-    <>
+    <Type
+      color={Color.fg1}
+      size={compact ? 'S' : 'L'}
+      style={{
+        display: 'flex',
+        ...(!compact && { marginBottom: '8px', height: '32px' }),
+      }}
+    >
       {isEditingName ? (
-        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+        <>
           <TextInput
-            onBlur={() => {
-              updateGearSet({ ...gearSet, name })
-              setIsEditingName(false)
-            }}
+            onBlur={onConfirm}
             onChange={(e) => setName(e)}
             value={name}
+            size={compact ? 'XS' : 'S'}
+          />
+          <IconButton onClick={onConfirm} icon="check" size="M" />
+          <IconButton
+            onClick={() => setIsEditingName(!isEditingName)}
+            icon="cancel"
             size="M"
           />
-          <IconButton
-            onClick={() => setIsEditingName(!isEditingName)}
-            icon="pen"
-          />
-        </div>
+        </>
       ) : (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Type bold color={Color.fg1} size="L">
-            {gearSet.name}
-          </Type>
-          <IconButton
-            onClick={() => setIsEditingName(!isEditingName)}
-            icon="pen"
-          />
-        </div>
+        <>
+          {gearSet.name}
+          {editable && (
+            <IconButton
+              onClick={() => setIsEditingName(!isEditingName)}
+              icon="pen"
+              size="S"
+            />
+          )}
+        </>
       )}
-    </>
+    </Type>
   )
 }

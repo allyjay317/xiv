@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { Color } from '../../utils/colorSchemes'
 import { getSize } from './utils'
+import { Size } from '../../utils/types'
 
 const Input = styled.input`
   -webkit-appearance: none;
@@ -27,7 +28,7 @@ export function TextInput({
 }: {
   onChange: (s: string) => void
   value: string
-  size?: 'S' | 'M' | 'L'
+  size?: Size
 } & Partial<
   Omit<
     React.ComponentProps<'input'>,

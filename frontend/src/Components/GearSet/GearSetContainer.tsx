@@ -2,15 +2,13 @@ import styled from '@emotion/styled'
 import { ComponentProps, useMemo } from 'react'
 
 import { GearPieceDisplay } from './GearPiece'
-import { Job } from './Job'
-import { Name } from './Name'
-import { GearSet, Jobs, Slot } from '../../utils/types'
-import { JobInfo } from '../../utils/constants'
+import { GearSet, Slot } from '../../utils/types'
 import { Color } from '../../utils/colorSchemes'
 import { Button } from '../common/Button'
 import { useSiteContext } from '../context/useSiteContext'
 import { MenuButton } from '../common/MenuButton'
 import { NEW_GEARSET } from '../context/constants'
+import { GearSetHeader } from './GearSetHeader'
 
 const Column = styled.div`
   display: flex;
@@ -33,8 +31,6 @@ export function GearSetContainer({
   gearSet: GearSet
   onDelete: (id: string) => void
 }) {
-  const jobInfo = JobInfo[gearSet.job as Jobs]
-
   const { characters, saveGearSet, selectedCharacter } = useSiteContext()
 
   const onSave = () => {
@@ -107,24 +103,7 @@ export function GearSetContainer({
           />
         </div>
 
-        <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
-          <img
-            alt="job icon"
-            src={jobInfo.icon}
-            style={{ height: '70px', width: '70px' }}
-          />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '4px',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Name gearSet={gearSet} />
-            <Job gearSet={gearSet} />
-          </div>
-        </div>
+        <GearSetHeader gearSet={gearSet} />
         <div style={{ display: 'flex', gap: '16px' }}>
           <Column>
             <GearPiece

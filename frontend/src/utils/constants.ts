@@ -277,4 +277,4 @@ export const baseStats = {
   },
 }
 
-export const PIECE_SIZE = '40px'
+export const PIECE_SIZE = '30px'

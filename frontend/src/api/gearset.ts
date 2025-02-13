@@ -6,7 +6,7 @@ const apiUrl = import.meta.env.VITE_SERVER_URL
 const baseUrl = `${apiUrl}/gearset`
 
 export type GearSetRequest = {
-  id: string
+  user_id: string
   name: string
   job: Jobs
   items: Record<Slot, GearPiece>

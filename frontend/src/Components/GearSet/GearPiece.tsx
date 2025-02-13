@@ -26,7 +26,7 @@ const GearPieceContainer = styled.div({
   padding: '8px',
   position: 'relative',
   textAlign: 'left',
-  width: '250px',
+  width: '200px',
   height: '48px',
 })
 
@@ -42,7 +42,7 @@ const SlotText = styled.div({
   justifySelf: 'flex-start',
   textAlign: 'left',
   alignSelf: 'center',
-  width: '100px',
+  width: '80px',
 })
 
 export function GearPieceDisplay({

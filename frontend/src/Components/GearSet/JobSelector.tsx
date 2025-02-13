@@ -3,15 +3,19 @@ import { GearSet, Jobs } from '../../utils/types'
 import { Select } from '../common/Select'
 import { useSiteContext } from '../context/useSiteContext'
 
-export function JobSelector({ gearSet }: { gearSet: GearSet }) {
+export function JobSelector({
+  gearSet,
+  onSelect,
+}: {
+  gearSet: GearSet
+  onSelect?: (job: Jobs) => void
+}) {
   const { updateGearSet } = useSiteContext()
 
-  const changeJob = (job: Jobs) => {
-    updateGearSet({ ...gearSet, job })
-  }
-
   const onChange = (value: string) => {
-    changeJob(value as unknown as Jobs)
+    const job = value as unknown as Jobs
+    updateGearSet({ ...gearSet, job })
+    if (onSelect) onSelect(job)
   }
 
   const options = Object.keys(Jobs)
