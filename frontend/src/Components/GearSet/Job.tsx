@@ -18,13 +18,20 @@ export function Job({
 
   const jobInfo = JobInfo[gearSet.job as Jobs]
   return (
-    <Type color={Color.fg1} size="M">
+    <Type
+      color={Color.fg1}
+      size="M"
+      style={{ display: 'flex', height: '32px' }}
+    >
       {isEditingJob ? (
         <>
-          <JobSelector gearSet={gearSet} />
+          <JobSelector
+            gearSet={gearSet}
+            onSelect={() => setIsEditingJob(false)}
+          />
           <IconButton
             onClick={() => setIsEditingJob(!isEditingJob)}
-            icon="pen"
+            icon="cancel"
           />
         </>
       ) : (

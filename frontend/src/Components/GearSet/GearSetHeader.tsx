@@ -14,7 +14,13 @@ export function GearSetHeader({
 }) {
   const jobInfo = JobInfo[gearSet.job as Jobs]
   return (
-    <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+    <div
+      style={{
+        display: 'flex',
+        gap: '16px',
+        marginBottom: '16px',
+      }}
+    >
       <img
         alt="job icon"
         src={jobInfo.icon}

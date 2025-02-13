@@ -20,37 +20,47 @@ export function Name({
   const { updateGearSet } = useSiteContext()
   const [name, setName] = useState(gearSet.name)
 
+  const onConfirm = () => {
+    updateGearSet({ ...gearSet, name })
+    setIsEditingName(false)
+  }
+
   return (
-    <>
+    <Type
+      color={Color.fg1}
+      size={compact ? 'S' : 'L'}
+      style={{
+        display: 'flex',
+        ...(!compact && { marginBottom: '8px', height: '32px' }),
+      }}
+    >
       {isEditingName ? (
-        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+        <>
           <TextInput
-            onBlur={() => {
-              updateGearSet({ ...gearSet, name })
-              setIsEditingName(false)
-            }}
+            onBlur={onConfirm}
             onChange={(e) => setName(e)}
             value={name}
-            size={compact ? 'XS' : 'M'}
+            size={compact ? 'XS' : 'S'}
           />
+          <IconButton onClick={onConfirm} icon="check" size="M" />
           <IconButton
             onClick={() => setIsEditingName(!isEditingName)}
-            icon="pen"
+            icon="cancel"
+            size="M"
           />
-        </div>
+        </>
       ) : (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Type bold color={Color.fg1} size={compact ? 'S' : 'L'}>
-            {gearSet.name}
-          </Type>
+        <>
+          {gearSet.name}
           {editable && (
             <IconButton
               onClick={() => setIsEditingName(!isEditingName)}
               icon="pen"
+              size="S"
             />
           )}
-        </div>
+        </>
       )}
-    </>
+    </Type>
   )
 }

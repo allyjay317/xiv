@@ -31,7 +31,7 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
       if (!id) return API_REQUEST_RESULT.NOT_LOGGED_IN
       try {
         const newGearSet = {
-          id,
+          user_id: id,
           name: gearSet.name,
           job: Number(gearSet.job),
           items: gearSet.items,

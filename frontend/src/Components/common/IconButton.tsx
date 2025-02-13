@@ -6,6 +6,8 @@ import {
   BsPlusCircle,
   BsXCircle,
 } from 'react-icons/bs'
+import { Size } from '../../utils/types'
+import { getSize } from './utils'
 
 const icons = {
   pen: BsFillPencilFill,
@@ -20,11 +22,14 @@ export type Icon = keyof typeof icons
 export function IconButton({
   onClick,
   icon,
+  size = 'S',
 }: {
   onClick: () => void
   icon: Icon
+  size?: Size
 }) {
   const Component = icons[icon]
+  const sizeVal = getSize(size)
   return (
     <div
       onClick={onClick}
@@ -36,7 +41,10 @@ export function IconButton({
         width: '16px',
       }}
     >
-      <Component color={Color.fg1} />
+      <Component
+        color={Color.fg1}
+        style={{ height: sizeVal, width: sizeVal }}
+      />
     </div>
   )
 }

@@ -3,9 +3,9 @@ import { Type } from '../common/Type'
 import { Card } from '../common/Card'
 import { Task } from './Task'
 import { useSiteContext } from '../context/useSiteContext'
-import { GearSetHeader } from '../GearSet/GearSetHeader'
 import { Slot } from '../../utils/types'
 import { SLOT_INFO } from '../../utils/constants'
+import { GearSetPriority } from './GearSetPriority'
 
 const defaultTasks = [
   {
@@ -98,19 +98,8 @@ export function GearPlannerPage() {
                 />
               </Card>
             </Card>
-            <Card title="Gear Set Priority">
-              {displayedCharacter.gearSets.map((gs) => (
-                <Card>
-                  <GearSetHeader gearSet={gs} compact editable={false} />
-                  <div style={{ display: 'flex', gap: 4 }}>
-                    <Type size="XS">Raid: 0</Type>
-                    <Type size="XS">Tome: 0</Type>
-                    <Type size="XS">Twine: 0</Type>
-                    <Type size="XS">Brine: 0</Type>
-                  </div>
-                </Card>
-              ))}
-            </Card>
+            <GearSetPriority gearSets={displayedCharacter.gearSets} />
+
             <Card title="Gear Priority">
               {priorityItems.map((s) => {
                 return (
