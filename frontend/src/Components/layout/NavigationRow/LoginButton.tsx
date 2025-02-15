@@ -15,8 +15,9 @@ export function LoginButton({ loginURI }: { loginURI: string }) {
           onClick: () => {
             navigate('/user')
           },
+          type: 'button',
         },
-        { label: 'Logout', onClick: logOut },
+        { label: 'Logout', onClick: logOut, type: 'button' },
       ]}
       direction="down"
       config={{
