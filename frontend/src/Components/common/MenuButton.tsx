@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Button } from './Button'
 import { ImgButton } from './ImgButton'
 import { Icon, IconButton } from './IconButton'
+import { Size } from '../../utils/types'
 
 type TButton = {
   type: 'button'
@@ -49,6 +50,7 @@ export function MenuButton({
   menuWidth = '100px',
   config = { type: 'button' },
   hover,
+  size = 'S',
 }: {
   label: string
   style?: React.CSSProperties
@@ -59,6 +61,7 @@ export function MenuButton({
   menuWidth?: string
   config?: ButtonConfig
   hover?: boolean
+  size?: Size
 }) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -111,7 +114,11 @@ export function MenuButton({
         )
       case 'icon':
         return (
-          <IconButton onClick={() => setIsOpen(!isOpen)} icon={config.icon} />
+          <IconButton
+            onClick={() => setIsOpen(!isOpen)}
+            icon={config.icon}
+            size={size}
+          />
         )
     }
   }, [config.type, isOpen, state, width, style, label, setIsOpen])

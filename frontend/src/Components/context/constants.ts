@@ -18,6 +18,7 @@ export const defaultValues: SiteValues = {
   saveGearSet: async () => API_REQUEST_RESULT.SUCCESS,
   deleteCharacter: async () => API_REQUEST_RESULT.SUCCESS,
   updateCharacter: async () => API_REQUEST_RESULT.SUCCESS,
+  saveGearSets: async () => API_REQUEST_RESULT.SUCCESS,
 }
 
 export const testUser: CharacterInfo = {

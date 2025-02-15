@@ -1,15 +1,15 @@
 export enum Slot {
-  HEAD,
-  BODY,
-  HANDS,
-  LEGS,
-  FEET,
-  EARRINGS,
-  NECKLACE,
-  BRACELET,
-  RING1,
-  RING2,
-  WEAPON,
+  HEAD,     // 0
+  BODY,     // 1
+  HANDS,    // 2
+  LEGS,     // 3
+  FEET,     // 4
+  EARRINGS, // 5
+  NECKLACE, // 6
+  BRACELET, // 7
+  RING1,    // 8
+  RING2,    // 9
+  WEAPON,   // 10
 }
 
 export enum UpgradeItem {
@@ -114,4 +114,4 @@ export enum Language {
   JA = 'ja',
 }
 
-export type Size = 'S' | 'M' | 'L' | 'XS'
+export type Size = 'S' | 'M' | 'L' | 'XS' | 'XL'

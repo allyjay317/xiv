@@ -21,7 +21,13 @@ const Container = styled(FlexRow)`
   left 0;
 `
 
-export function Header({ onAdd }: { onAdd: (job: Jobs) => void }) {
+export function Header({
+  onAdd,
+  onSave,
+}: {
+  onAdd: (job: Jobs) => void
+  onSave: VoidFunction
+}) {
   const [isSetCreatorOpen, setIsSetCreatorOpen] = useState(false)
 
   return (
@@ -44,7 +50,7 @@ export function Header({ onAdd }: { onAdd: (job: Jobs) => void }) {
               setIsSetCreatorOpen(!isSetCreatorOpen)
             }}
           />
-          <IconButton icon="save" size="L" onClick={() => {}} />
+          <IconButton icon="save" size="L" onClick={onSave} />
         </FlexColumn>
         <FlexRow wrap="wrap">
           {isSetCreatorOpen && (

@@ -22,6 +22,7 @@ export function FlexRow({
   justify,
   wrap,
   gap = 8,
+  style,
   ...props
 }: Props) {
   return (
@@ -31,6 +32,7 @@ export function FlexRow({
         justifyContent: justify,
         flexWrap: wrap,
         gap: `${gap}px`,
+        ...style,
       }}
       {...props}
     >

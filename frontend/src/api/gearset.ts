@@ -10,6 +10,7 @@ export type GearSetRequest = {
   name: string
   job: Jobs
   items: Record<Slot, GearPiece>
+  index: number
 }
 
 async function getGearsets(characterId: string) {
@@ -32,6 +33,7 @@ async function deleteGearSet(characterId: string, gearsetId: string) {
 }
 
 async function createGearSet(characterId: string, gearSet: GearSetRequest) {
+  debugger
   const res = await axios.post(`${apiUrl}/gearset/${characterId}`, gearSet)
   if (res.status !== 201) {
     throw new Error('Not Created')
@@ -52,9 +54,17 @@ async function updateGearSet(
   await axios.patch(`${baseUrl}/${characterId}/${gearSetId}`, gearSet)
 }
 
+async function bulkUpdateGearSets(
+  characterId: string,
+  gearSets: Array<GearSetRequest & {id: string}>
+){
+  await axios.patch(`${baseUrl}/${characterId}`, gearSets)
+}
+
 export const gearsets = {
   getGearsets,
   deleteGearSet,
   createGearSet,
   updateGearSet,
+  bulkUpdateGearSets
 }

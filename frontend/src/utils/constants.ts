@@ -10,7 +10,7 @@ import blu from '../assets/img/job_images/BlueMage.png'
 import dnc from '../assets/img/job_images/Dancer.png'
 import drk from '../assets/img/job_images/DarkKnight.png'
 import drg from '../assets/img/job_images/Dragoon.png'
-import pct from '../assets/img/job_images/GreenMage.png'
+import pct from '../assets/img/job_images/Pictomancer.png'
 import gnb from '../assets/img/job_images/Gunbreaker.png'
 import mch from '../assets/img/job_images/Machinist.png'
 import mnk from '../assets/img/job_images/Monk.png'
@@ -25,6 +25,7 @@ import smn from '../assets/img/job_images/Summoner.png'
 import vpr from '../assets/img/job_images/Viper.png'
 import war from '../assets/img/job_images/Warrior.png'
 import whm from '../assets/img/job_images/WhiteMage.png'
+import { ffIcons } from '../Components/GearSet/util'
 
 export enum API_REQUEST_RESULT {
   SUCCESS = 'Success',
@@ -43,91 +44,105 @@ export const FLOOR_1 = [
 
 export const SLOT_INFO: Record<
   Slot | UpgradeItem,
-  { floor: 1 | 2 | 3 | 4; tomeCost: number; bookCost: number; name: string }
+  { floor: 1 | 2 | 3 | 4; tomeCost: number; bookCost: number; name: string, icon: string }
 > = {
   [Slot.BODY]: {
     name: 'Body',
     bookCost: 6,
     floor: 3,
     tomeCost: 825,
+    icon: ffIcons.body
   },
   [Slot.BRACELET]: {
     name: 'Bracelet',
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
+    icon: ffIcons.wrist
   },
   Brine: {
     name: 'Brine',
     bookCost: 4,
     floor: 3,
     tomeCost: 0,
+    icon: ''
   },
   [Slot.EARRINGS]: {
     name: 'Earrings',
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
+    icon: ffIcons.earring
   },
   [Slot.FEET]: {
     name: 'Feet',
     bookCost: 4,
     floor: 2,
     tomeCost: 495,
+    icon: ffIcons.feet
   },
   [Slot.HANDS]: {
     name: 'Hands',
     bookCost: 4,
     floor: 2,
     tomeCost: 495,
+    icon: ffIcons.hand
   },
   [Slot.HEAD]: {
     name: 'Head',
     bookCost: 4,
     floor: 2,
     tomeCost: 495,
+    icon: ffIcons.head
   },
   [Slot.LEGS]: {
     name: 'Legs',
     bookCost: 6,
     floor: 3,
     tomeCost: 825,
+    icon: ffIcons.legs
   },
   [Slot.NECKLACE]: {
     name: 'Necklace',
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
+    icon: ffIcons.necklace
   },
   [Slot.RING1]: {
     name: 'Ring',
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
+    icon: ffIcons.ring
   },
   [Slot.RING2]: {
     name: 'Ring',
     bookCost: 3,
     floor: 1,
     tomeCost: 375,
+    icon: ffIcons.ring
   },
   Shine: {
     name: 'Shine',
     bookCost: 3,
     floor: 2,
     tomeCost: 0,
+    icon: ''
   },
   Twine: {
     name: 'Twine',
     bookCost: 4,
     floor: 3,
     tomeCost: 0,
+    icon: ''
   },
   [Slot.WEAPON]: {
     name: 'Weapon',
     bookCost: 8,
     floor: 4,
     tomeCost: 500,
+    icon: ''
   },
 }
 

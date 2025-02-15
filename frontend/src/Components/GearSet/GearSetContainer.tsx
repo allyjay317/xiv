@@ -2,14 +2,15 @@ import styled from '@emotion/styled'
 import { ComponentProps, useMemo } from 'react'
 
 import { GearPieceDisplay } from './GearPiece'
-import { GearSet, Slot } from '../../utils/types'
+import { GearSet, Jobs, Slot } from '../../utils/types'
 import { Color } from '../../utils/colorSchemes'
-import { Button } from '../common/Button'
 import { useSiteContext } from '../context/useSiteContext'
 import { MenuButton, TMenuItem } from '../common/MenuButton'
 import { NEW_GEARSET } from '../context/constants'
 import { GearSetHeader } from './GearSetHeader'
 import { FlexColumn, FlexRow } from '../common/Layout'
+import { Type } from '../common/Type'
+import { useMediaQuery } from '@react-hook/media-query'
 
 const Container = styled.div`
   background-color: ${Color.bg1};
@@ -20,19 +21,19 @@ const Container = styled.div`
   width: fit-content;
 `
 
-const Menu = styled.div`
-  cursor: pointer;
+const Menu = styled.div<{ compact?: boolean }>`
   position: absolute;
-  right: 32px;
-  top: 32px;
+  right: ${(props) => (props.compact ? '16px' : '32px')};
+  top: ${(props) => (props.compact ? '16px' : '32px')};
   display: flex;
+  user-select: none;
 `
 
-function withId(id: string) {
+function withId(id: string, job: Jobs) {
   return function GearPiece(
-    props: Omit<ComponentProps<typeof GearPieceDisplay>, 'id'>,
+    props: Omit<ComponentProps<typeof GearPieceDisplay>, 'id' | 'job'>,
   ) {
-    return <GearPieceDisplay {...props} id={id} />
+    return <GearPieceDisplay {...props} id={id} job={job} />
   }
 }
 
@@ -44,12 +45,11 @@ export function GearSetContainer({
   onDelete: (id: string) => void
 }) {
   const { characters, saveGearSet, selectedCharacter } = useSiteContext()
+  const query = useMediaQuery('only screen and (min-width: 1020px)')
 
-  const onSave = () => {
-    saveGearSet(gearSet)
-  }
+  const GearPiece = withId(gearSet.id, gearSet.job)
 
-  const GearPiece = withId(gearSet.id)
+  const gap = query ? '16' : '8'
 
   const characterItems: TMenuItem[] = useMemo(() => {
     return Object.keys(characters)
@@ -69,19 +69,18 @@ export function GearSetContainer({
 
   return (
     <Container>
-      <Menu>
+      <Menu compact={!query}>
         {gearSet.modified && (
-          <Button
-            label="Save"
-            onClick={onSave}
-            state={gearSet.modified ? 'default' : 'disabled'}
-          />
+          <Type size="M">
+            {gearSet.id.startsWith(NEW_GEARSET) ? 'New' : '*'}
+          </Type>
         )}
 
         <MenuButton
           direction="right"
           width="10px"
-          label=":"
+          label="Menu"
+          size={query ? 'S' : 'XS'}
           menuItems={[
             {
               type: 'button',
@@ -102,9 +101,9 @@ export function GearSetContainer({
         />
       </Menu>
 
-      <GearSetHeader gearSet={gearSet} />
-      <FlexRow gap="16">
-        <FlexColumn gap="16">
+      <GearSetHeader gearSet={gearSet} compact={!query} />
+      <FlexRow gap={gap}>
+        <FlexColumn gap={gap}>
           <GearPiece
             gearPiece={gearSet.items[Slot.WEAPON]}
             slot={Slot.WEAPON}
@@ -115,7 +114,7 @@ export function GearSetContainer({
           <GearPiece gearPiece={gearSet.items[Slot.LEGS]} slot={Slot.LEGS} />
           <GearPiece gearPiece={gearSet.items[Slot.FEET]} slot={Slot.FEET} />
         </FlexColumn>
-        <FlexColumn gap="16">
+        <FlexColumn gap={gap}>
           <GearPiece
             gearPiece={gearSet.items[Slot.EARRINGS]}
             slot={Slot.EARRINGS}
