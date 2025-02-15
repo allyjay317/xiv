@@ -6,14 +6,26 @@ import { GearSet, Slot } from '../../utils/types'
 import { Color } from '../../utils/colorSchemes'
 import { Button } from '../common/Button'
 import { useSiteContext } from '../context/useSiteContext'
-import { MenuButton } from '../common/MenuButton'
+import { MenuButton, TMenuItem } from '../common/MenuButton'
 import { NEW_GEARSET } from '../context/constants'
 import { GearSetHeader } from './GearSetHeader'
+import { FlexColumn, FlexRow } from '../common/Layout'
 
-const Column = styled.div`
+const Container = styled.div`
+  background-color: ${Color.bg1};
+  border: 1px solid ${Color.fg1};
+  border-radius: 5%;
+  padding: 16px;
+  position: relative;
+  width: fit-content;
+`
+
+const Menu = styled.div`
+  cursor: pointer;
+  position: absolute;
+  right: 32px;
+  top: 32px;
   display: flex;
-  flex-direction: column;
-  gap: 16px;
 `
 
 function withId(id: string) {
@@ -39,11 +51,12 @@ export function GearSetContainer({
 
   const GearPiece = withId(gearSet.id)
 
-  const characterItems = useMemo(() => {
+  const characterItems: TMenuItem[] = useMemo(() => {
     return Object.keys(characters)
       .filter((c) => c !== selectedCharacter)
       .map((c) => {
         return {
+          type: 'button',
           label: characters[c].info.name,
           onClick: () =>
             saveGearSet(
@@ -55,94 +68,70 @@ export function GearSetContainer({
   }, [characters])
 
   return (
-    <div>
-      <div
-        style={{
-          backgroundColor: Color.bg1,
-          border: `1px solid ${Color.fg1}`,
-          borderRadius: '5%',
-          padding: '16px',
-          position: 'relative',
-          width: 'fit-content',
-        }}
-      >
-        <div
-          style={{
-            cursor: 'pointer',
-            position: 'absolute',
-            right: '32px',
-            top: '32px',
-            display: 'flex',
-          }}
-        >
-          {gearSet.modified && (
-            <Button
-              label="Save"
-              onClick={onSave}
-              state={gearSet.modified ? 'default' : 'disabled'}
-            />
-          )}
-
-          <MenuButton
-            direction="right"
-            width="10px"
-            label=":"
-            menuItems={[
-              { label: 'Delete', onClick: () => onDelete(gearSet.id) },
-              {
-                label: (
-                  <MenuButton
-                    label="Copy to Another Character"
-                    menuItems={characterItems}
-                    direction="right"
-                  />
-                ),
-                onClick: () => {},
-              },
-            ]}
+    <Container>
+      <Menu>
+        {gearSet.modified && (
+          <Button
+            label="Save"
+            onClick={onSave}
+            state={gearSet.modified ? 'default' : 'disabled'}
           />
-        </div>
+        )}
 
-        <GearSetHeader gearSet={gearSet} />
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Column>
-            <GearPiece
-              gearPiece={gearSet.items[Slot.WEAPON]}
-              slot={Slot.WEAPON}
-            />
-            <GearPiece gearPiece={gearSet.items[Slot.HEAD]} slot={Slot.HEAD} />
-            <GearPiece gearPiece={gearSet.items[Slot.BODY]} slot={Slot.BODY} />
-            <GearPiece
-              gearPiece={gearSet.items[Slot.HANDS]}
-              slot={Slot.HANDS}
-            />
-            <GearPiece gearPiece={gearSet.items[Slot.LEGS]} slot={Slot.LEGS} />
-            <GearPiece gearPiece={gearSet.items[Slot.FEET]} slot={Slot.FEET} />
-          </Column>
-          <Column>
-            <GearPiece
-              gearPiece={gearSet.items[Slot.EARRINGS]}
-              slot={Slot.EARRINGS}
-            />
-            <GearPiece
-              gearPiece={gearSet.items[Slot.NECKLACE]}
-              slot={Slot.NECKLACE}
-            />
-            <GearPiece
-              gearPiece={gearSet.items[Slot.BRACELET]}
-              slot={Slot.BRACELET}
-            />
-            <GearPiece
-              gearPiece={gearSet.items[Slot.RING1]}
-              slot={Slot.RING1}
-            />
-            <GearPiece
-              gearPiece={gearSet.items[Slot.RING2]}
-              slot={Slot.RING2}
-            />
-          </Column>
-        </div>
-      </div>
-    </div>
+        <MenuButton
+          direction="right"
+          width="10px"
+          label=":"
+          menuItems={[
+            {
+              type: 'button',
+              label: 'Delete',
+              onClick: () => onDelete(gearSet.id),
+            },
+            {
+              type: 'menu',
+              label: 'Copy to another character',
+              menuItems: characterItems,
+            },
+          ]}
+          config={{
+            type: 'icon',
+            icon: 'menu',
+            color: Color.fg1,
+          }}
+        />
+      </Menu>
+
+      <GearSetHeader gearSet={gearSet} />
+      <FlexRow gap="16">
+        <FlexColumn gap="16">
+          <GearPiece
+            gearPiece={gearSet.items[Slot.WEAPON]}
+            slot={Slot.WEAPON}
+          />
+          <GearPiece gearPiece={gearSet.items[Slot.HEAD]} slot={Slot.HEAD} />
+          <GearPiece gearPiece={gearSet.items[Slot.BODY]} slot={Slot.BODY} />
+          <GearPiece gearPiece={gearSet.items[Slot.HANDS]} slot={Slot.HANDS} />
+          <GearPiece gearPiece={gearSet.items[Slot.LEGS]} slot={Slot.LEGS} />
+          <GearPiece gearPiece={gearSet.items[Slot.FEET]} slot={Slot.FEET} />
+        </FlexColumn>
+        <FlexColumn gap="16">
+          <GearPiece
+            gearPiece={gearSet.items[Slot.EARRINGS]}
+            slot={Slot.EARRINGS}
+          />
+          <GearPiece
+            gearPiece={gearSet.items[Slot.NECKLACE]}
+            slot={Slot.NECKLACE}
+          />
+          <GearPiece
+            gearPiece={gearSet.items[Slot.BRACELET]}
+            slot={Slot.BRACELET}
+          />
+          <GearPiece gearPiece={gearSet.items[Slot.RING1]} slot={Slot.RING1} />
+          <GearPiece gearPiece={gearSet.items[Slot.RING2]} slot={Slot.RING2} />
+        </FlexColumn>
+      </FlexRow>
+    </Container>
   )
 }

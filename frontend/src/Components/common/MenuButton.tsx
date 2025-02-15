@@ -19,6 +19,24 @@ type TIconButton = {
   color: string
 }
 
+type BaseMenuItem = {
+  type: string
+}
+
+type TButtonMenuItem = BaseMenuItem & {
+  type: 'button'
+  label: string
+  onClick: VoidFunction
+}
+
+type TSubMenuItem = BaseMenuItem & {
+  type: 'menu'
+  label: string
+  menuItems: Array<TMenuItem>
+}
+
+export type TMenuItem = TButtonMenuItem | TSubMenuItem
+
 type ButtonConfig = TButton | TImgButton | TIconButton
 
 export function MenuButton({
@@ -30,18 +48,17 @@ export function MenuButton({
   width = '100px',
   menuWidth = '100px',
   config = { type: 'button' },
+  hover,
 }: {
   label: string
   style?: React.CSSProperties
   state?: 'default' | 'disabled'
-  menuItems: Array<{
-    label: string | React.ReactNode
-    onClick: VoidFunction
-  }>
+  menuItems: Array<TMenuItem>
   direction?: 'up' | 'down' | 'left' | 'right'
   width?: string
   menuWidth?: string
   config?: ButtonConfig
+  hover?: boolean
 }) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -79,6 +96,8 @@ export function MenuButton({
             state={state}
             width={width}
             style={style}
+            onMouseOver={hover ? () => setIsOpen(true) : undefined}
+            //onMouseLeave={hover ? () => setIsOpen(false) : undefined}
           />
         )
       case 'img':
@@ -119,31 +138,42 @@ export function MenuButton({
             color="white"
           >
             {menuItems.map((mi) => {
-              if (typeof mi.label === 'string') {
-                return (
-                  <Button
-                    label={mi.label}
-                    onClick={mi.onClick}
-                    width={menuWidth}
-                  />
-                )
-              } else {
-                return (
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      e.preventDefault()
-                      mi.onClick()
-                    }}
-                  >
-                    {mi.label}
-                  </div>
-                )
-              }
+              return <MenuItem {...mi} width={menuWidth} />
+              // if (mi.type === 'button') {
+              //   return (
+              //     <Button
+              //       label={mi.label}
+              //       onClick={mi.onClick}
+              //       width={menuWidth}
+              //     />
+              //   )
+              // } else {
+              //   return (
+              //     <div
+              //       onMouseOver={(e) => {
+              //         e.stopPropagation()
+              //         e.preventDefault()
+              //         mi.onClick()
+              //         e.target.dispatchEvent()
+              //       }}
+              //     >
+              //       {mi.label}
+              //     </div>
+              //   )
+              // }
             })}
           </div>
         </>
       )}
     </div>
   )
+}
+
+function MenuItem({ type, width, ...props }: TMenuItem & { width: string }) {
+  switch (type) {
+    case 'button':
+      return <Button {...props} width={width} />
+    case 'menu':
+      return <MenuButton {...(props as TSubMenuItem)} direction="right" hover />
+  }
 }

@@ -6,6 +6,7 @@ import { JobInfo } from '../../utils/constants'
 import { Type } from '../common/Type'
 import { Color } from '../../utils/colorSchemes'
 import { IconButton } from '../common/IconButton'
+import { useSiteContext } from '../context/useSiteContext'
 
 export function Job({
   gearSet,
@@ -15,6 +16,7 @@ export function Job({
   editable: boolean
 }) {
   const [isEditingJob, setIsEditingJob] = useState(false)
+  const { updateGearSet } = useSiteContext()
 
   const jobInfo = JobInfo[gearSet.job as Jobs]
   return (
@@ -26,8 +28,11 @@ export function Job({
       {isEditingJob ? (
         <>
           <JobSelector
-            gearSet={gearSet}
-            onSelect={() => setIsEditingJob(false)}
+            value={`${gearSet.job}`}
+            onSelect={(job: Jobs) => {
+              updateGearSet({ ...gearSet, job })
+              setIsEditingJob(false)
+            }}
           />
           <IconButton
             onClick={() => setIsEditingJob(!isEditingJob)}

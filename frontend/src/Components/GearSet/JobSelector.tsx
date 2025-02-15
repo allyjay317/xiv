@@ -1,21 +1,29 @@
 import { JobInfo } from '../../utils/constants'
-import { GearSet, Jobs } from '../../utils/types'
+import { Jobs } from '../../utils/types'
+import { FlexRow } from '../common/Layout'
 import { Select } from '../common/Select'
-import { useSiteContext } from '../context/useSiteContext'
+import styled from '@emotion/styled'
+
+const JobImg = styled.img`
+  cursor: pointer;
+  height: 50px;
+  width: 50px;
+  user-select: none;
+`
 
 export function JobSelector({
-  gearSet,
   onSelect,
+  type = 'select',
+  value,
 }: {
-  gearSet: GearSet
-  onSelect?: (job: Jobs) => void
+  onSelect: (job: Jobs) => void
+  type?: 'select' | 'list'
+  value?: string
 }) {
-  const { updateGearSet } = useSiteContext()
-
   const onChange = (value: string) => {
     const job = value as unknown as Jobs
-    updateGearSet({ ...gearSet, job })
-    if (onSelect) onSelect(job)
+
+    onSelect(job)
   }
 
   const options = Object.keys(Jobs)
@@ -23,9 +31,24 @@ export function JobSelector({
     .map((job) => ({
       label: JobInfo[job as unknown as Jobs].name,
       value: job,
+      img: JobInfo[job as unknown as Jobs].icon,
     }))
 
-  return (
-    <Select onChange={onChange} options={options} value={`${gearSet.job}`} />
-  )
+  switch (type) {
+    case 'select':
+      return <Select onChange={onChange} options={options} value={value} />
+    case 'list':
+      return (
+        <FlexRow wrap="wrap">
+          {options.map((o) => (
+            <JobImg
+              key={o.value}
+              alt={o.label}
+              src={o.img}
+              onClick={() => onChange(o.value)}
+            />
+          ))}
+        </FlexRow>
+      )
+  }
 }
