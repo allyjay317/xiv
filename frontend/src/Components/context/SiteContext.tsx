@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { UserInfo } from '../types'
 import { GearPiece, GearSet, Slot } from '../../utils/types'
 import { useCharacters } from './useCharacters'
@@ -25,6 +25,16 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
     updateCharacter,
   } = useCharacters(id)
 
+  const hasUnsavedGearSets = useMemo(() => {
+    let hasUnsaved = false
+    Object.values(characters).forEach((c) => {
+      c.gearSets.forEach((gs) => {
+        hasUnsaved = hasUnsaved || gs.modified
+      })
+    })
+    return hasUnsaved
+  }, [characters])
+
   const saveGearSet = useCallback(
     async (gearSet: GearSet, cId?: string) => {
       if (!selectedCharacter) return API_REQUEST_RESULT.FAILURE
@@ -35,13 +45,14 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
           name: gearSet.name,
           job: Number(gearSet.job),
           items: gearSet.items,
+          index: 0,
         }
 
         const characterId = cId ?? selectedCharacter
         const character = characters[characterId]
         const gearSets = character.gearSets.filter((gs) => gs.id !== gearSet.id)
 
-        if (gearSet.id === NEW_GEARSET) {
+        if (gearSet.id.startsWith(NEW_GEARSET)) {
           const { id: gsId } = await gearsets.createGearSet(
             characterId,
             newGearSet,
@@ -66,6 +77,56 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
       }
     },
     [selectedCharacter, id, characters, setCharacters],
+  )
+
+  const saveGearSets = useCallback(
+    async (newGearSets: GearSet[]) => {
+      if (!selectedCharacter || !id) return API_REQUEST_RESULT.NOT_LOGGED_IN
+      let gearSets = characters[selectedCharacter].gearSets
+      if (newGearSets.length) {
+        const gsPromises: Promise<GearSet>[] = []
+        newGearSets.forEach((gs, i) => {
+          gsPromises.push(
+            new Promise((resolve, reject) => {
+              gearsets
+                .createGearSet(selectedCharacter, {
+                  user_id: id,
+                  name: gs.name,
+                  job: Number(gs.job),
+                  items: gs.items,
+                  index: gearSets.length + i,
+                })
+                .then(({ id: gsId }) => {
+                  resolve({ ...gs, id: gsId })
+                })
+                .catch(reject)
+            }),
+          )
+        })
+        const resolvedSets = await Promise.all(gsPromises)
+        gearSets = [...gearSets, ...resolvedSets]
+      }
+      await gearsets.bulkUpdateGearSets(
+        selectedCharacter,
+        gearSets.map((gs, i) => ({
+          user_id: id,
+          name: gs.name,
+          job: Number(gs.job),
+          items: gs.items,
+          index: i,
+          id: gs.id,
+        })),
+      )
+      setCharacters({
+        ...characters,
+        [selectedCharacter]: {
+          ...characters[selectedCharacter],
+          gearSets: gearSets.map((gs) => ({ ...gs, modified: false })),
+        },
+      })
+      return API_REQUEST_RESULT.SUCCESS
+    },
+    [characters],
   )
 
   const addGearSet = useCallback(
@@ -188,6 +249,8 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
         saveGearSet,
         deleteCharacter,
         updateCharacter,
+        saveGearSets,
+        modifiedGearSets: hasUnsavedGearSets,
       }}
     >
       {props.children}

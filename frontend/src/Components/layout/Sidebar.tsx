@@ -39,7 +39,9 @@ export function Sidebar() {
         width: `${SIDEBAR_WIDTH}px`,
       }}
     >
-      <CharacterSelector />
+      <div style={{ marginLeft: '50px', marginRight: '16px' }}>
+        <CharacterSelector />
+      </div>
       {userInfo ? (
         <>
           {info}

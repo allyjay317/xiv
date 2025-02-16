@@ -48,7 +48,6 @@ async function deleteCharacter({ character_id }: { character_id: number }) {
 
 async function updateCharacter(characterId: number) {
   const res = await axios.get(`${baseUrl}/c/${characterId}`)
-  debugger
   if (res.status !== 200) {
     throw new Error('Character not updated')
   }

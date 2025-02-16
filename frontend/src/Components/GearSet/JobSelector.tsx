@@ -1,21 +1,32 @@
 import { JobInfo } from '../../utils/constants'
-import { GearSet, Jobs } from '../../utils/types'
+import { Jobs, Size } from '../../utils/types'
+import { FlexRow } from '../common/Layout'
 import { Select } from '../common/Select'
-import { useSiteContext } from '../context/useSiteContext'
+import styled from '@emotion/styled'
+import { getSize } from '../common/utils'
+
+const JobImg = styled.img<{ size: Size }>`
+  cursor: pointer;
+  height: ${({ size }) => getSize(size)}px;
+  width: ${({ size }) => getSize(size)}px;
+  user-select: none;
+`
 
 export function JobSelector({
-  gearSet,
   onSelect,
+  type = 'select',
+  value,
+  size = 'XL',
 }: {
-  gearSet: GearSet
-  onSelect?: (job: Jobs) => void
+  onSelect: (job: Jobs) => void
+  type?: 'select' | 'list'
+  value?: string
+  size?: Size
 }) {
-  const { updateGearSet } = useSiteContext()
-
   const onChange = (value: string) => {
     const job = value as unknown as Jobs
-    updateGearSet({ ...gearSet, job })
-    if (onSelect) onSelect(job)
+
+    onSelect(job)
   }
 
   const options = Object.keys(Jobs)
@@ -23,9 +34,30 @@ export function JobSelector({
     .map((job) => ({
       label: JobInfo[job as unknown as Jobs].name,
       value: job,
+      img: JobInfo[job as unknown as Jobs].icon,
     }))
 
-  return (
-    <Select onChange={onChange} options={options} value={`${gearSet.job}`} />
-  )
+  switch (type) {
+    case 'select':
+      return <Select onChange={onChange} options={options} value={value} />
+    case 'list':
+      return (
+        <FlexRow
+          wrap="wrap"
+          style={{
+            width: size === 'XL' ? undefined : '300px',
+          }}
+        >
+          {options.map((o) => (
+            <JobImg
+              key={o.value}
+              alt={o.label}
+              src={o.img}
+              onClick={() => onChange(o.value)}
+              size={size}
+            />
+          ))}
+        </FlexRow>
+      )
+  }
 }

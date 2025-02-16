@@ -2,48 +2,86 @@ import styled from '@emotion/styled'
 import { ComponentProps, useMemo } from 'react'
 
 import { GearPieceDisplay } from './GearPiece'
-import { GearSet, Slot } from '../../utils/types'
+import { GearPiece, GearSet, Jobs, Slot } from '../../utils/types'
 import { Color } from '../../utils/colorSchemes'
-import { Button } from '../common/Button'
 import { useSiteContext } from '../context/useSiteContext'
-import { MenuButton } from '../common/MenuButton'
+import { MenuButton, TMenuItem } from '../common/MenuButton'
 import { NEW_GEARSET } from '../context/constants'
 import { GearSetHeader } from './GearSetHeader'
+import { FlexColumn, FlexRow } from '../common/Layout'
+import { Type } from '../common/Type'
+import { useMediaQuery } from '@react-hook/media-query'
 
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+const Container = styled.div`
+  background-color: ${Color.bg1};
+  border: 1px solid ${Color.fg1};
+  border-radius: 5%;
+  padding: 16px;
+  position: relative;
+  width: fit-content;
 `
 
-function withId(id: string) {
+const Menu = styled.div<{ compact?: boolean }>`
+  position: absolute;
+  right: ${(props) => (props.compact ? '16px' : '32px')};
+  top: ${(props) => (props.compact ? '16px' : '32px')};
+  display: flex;
+  user-select: none;
+`
+
+function withProps(
+  job: Jobs,
+  onEdit: (props: { slot: Slot; value: GearPiece }) => void,
+) {
   return function GearPiece(
-    props: Omit<ComponentProps<typeof GearPieceDisplay>, 'id'>,
+    props: Omit<
+      ComponentProps<typeof GearPieceDisplay>,
+      'id' | 'job' | 'onEdit'
+    >,
   ) {
-    return <GearPieceDisplay {...props} id={id} />
+    return (
+      <GearPieceDisplay
+        {...props}
+        job={job}
+        onEdit={({ slot, value }: { slot: Slot; value: GearPiece }) =>
+          onEdit({ slot, value })
+        }
+      />
+    )
   }
 }
 
 export function GearSetContainer({
   gearSet,
   onDelete,
+  onEdit,
 }: {
   gearSet: GearSet
   onDelete: (id: string) => void
+  onEdit: (gearSet: GearSet) => void
 }) {
   const { characters, saveGearSet, selectedCharacter } = useSiteContext()
+  const query = useMediaQuery('only screen and (min-width: 1020px)')
 
-  const onSave = () => {
-    saveGearSet(gearSet)
-  }
+  const onGearPieceEdit = ({ slot, value }: { slot: Slot; value: GearPiece }) =>
+    onEdit({
+      ...gearSet,
+      items: {
+        ...gearSet.items,
+        [slot]: value,
+      },
+    })
 
-  const GearPiece = withId(gearSet.id)
+  const GearPiece = withProps(gearSet.job, onGearPieceEdit)
 
-  const characterItems = useMemo(() => {
+  const gap = query ? '16' : '8'
+
+  const characterItems: TMenuItem[] = useMemo(() => {
     return Object.keys(characters)
       .filter((c) => c !== selectedCharacter)
       .map((c) => {
         return {
+          type: 'button',
           label: characters[c].info.name,
           onClick: () =>
             saveGearSet(
@@ -55,94 +93,69 @@ export function GearSetContainer({
   }, [characters])
 
   return (
-    <div>
-      <div
-        style={{
-          backgroundColor: Color.bg1,
-          border: `1px solid ${Color.fg1}`,
-          borderRadius: '5%',
-          padding: '16px',
-          position: 'relative',
-          width: 'fit-content',
-        }}
-      >
-        <div
-          style={{
-            cursor: 'pointer',
-            position: 'absolute',
-            right: '32px',
-            top: '32px',
-            display: 'flex',
+    <Container>
+      <Menu compact={!query}>
+        {gearSet.modified && (
+          <Type size="M">
+            {gearSet.id.startsWith(NEW_GEARSET) ? 'New' : '*'}
+          </Type>
+        )}
+
+        <MenuButton
+          direction="right"
+          width="10px"
+          label="Menu"
+          size={query ? 'S' : 'XS'}
+          menuItems={[
+            {
+              type: 'button',
+              label: 'Delete',
+              onClick: () => onDelete(gearSet.id),
+            },
+            {
+              type: 'menu',
+              label: 'Copy to another character',
+              menuItems: characterItems,
+            },
+          ]}
+          config={{
+            type: 'icon',
+            icon: 'menu',
+            color: Color.fg1,
           }}
-        >
-          {gearSet.modified && (
-            <Button
-              label="Save"
-              onClick={onSave}
-              state={gearSet.modified ? 'default' : 'disabled'}
-            />
-          )}
+        />
+      </Menu>
 
-          <MenuButton
-            direction="right"
-            width="10px"
-            label=":"
-            menuItems={[
-              { label: 'Delete', onClick: () => onDelete(gearSet.id) },
-              {
-                label: (
-                  <MenuButton
-                    label="Copy to Another Character"
-                    menuItems={characterItems}
-                    direction="right"
-                  />
-                ),
-                onClick: () => {},
-              },
-            ]}
+      <GearSetHeader gearSet={gearSet} compact={!query} onEdit={onEdit} />
+      <FlexRow gap={gap}>
+        <FlexColumn gap={gap}>
+          <GearPiece
+            gearPiece={gearSet.items[Slot.WEAPON]}
+            slot={Slot.WEAPON}
           />
-        </div>
-
-        <GearSetHeader gearSet={gearSet} />
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <Column>
-            <GearPiece
-              gearPiece={gearSet.items[Slot.WEAPON]}
-              slot={Slot.WEAPON}
-            />
-            <GearPiece gearPiece={gearSet.items[Slot.HEAD]} slot={Slot.HEAD} />
-            <GearPiece gearPiece={gearSet.items[Slot.BODY]} slot={Slot.BODY} />
-            <GearPiece
-              gearPiece={gearSet.items[Slot.HANDS]}
-              slot={Slot.HANDS}
-            />
-            <GearPiece gearPiece={gearSet.items[Slot.LEGS]} slot={Slot.LEGS} />
-            <GearPiece gearPiece={gearSet.items[Slot.FEET]} slot={Slot.FEET} />
-          </Column>
-          <Column>
-            <GearPiece
-              gearPiece={gearSet.items[Slot.EARRINGS]}
-              slot={Slot.EARRINGS}
-            />
-            <GearPiece
-              gearPiece={gearSet.items[Slot.NECKLACE]}
-              slot={Slot.NECKLACE}
-            />
-            <GearPiece
-              gearPiece={gearSet.items[Slot.BRACELET]}
-              slot={Slot.BRACELET}
-            />
-            <GearPiece
-              gearPiece={gearSet.items[Slot.RING1]}
-              slot={Slot.RING1}
-            />
-            <GearPiece
-              gearPiece={gearSet.items[Slot.RING2]}
-              slot={Slot.RING2}
-            />
-          </Column>
-        </div>
-      </div>
-    </div>
+          <GearPiece gearPiece={gearSet.items[Slot.HEAD]} slot={Slot.HEAD} />
+          <GearPiece gearPiece={gearSet.items[Slot.BODY]} slot={Slot.BODY} />
+          <GearPiece gearPiece={gearSet.items[Slot.HANDS]} slot={Slot.HANDS} />
+          <GearPiece gearPiece={gearSet.items[Slot.LEGS]} slot={Slot.LEGS} />
+          <GearPiece gearPiece={gearSet.items[Slot.FEET]} slot={Slot.FEET} />
+        </FlexColumn>
+        <FlexColumn gap={gap}>
+          <GearPiece
+            gearPiece={gearSet.items[Slot.EARRINGS]}
+            slot={Slot.EARRINGS}
+          />
+          <GearPiece
+            gearPiece={gearSet.items[Slot.NECKLACE]}
+            slot={Slot.NECKLACE}
+          />
+          <GearPiece
+            gearPiece={gearSet.items[Slot.BRACELET]}
+            slot={Slot.BRACELET}
+          />
+          <GearPiece gearPiece={gearSet.items[Slot.RING1]} slot={Slot.RING1} />
+          <GearPiece gearPiece={gearSet.items[Slot.RING2]} slot={Slot.RING2} />
+        </FlexColumn>
+      </FlexRow>
+    </Container>
   )
 }

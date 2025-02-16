@@ -13,6 +13,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@hello-pangea/dnd": "^17.0.0",
+    "@react-hook/media-query": "^1.1.1",
     "@types/node": "^22.10.5",
     "axios": "^1.7.9",
     "discord-api-types": "^0.37.115",

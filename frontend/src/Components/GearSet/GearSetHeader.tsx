@@ -1,46 +1,65 @@
+import { useState } from 'react'
 import { JobInfo } from '../../utils/constants'
 import { GearSet, Jobs } from '../../utils/types'
+import { FlexColumn, FlexRow } from '../common/Layout'
 import { Job } from './Job'
 import { Name } from './Name'
+import styled from '@emotion/styled'
+import { JobSelector } from './JobSelector'
+
+const Container = styled(FlexRow)`
+  margin-bottom: 16px;
+`
+
+const JobIcon = styled.img<{ compact: boolean }>`
+  user-select: none;
+  height: ${(props) => (props.compact ? '24px' : '70px')};
+  width: ${(props) => (props.compact ? '24px' : '70px')};
+`
 
 export function GearSetHeader({
   gearSet,
   compact = false,
   editable = true,
+  onEdit,
 }: {
   gearSet: GearSet
   compact?: boolean
   editable?: boolean
+  onEdit?: (gearSet: GearSet) => void
 }) {
+  const [isJobMenuOpen, setIsJobMenuOpen] = useState(false)
   const jobInfo = JobInfo[gearSet.job as Jobs]
+
+  const onChangeJob = (job: Jobs) => {
+    onEdit && onEdit({ ...gearSet, job })
+  }
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '16px',
-        marginBottom: '16px',
-      }}
-    >
-      <img
+    <Container gap="16">
+      <JobIcon
         alt="job icon"
+        compact={compact}
         src={jobInfo.icon}
-        style={
-          compact
-            ? { height: '24px', width: '24px' }
-            : { height: '70px', width: '70px' }
-        }
+        onClick={editable ? () => setIsJobMenuOpen(!isJobMenuOpen) : undefined}
       />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '4px',
-          alignItems: 'flex-start',
-        }}
-      >
-        <Name gearSet={gearSet} compact={compact} editable={editable} />
+      <FlexColumn gap="4" align="flex-start">
+        <Name
+          gearSet={gearSet}
+          compact={compact}
+          editable={editable}
+          onEdit={onEdit}
+        />
         {!compact && <Job gearSet={gearSet} editable={editable} />}
-      </div>
-    </div>
+        {compact && isJobMenuOpen && (
+          <JobSelector
+            type="list"
+            onSelect={onChangeJob}
+            value={`${gearSet.job}`}
+            size="M"
+          />
+        )}
+      </FlexColumn>
+    </Container>
   )
 }

@@ -5,8 +5,6 @@ import { characters as apiCharacters } from '../../api/characters'
 import { gearsets } from '../../api/gearset'
 import { GearSet } from '../../utils/types'
 
-const gsSort = (a: GearSet, b: GearSet) => a.id.localeCompare(b.id)
-
 export function useCharacters(id: string | null) {
   const [characters, setCharacters] = useState<Record<string, CharacterInfo>>(
     {},
@@ -56,7 +54,7 @@ export function useCharacters(id: string | null) {
           ...characters,
           [characterId]: {
             ...characters[characterId],
-            gearSets: data.sort(gsSort),
+            gearSets: data,
           },
         })
         setselectedCharacter(characterId)
@@ -161,7 +159,7 @@ export function useCharacters(id: string | null) {
       res.forEach(([i, r]) => {
         nc[i] = {
           ...newCharacters[i],
-          gearSets: r.sort(gsSort),
+          gearSets: r,
         }
       })
       setCharacters(nc)
@@ -174,7 +172,7 @@ export function useCharacters(id: string | null) {
       const ids = Object.keys(newCharacters)
       const nc: Record<string, CharacterInfo> = {}
       ids.forEach((i) => {
-        const newGearSets = newCharacters[i].gearSets.sort(gsSort)
+        const newGearSets = newCharacters[i].gearSets
         nc[i] = {
           ...newCharacters[i],
           gearSets: newGearSets,

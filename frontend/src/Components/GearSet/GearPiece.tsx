@@ -3,87 +3,82 @@ import { useMemo, useState } from 'react'
 
 import { SourceSelector } from './SourceSelector'
 import { Color } from '../../utils/colorSchemes'
-import { GearPiece, GearSource, Slot } from '../../utils/types'
-import { PIECE_SIZE, SLOT_INFO } from '../../utils/constants'
+import { GearPiece, GearSource, Jobs, Slot } from '../../utils/types'
+import { JobInfo, PIECE_SIZE, SLOT_INFO } from '../../utils/constants'
 import { Type } from '../common/Type'
 import { Checkbox } from '../common/Checkbox'
 
-import tomeImg from '../../assets/img/gear_sources/tomestone.png'
-import rOneImg from '../../assets/img/gear_sources/book1.png'
-import rTwoImg from '../../assets/img/gear_sources/book2.png'
-import rThreeImg from '../../assets/img/gear_sources/book3.png'
-import rFourImg from '../../assets/img/gear_sources/book4.png'
-import ultimateSourceImage from '../../assets/img/gear_sources/ultimate.png'
-import chaoticSourceImage from '../../assets/img/gear_sources/FFXIV_Chaotic_Icon.webp'
-import craftedSourceImage from '../../assets/img/gear_sources/crafted.webp'
-import { useSiteContext } from '../context/useSiteContext'
+import { ffIcons } from './util'
+import { useMediaQuery } from '@react-hook/media-query'
 
-const GearPieceContainer = styled.div({
-  backgroundColor: Color.bg2,
-  border: `1px solid ${Color.fg1}`,
-  borderRadius: '16px',
-  overflow: 'hidden',
-  padding: '8px',
-  position: 'relative',
-  textAlign: 'left',
-  width: '200px',
-  height: '48px',
-})
+const GearPieceContainer = styled.div<{ compact?: boolean }>`
+  background-color: ${Color.bg2};
+  border: 1px solid ${Color.fg1};
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 8px;
+  position: relative;
+  text-align: left;
+  width: ${(props) => (props.compact ? '142px' : '200px')};
+  height: 48px;
+`
 
-const GearPieceInner = styled.div({
-  alignItems: 'center',
-  display: 'flex',
-  gap: '8px',
-  justifyContent: 'flex-start',
-  height: '100%',
-})
+const GearPieceInner = styled.div<{ compact?: boolean }>`
+  align-items: center;
+  display: flex;
+  gap: ${(props) => (props.compact ? 4 : 8)}px;
+  justify-content: flex-start;
+  height: 100%;
+`
 
-const SlotText = styled.div({
-  justifySelf: 'flex-start',
-  textAlign: 'left',
-  alignSelf: 'center',
-  width: '80px',
-})
+const SlotText = styled.div`
+  justify-self: flex-start;
+  text-align: left;
+  align-self: center;
+  width: 80px;
+`
 
 export function GearPieceDisplay({
   gearPiece,
-  id,
   slot,
+  job,
+  onEdit,
 }: {
   gearPiece: GearPiece
   slot: Slot
-  id: string
+  job: Jobs
+  onEdit: (props: { slot: Slot; value: GearPiece }) => void
 }) {
   const [isEditing, setIsEditing] = useState(false)
   // const [isDisplayingMateria, setIsDisplayingMateria] = useState(false)
-  const { updateGearPiece } = useSiteContext()
+  const query = useMediaQuery('only screen and (min-width: 1020px)')
 
   const raidSourceImage = useMemo(() => {
     const floor = SLOT_INFO[slot].floor
     switch (floor) {
       case 1:
-        return rOneImg
+        return ffIcons.floor1
       case 2:
-        return rTwoImg
+        return ffIcons.floor2
       case 3:
-        return rThreeImg
+        return ffIcons.floor3
       case 4:
-        return rFourImg
+        return ffIcons.floor4
     }
   }, [slot])
 
   const imageSource = useMemo(() => {
     switch (gearPiece.source) {
       case GearSource.TOME:
-        return tomeImg
+        return ffIcons.tome
       case GearSource.RAID:
         return raidSourceImage
       case GearSource.CHAOTIC:
-        return chaoticSourceImage
+        return ffIcons.chaotic
       case GearSource.ULTIMATE:
-        return ultimateSourceImage
+        return ffIcons.ultimate
       case GearSource.CRAFTED:
-        return craftedSourceImage
+        return ffIcons.crafted
       default:
         return 's'
     }
@@ -91,8 +86,7 @@ export function GearPieceDisplay({
 
   const changeSource = (source: GearSource) => {
     if (source !== gearPiece.source) {
-      updateGearPiece({
-        id,
+      onEdit({
         slot,
         value: { augmented: false, have: false, source },
       })
@@ -107,13 +101,27 @@ export function GearPieceDisplay({
   )
 
   return (
-    <GearPieceContainer>
-      <GearPieceInner>
-        <SlotText>
-          <Type color={Color.fg1} inline size="S">
-            {SLOT_INFO[slot].name}
-          </Type>
-        </SlotText>
+    <GearPieceContainer compact={!query}>
+      <GearPieceInner compact={!query}>
+        {query ? (
+          <SlotText>
+            <Type color={Color.fg1} inline size="S">
+              {SLOT_INFO[slot].name}
+            </Type>
+          </SlotText>
+        ) : (
+          <img
+            src={
+              slot === Slot.WEAPON ? JobInfo[job].icon : SLOT_INFO[slot].icon
+            }
+            style={{
+              height: '24px',
+              width: '24px',
+              display: isEditing ? 'none' : 'block',
+            }}
+          />
+        )}
+
         {isEditing ? (
           <SourceSelector
             onClick={changeSource}
@@ -137,8 +145,7 @@ export function GearPieceDisplay({
             <Checkbox
               label="Have"
               onChange={(isChecked) => {
-                updateGearPiece({
-                  id,
+                onEdit({
                   slot,
                   value: { ...gearPiece, have: isChecked },
                 })
@@ -149,8 +156,7 @@ export function GearPieceDisplay({
               <Checkbox
                 label="Aug"
                 onChange={(isChecked) => {
-                  updateGearPiece({
-                    id,
+                  onEdit({
                     slot,
                     value: { ...gearPiece, augmented: isChecked },
                   })

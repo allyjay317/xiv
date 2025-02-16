@@ -41,4 +41,6 @@ export type SiteValues = {
   ) => Promise<API_REQUEST_RESULT | Error>
   deleteCharacter: (characterId: number) => Promise<API_REQUEST_RESULT | Error>
   updateCharacter: (characterId: number) => Promise<API_REQUEST_RESULT | Error>
+  saveGearSets: (newGearSets: GearSet[]) => Promise<API_REQUEST_RESULT | Error>
+  modifiedGearSets: boolean
 }

@@ -10,6 +10,7 @@ export type GearSetRequest = {
   name: string
   job: Jobs
   items: Record<Slot, GearPiece>
+  index: number
 }
 
 async function getGearsets(characterId: string) {
@@ -52,9 +53,17 @@ async function updateGearSet(
   await axios.patch(`${baseUrl}/${characterId}/${gearSetId}`, gearSet)
 }
 
+async function bulkUpdateGearSets(
+  characterId: string,
+  gearSets: Array<GearSetRequest & {id: string}>
+){
+  await axios.patch(`${baseUrl}/${characterId}`, gearSets)
+}
+
 export const gearsets = {
   getGearsets,
   deleteGearSet,
   createGearSet,
   updateGearSet,
+  bulkUpdateGearSets
 }

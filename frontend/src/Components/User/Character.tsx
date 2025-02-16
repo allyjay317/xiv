@@ -41,7 +41,6 @@ export function Character({ character }: { character: CharacterInfo }) {
     setError(null)
     setLoading(true)
     const res = await updateCharacter(character.info.id)
-    debugger
     if (res === API_REQUEST_RESULT.FAILURE) {
       setError('Failed to update')
     }
