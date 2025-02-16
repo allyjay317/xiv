@@ -5,11 +5,13 @@ import { Type } from '../../common/Type'
 import { LoginButton } from './LoginButton'
 import { Button } from '../../common/Button'
 import { useSiteContext } from '../../context/useSiteContext'
+import { useMediaQuery } from '@react-hook/media-query'
 
 export const Navigator = () => {
   const loginURI = import.meta.env.VITE_LOGIN_URI
   const { isLoggedIn } = useSiteContext()
   const navigate = useNavigate()
+  const query = useMediaQuery('only screen and (min-width: 1020px)')
 
   return (
     <div
@@ -23,10 +25,15 @@ export const Navigator = () => {
         height: `${HEADER_HEIGHT}px`,
         justifyContent: 'flex-start',
         padding: '0 20px',
-        width: '100%',
+        width: '100vw',
       }}
     >
-      <Type bold size="L" inline style={{ flexGrow: 1, textAlign: 'left' }}>
+      <Type
+        bold
+        size={!query ? 'S' : 'L'}
+        inline
+        style={{ flexGrow: 1, textAlign: 'left' }}
+      >
         FFXIV Gear Planner
       </Type>
       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -45,7 +52,7 @@ export const Navigator = () => {
             />
           </>
         )}
-        <LoginButton loginURI={loginURI} />
+        <LoginButton loginURI={loginURI} size="XL" />
       </div>
     </div>
   )

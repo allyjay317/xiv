@@ -110,6 +110,7 @@ export function MenuButton({
             color={config.color}
             src={config.img}
             onClick={() => setIsOpen(!isOpen)}
+            size={size}
           />
         )
       case 'icon':
@@ -125,7 +126,12 @@ export function MenuButton({
 
   return (
     <div
-      style={{ position: 'relative', display: 'inline-block' }}
+      style={{
+        position: 'relative',
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        height: '100%',
+      }}
       onBlur={() => setIsOpen(false)}
       tabIndex={1}
     >

@@ -1,5 +1,9 @@
 import styled from '@emotion/styled'
 import { Color } from '../../utils/colorSchemes'
+import { useMediaQuery } from '@react-hook/media-query'
+import { Type } from './Type'
+import { Size } from '../../utils/types'
+import { useMemo } from 'react'
 
 const ButtonContainer = styled.div<{ state?: 'disabled' | 'default' }>`
   background-color: ${Color.bg1};
@@ -22,7 +26,7 @@ const ButtonContainer = styled.div<{ state?: 'disabled' | 'default' }>`
     background-color: ${Color.bg2};
     left: 5px';
     top: 5px;
-  }`}
+  };`}
 `
 
 export function Button({
@@ -31,6 +35,7 @@ export function Button({
   style,
   state,
   width = 'fit-content',
+  size = 'S',
   ...buttonProps
 }: {
   label: string
@@ -38,11 +43,27 @@ export function Button({
   style?: React.CSSProperties
   state?: 'default' | 'disabled'
   width?: string
+  size?: Size
 } & React.ComponentProps<'div'>) {
+  const query = useMediaQuery('only screen and (min-width: 1020px)')
   const baseOnClick = (e: React.SyntheticEvent) => {
     e.stopPropagation()
     onClick && onClick()
   }
+
+  const adjustedSize = useMemo(() => {
+    if (query || size === 'XS') return size
+    switch (size) {
+      case 'XL':
+        return 'L'
+      case 'L':
+        return 'M'
+      case 'M':
+        return 'S'
+      case 'S':
+        return 'XS'
+    }
+  }, [query, size])
 
   return (
     <ButtonContainer
@@ -56,7 +77,7 @@ export function Button({
       state={state}
       {...buttonProps}
     >
-      {label}
+      <Type size={adjustedSize}>{label}</Type>
     </ButtonContainer>
   )
 }
