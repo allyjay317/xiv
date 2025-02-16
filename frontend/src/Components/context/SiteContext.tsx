@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { UserInfo } from '../types'
 import { GearPiece, GearSet, Slot } from '../../utils/types'
 import { useCharacters } from './useCharacters'
@@ -24,6 +24,16 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
     deleteCharacter,
     updateCharacter,
   } = useCharacters(id)
+
+  const hasUnsavedGearSets = useMemo(() => {
+    let hasUnsaved = false
+    Object.values(characters).forEach((c) => {
+      c.gearSets.forEach((gs) => {
+        hasUnsaved = hasUnsaved || gs.modified
+      })
+    })
+    return hasUnsaved
+  }, [characters])
 
   const saveGearSet = useCallback(
     async (gearSet: GearSet, cId?: string) => {
@@ -241,6 +251,7 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
         deleteCharacter,
         updateCharacter,
         saveGearSets,
+        modifiedGearSets: hasUnsavedGearSets,
       }}
     >
       {props.children}

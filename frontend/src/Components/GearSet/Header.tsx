@@ -5,6 +5,7 @@ import { IconButton } from '../common/IconButton'
 import styled from '@emotion/styled'
 import { FlexColumn, FlexRow } from '../common/Layout'
 import { JobSelector } from './JobSelector'
+import { useSiteContext } from '../context/useSiteContext'
 
 const AbsoluteContainer = styled.div`
   position: absolute;
@@ -15,10 +16,11 @@ const Container = styled(FlexRow)`
   position: sticky;
   max-height: 380px;
   top: 16px;
-  width: 100%;
+  width: fit-content;
   z-index: 100;
   right: 0;
   left 0;
+  padding: 8px;
 `
 
 export function Header({
@@ -29,6 +31,7 @@ export function Header({
   onSave: VoidFunction
 }) {
   const [isSetCreatorOpen, setIsSetCreatorOpen] = useState(false)
+  const { modifiedGearSets } = useSiteContext()
 
   return (
     <AbsoluteContainer>
@@ -50,7 +53,9 @@ export function Header({
               setIsSetCreatorOpen(!isSetCreatorOpen)
             }}
           />
-          <IconButton icon="save" size="L" onClick={onSave} />
+          {modifiedGearSets && (
+            <IconButton icon="save" size="L" onClick={onSave} />
+          )}
         </FlexColumn>
         <FlexRow wrap="wrap">
           {isSetCreatorOpen && (
