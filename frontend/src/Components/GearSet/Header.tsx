@@ -55,10 +55,9 @@ export function Header({
               setIsSetCreatorOpen(!isSetCreatorOpen)
             }}
           />
-          {modifiedGearSets ||
-            (hasNewGearSets && (
-              <IconButton icon="save" size="L" onClick={onSave} />
-            ))}
+          {(modifiedGearSets || hasNewGearSets) && (
+            <IconButton icon="save" size="L" onClick={onSave} />
+          )}
         </FlexColumn>
         <FlexRow wrap="wrap">
           {isSetCreatorOpen && (

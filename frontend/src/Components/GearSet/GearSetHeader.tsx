@@ -6,6 +6,7 @@ import { Job } from './Job'
 import { Name } from './Name'
 import styled from '@emotion/styled'
 import { JobSelector } from './JobSelector'
+import { Color } from '../../utils/colorSchemes'
 
 const Container = styled(FlexRow)`
   margin-bottom: 16px;
@@ -33,6 +34,7 @@ export function GearSetHeader({
 
   const onChangeJob = (job: Jobs) => {
     onEdit && onEdit({ ...gearSet, job })
+    setIsJobMenuOpen(false)
   }
 
   return (
@@ -50,14 +52,16 @@ export function GearSetHeader({
           editable={editable}
           onEdit={onEdit}
         />
-        {!compact && <Job gearSet={gearSet} editable={editable} />}
-        {compact && isJobMenuOpen && (
-          <JobSelector
-            type="list"
-            onSelect={onChangeJob}
-            value={`${gearSet.job}`}
-            size="M"
-          />
+        {!compact && <Job gearSet={gearSet} />}
+        {isJobMenuOpen && (
+          <div style={{ position: 'absolute', backgroundColor: Color.bg1 }}>
+            <JobSelector
+              type="list"
+              onSelect={onChangeJob}
+              value={`${gearSet.job}`}
+              size="M"
+            />
+          </div>
         )}
       </FlexColumn>
     </Container>
