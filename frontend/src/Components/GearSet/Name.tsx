@@ -14,14 +14,14 @@ export function Name({
   gearSet: GearSet
   compact: boolean
   editable: boolean
-  onEdit: (gearSet: GearSet) => void
+  onEdit?: (gearSet: GearSet) => void
 }) {
   const [isEditingName, setIsEditingName] = useState(false)
 
   const [name, setName] = useState(gearSet.name)
 
   const onConfirm = () => {
-    onEdit({ ...gearSet, name })
+    onEdit && onEdit({ ...gearSet, name })
     setIsEditingName(false)
   }
 

@@ -26,13 +26,13 @@ export function GearSetHeader({
   gearSet: GearSet
   compact?: boolean
   editable?: boolean
-  onEdit: (gearSet: GearSet) => void
+  onEdit?: (gearSet: GearSet) => void
 }) {
   const [isJobMenuOpen, setIsJobMenuOpen] = useState(false)
   const jobInfo = JobInfo[gearSet.job as Jobs]
 
   const onChangeJob = (job: Jobs) => {
-    onEdit({ ...gearSet, job })
+    onEdit && onEdit({ ...gearSet, job })
   }
 
   return (
