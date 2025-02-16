@@ -33,7 +33,6 @@ async function deleteGearSet(characterId: string, gearsetId: string) {
 }
 
 async function createGearSet(characterId: string, gearSet: GearSetRequest) {
-  debugger
   const res = await axios.post(`${apiUrl}/gearset/${characterId}`, gearSet)
   if (res.status !== 201) {
     throw new Error('Not Created')

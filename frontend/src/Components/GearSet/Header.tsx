@@ -26,9 +26,11 @@ const Container = styled(FlexRow)`
 export function Header({
   onAdd,
   onSave,
+  hasNewGearSets,
 }: {
   onAdd: (job: Jobs) => void
   onSave: VoidFunction
+  hasNewGearSets: boolean
 }) {
   const [isSetCreatorOpen, setIsSetCreatorOpen] = useState(false)
   const { modifiedGearSets } = useSiteContext()
@@ -53,9 +55,10 @@ export function Header({
               setIsSetCreatorOpen(!isSetCreatorOpen)
             }}
           />
-          {modifiedGearSets && (
-            <IconButton icon="save" size="L" onClick={onSave} />
-          )}
+          {modifiedGearSets ||
+            (hasNewGearSets && (
+              <IconButton icon="save" size="L" onClick={onSave} />
+            ))}
         </FlexColumn>
         <FlexRow wrap="wrap">
           {isSetCreatorOpen && (

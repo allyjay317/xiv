@@ -7,8 +7,13 @@ import { NEW_GEARSET } from '../context/constants'
 import { useState } from 'react'
 
 export function GearSetList() {
-  const { characters, selectedCharacter, deleteGearSet, saveGearSets } =
-    useSiteContext()
+  const {
+    characters,
+    selectedCharacter,
+    deleteGearSet,
+    saveGearSets,
+    updateGearSet,
+  } = useSiteContext()
   const [newGearSets, setNewGearSets] = useState<GearSet[]>([])
 
   const gearSets = selectedCharacter
@@ -17,6 +22,16 @@ export function GearSetList() {
 
   const onDelete = (id: string) =>
     setNewGearSets(newGearSets.filter((s) => s.id !== id))
+
+  const onEdit = (gearSet: GearSet) => {
+    if (gearSet.id.startsWith(NEW_GEARSET)) {
+      setNewGearSets(
+        newGearSets.map((gs) => (gs.id === gearSet.id ? gearSet : gs)),
+      )
+    } else {
+      updateGearSet(gearSet)
+    }
+  }
 
   return (
     <div style={{ position: 'relative' }}>
@@ -35,6 +50,7 @@ export function GearSetList() {
           await saveGearSets(newGearSets)
           setNewGearSets([])
         }}
+        hasNewGearSets={newGearSets.length > 0}
       />
       <div
         style={{
@@ -50,6 +66,7 @@ export function GearSetList() {
             key={set.id}
             gearSet={set}
             onDelete={deleteGearSet}
+            onEdit={onEdit}
           />
         ))}
         {newGearSets.map((set) => (
@@ -57,6 +74,7 @@ export function GearSetList() {
             key={set.id}
             gearSet={set}
             onDelete={() => onDelete(set.id)}
+            onEdit={onEdit}
           />
         ))}
       </div>

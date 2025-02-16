@@ -3,25 +3,25 @@ import { GearSet } from '../../utils/types'
 import { Type } from '../common/Type'
 import { Color } from '../../utils/colorSchemes'
 import { IconButton } from '../common/IconButton'
-import { useSiteContext } from '../context/useSiteContext'
 import { TextInput } from '../common/TextInput'
 
 export function Name({
   gearSet,
   compact,
   editable,
+  onEdit,
 }: {
   gearSet: GearSet
   compact: boolean
   editable: boolean
+  onEdit: (gearSet: GearSet) => void
 }) {
   const [isEditingName, setIsEditingName] = useState(false)
 
-  const { updateGearSet } = useSiteContext()
   const [name, setName] = useState(gearSet.name)
 
   const onConfirm = () => {
-    updateGearSet({ ...gearSet, name })
+    onEdit({ ...gearSet, name })
     setIsEditingName(false)
   }
 

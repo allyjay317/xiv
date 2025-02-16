@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { ComponentProps, useMemo } from 'react'
 
 import { GearPieceDisplay } from './GearPiece'
-import { GearSet, Jobs, Slot } from '../../utils/types'
+import { GearPiece, GearSet, Jobs, Slot } from '../../utils/types'
 import { Color } from '../../utils/colorSchemes'
 import { useSiteContext } from '../context/useSiteContext'
 import { MenuButton, TMenuItem } from '../common/MenuButton'
@@ -29,25 +29,50 @@ const Menu = styled.div<{ compact?: boolean }>`
   user-select: none;
 `
 
-function withId(id: string, job: Jobs) {
+function withProps(
+  job: Jobs,
+  onEdit: (props: { slot: Slot; value: GearPiece }) => void,
+) {
   return function GearPiece(
-    props: Omit<ComponentProps<typeof GearPieceDisplay>, 'id' | 'job'>,
+    props: Omit<
+      ComponentProps<typeof GearPieceDisplay>,
+      'id' | 'job' | 'onEdit'
+    >,
   ) {
-    return <GearPieceDisplay {...props} id={id} job={job} />
+    return (
+      <GearPieceDisplay
+        {...props}
+        job={job}
+        onEdit={({ slot, value }: { slot: Slot; value: GearPiece }) =>
+          onEdit({ slot, value })
+        }
+      />
+    )
   }
 }
 
 export function GearSetContainer({
   gearSet,
   onDelete,
+  onEdit,
 }: {
   gearSet: GearSet
   onDelete: (id: string) => void
+  onEdit: (gearSet: GearSet) => void
 }) {
   const { characters, saveGearSet, selectedCharacter } = useSiteContext()
   const query = useMediaQuery('only screen and (min-width: 1020px)')
 
-  const GearPiece = withId(gearSet.id, gearSet.job)
+  const onGearPieceEdit = ({ slot, value }: { slot: Slot; value: GearPiece }) =>
+    onEdit({
+      ...gearSet,
+      items: {
+        ...gearSet.items,
+        [slot]: value,
+      },
+    })
+
+  const GearPiece = withProps(gearSet.job, onGearPieceEdit)
 
   const gap = query ? '16' : '8'
 
@@ -101,7 +126,7 @@ export function GearSetContainer({
         />
       </Menu>
 
-      <GearSetHeader gearSet={gearSet} compact={!query} />
+      <GearSetHeader gearSet={gearSet} compact={!query} onEdit={onEdit} />
       <FlexRow gap={gap}>
         <FlexColumn gap={gap}>
           <GearPiece

@@ -6,7 +6,6 @@ import { Job } from './Job'
 import { Name } from './Name'
 import styled from '@emotion/styled'
 import { JobSelector } from './JobSelector'
-import { useSiteContext } from '../context/useSiteContext'
 
 const Container = styled(FlexRow)`
   margin-bottom: 16px;
@@ -22,17 +21,18 @@ export function GearSetHeader({
   gearSet,
   compact = false,
   editable = true,
+  onEdit,
 }: {
   gearSet: GearSet
   compact?: boolean
   editable?: boolean
+  onEdit: (gearSet: GearSet) => void
 }) {
   const [isJobMenuOpen, setIsJobMenuOpen] = useState(false)
   const jobInfo = JobInfo[gearSet.job as Jobs]
-  const { updateGearSet } = useSiteContext()
 
   const onChangeJob = (job: Jobs) => {
-    updateGearSet({ ...gearSet, job })
+    onEdit({ ...gearSet, job })
   }
 
   return (
@@ -44,7 +44,12 @@ export function GearSetHeader({
         onClick={editable ? () => setIsJobMenuOpen(!isJobMenuOpen) : undefined}
       />
       <FlexColumn gap="4" align="flex-start">
-        <Name gearSet={gearSet} compact={compact} editable={editable} />
+        <Name
+          gearSet={gearSet}
+          compact={compact}
+          editable={editable}
+          onEdit={onEdit}
+        />
         {!compact && <Job gearSet={gearSet} editable={editable} />}
         {compact && isJobMenuOpen && (
           <JobSelector

@@ -9,7 +9,6 @@ import { Type } from '../common/Type'
 import { Checkbox } from '../common/Checkbox'
 
 import { ffIcons } from './util'
-import { useSiteContext } from '../context/useSiteContext'
 import { useMediaQuery } from '@react-hook/media-query'
 
 const GearPieceContainer = styled.div<{ compact?: boolean }>`
@@ -41,18 +40,17 @@ const SlotText = styled.div`
 
 export function GearPieceDisplay({
   gearPiece,
-  id,
   slot,
   job,
+  onEdit,
 }: {
   gearPiece: GearPiece
   slot: Slot
-  id: string
   job: Jobs
+  onEdit: (props: { slot: Slot; value: GearPiece }) => void
 }) {
   const [isEditing, setIsEditing] = useState(false)
   // const [isDisplayingMateria, setIsDisplayingMateria] = useState(false)
-  const { updateGearPiece } = useSiteContext()
   const query = useMediaQuery('only screen and (min-width: 1020px)')
 
   const raidSourceImage = useMemo(() => {
@@ -88,8 +86,7 @@ export function GearPieceDisplay({
 
   const changeSource = (source: GearSource) => {
     if (source !== gearPiece.source) {
-      updateGearPiece({
-        id,
+      onEdit({
         slot,
         value: { augmented: false, have: false, source },
       })
@@ -148,8 +145,7 @@ export function GearPieceDisplay({
             <Checkbox
               label="Have"
               onChange={(isChecked) => {
-                updateGearPiece({
-                  id,
+                onEdit({
                   slot,
                   value: { ...gearPiece, have: isChecked },
                 })
@@ -160,8 +156,7 @@ export function GearPieceDisplay({
               <Checkbox
                 label="Aug"
                 onChange={(isChecked) => {
-                  updateGearPiece({
-                    id,
+                  onEdit({
                     slot,
                     value: { ...gearPiece, augmented: isChecked },
                   })

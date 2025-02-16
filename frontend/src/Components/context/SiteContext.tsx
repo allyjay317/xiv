@@ -81,7 +81,6 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
 
   const saveGearSets = useCallback(
     async (newGearSets: GearSet[]) => {
-      debugger
       if (!selectedCharacter || !id) return API_REQUEST_RESULT.NOT_LOGGED_IN
       let gearSets = characters[selectedCharacter].gearSets
       if (newGearSets.length) {
