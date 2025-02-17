@@ -43,7 +43,7 @@ export const FLOOR_1 = [
 ]
 
 export const SLOT_INFO: Record<
-  Slot | UpgradeItem,
+  Partial<Slot | UpgradeItem>,
   { floor: 1 | 2 | 3 | 4; tomeCost: number; bookCost: number; name: string, icon: string }
 > = {
   [Slot.BODY]: {

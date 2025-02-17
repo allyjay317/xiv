@@ -24,7 +24,7 @@ export type SiteValues = {
   }: {
     id: string
     slot: Slot
-    value: GearPiece
+    value: Partial<GearPiece>
   }) => void
   addGearSet: (gearSet: GearSet) => void
   deleteGearSet: (id: string) => void

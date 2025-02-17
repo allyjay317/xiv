@@ -30,6 +30,7 @@ export type GearPiece = {
   source: GearSource
   have: boolean
   augmented: boolean
+  priority: number
 }
 
 export type GearSet = {

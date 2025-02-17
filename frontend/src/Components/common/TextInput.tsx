@@ -24,11 +24,13 @@ export function TextInput({
   onChange,
   value,
   size = 'S',
+  width,
   ...inputProps
 }: {
   onChange: (s: string) => void
   value: string
   size?: Size
+  width?: number
 } & Partial<
   Omit<
     React.ComponentProps<'input'>,
@@ -44,6 +46,8 @@ export function TextInput({
       style={{
         fontSize: `${getSize(size)}px`,
         height: `${getSize(size) / 10}rem`,
+        minWidth: `${width}px`,
+        width: `${width}px`,
       }}
       type="text"
       onChange={onInputChange}

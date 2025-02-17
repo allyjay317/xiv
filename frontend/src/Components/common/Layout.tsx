@@ -49,11 +49,13 @@ export function FlexColumn({
   justify,
   wrap,
   gap,
+  style,
   ...props
 }: Props) {
   return (
     <FlexDivCol
       style={{
+        ...style,
         alignContent: align,
         justifyItems: justify,
         flexWrap: wrap,

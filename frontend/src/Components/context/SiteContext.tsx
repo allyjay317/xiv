@@ -191,7 +191,15 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
   )
 
   const updateGearPiece = useCallback(
-    ({ id, slot, value }: { id: string; slot: Slot; value: GearPiece }) => {
+    ({
+      id,
+      slot,
+      value,
+    }: {
+      id: string
+      slot: Slot
+      value: Partial<GearPiece>
+    }) => {
       if (!selectedCharacter) return
       const gearSets = characters[selectedCharacter].gearSets || []
       const gearSetValue = gearSets.find((gs) => gs.id === id)
@@ -200,7 +208,10 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
       }
       const newGearSet: GearSet = {
         ...gearSetValue,
-        items: { ...gearSetValue.items, [slot]: value },
+        items: {
+          ...gearSetValue.items,
+          [slot]: { ...gearSetValue.items[slot], ...value },
+        },
       }
       updateGearSet(newGearSet)
     },

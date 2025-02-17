@@ -88,7 +88,7 @@ export function GearPieceDisplay({
     if (source !== gearPiece.source) {
       onEdit({
         slot,
-        value: { augmented: false, have: false, source },
+        value: { ...gearPiece, augmented: false, have: false, source },
       })
     }
     setIsEditing(false)
