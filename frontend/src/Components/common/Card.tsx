@@ -2,14 +2,29 @@ import { Color } from '../../utils/colorSchemes'
 import { Type } from './Type'
 import { Draggable } from '@hello-pangea/dnd'
 import styled from '@emotion/styled'
+import { Button } from './Button'
+import { Separator } from './Layout'
+
+type Action = {
+  label: string
+  onClick: VoidFunction
+}
 
 type CardProps = {
   children: React.ReactNode
   title?: string
   style?: React.CSSProperties
+  actions?: Action[]
+  width?: string
 }
 
-export function Card({ children, title, style }: CardProps) {
+export function Card({
+  children,
+  title,
+  style,
+  actions = [],
+  width,
+}: CardProps) {
   return (
     <div
       style={{
@@ -22,10 +37,22 @@ export function Card({ children, title, style }: CardProps) {
         maxHeight: 'fit-content',
         gap: 4,
         border: `1px solid ${Color.bg1}`,
+        width,
         ...style,
       }}
     >
-      {title && <Type size="M">{title}</Type>}
+      <div style={{ display: 'flex' }}>
+        {title && (
+          <Type size="M" style={{ flexGrow: 2 }}>
+            {title}
+          </Type>
+        )}
+
+        {actions.map((action) => (
+          <Button label={action.label} onClick={action.onClick} />
+        ))}
+      </div>
+      {(title || actions.length > 0) && <Separator />}
       {children}
     </div>
   )
@@ -49,6 +76,7 @@ export function DragableCard({
   index,
   title,
   children,
+  actions = [],
 }: CardProps & { id: string; index: number }) {
   return (
     <Draggable draggableId={id} index={index}>
@@ -58,7 +86,12 @@ export function DragableCard({
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          {title && <Type size="M">{title}</Type>}
+          <div>
+            {title && <Type size="M">{title}</Type>}
+            {actions.map((action) => (
+              <Button label={action.label} onClick={action.onClick} />
+            ))}
+          </div>
           {children}
         </Container>
       )}

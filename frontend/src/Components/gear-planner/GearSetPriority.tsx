@@ -4,6 +4,7 @@ import { GearSetHeader } from '../GearSet/GearSetHeader'
 import { Type } from '../common/Type'
 import { useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd'
+import { useSiteContext } from '../context/useSiteContext'
 
 function GearSetDisplay({ gs }: { gs?: GearSet }) {
   if (!gs) return null
@@ -22,6 +23,7 @@ function GearSetDisplay({ gs }: { gs?: GearSet }) {
 
 export function GearSetPriority({ gearSets }: { gearSets: GearSet[] }) {
   const [sets, setSets] = useState(gearSets)
+  const { saveGearSets } = useSiteContext()
 
   const onDragEnd = ({ destination, source, draggableId }: DropResult) => {
     if (!destination) return
@@ -39,7 +41,20 @@ export function GearSetPriority({ gearSets }: { gearSets: GearSet[] }) {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Card title="Gear Set Priority" style={{ width: '200px' }}>
+      <Card
+        title="Gear Set Priority"
+        actions={[
+          {
+            label: 'Save',
+            onClick: () => {
+              saveGearSets({
+                existingGearSets: sets,
+              })
+            },
+          },
+        ]}
+        width="300px"
+      >
         <Droppable droppableId="gsPrios">
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>

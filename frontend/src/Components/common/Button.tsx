@@ -26,7 +26,8 @@ const ButtonContainer = styled.div<{ state?: 'disabled' | 'default' }>`
     background-color: ${Color.bg2};
     left: 5px';
     top: 5px;
-  };`}
+  };`};
+  height: min-content;
 `
 
 export function Button({
@@ -73,6 +74,7 @@ export function Button({
         color: state === 'disabled' ? Color.bg3 : (style?.color ?? Color.fg1),
         cursor: state === 'disabled' ? 'default' : 'pointer',
         width: width,
+        height: 'min-content',
       }}
       state={state}
       {...buttonProps}

@@ -1,4 +1,6 @@
 import styled from '@emotion/styled'
+import { Color } from '../../utils/colorSchemes'
+import { CSSProperties } from 'react'
 
 const FlexDiv = styled.div`
   display: flex;
@@ -61,5 +63,26 @@ export function FlexColumn({
     >
       {children}
     </FlexDivCol>
+  )
+}
+
+export function Separator({
+  color = Color.bg1,
+  type = 'solid',
+  margin = 8,
+}: {
+  color?: string
+  type?: CSSProperties['borderStyle']
+  margin?: number
+}) {
+  return (
+    <div
+      style={{
+        height: '0px',
+        width: '100%',
+        borderBottom: `1px ${type} ${color}`,
+        margin: `${margin}px 0`,
+      }}
+    />
   )
 }

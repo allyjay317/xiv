@@ -47,7 +47,7 @@ export function GearSetList() {
           ])
         }}
         onSave={async () => {
-          await saveGearSets(newGearSets)
+          await saveGearSets({ newGearSets })
           setNewGearSets([])
         }}
         hasNewGearSets={newGearSets.length > 0}
