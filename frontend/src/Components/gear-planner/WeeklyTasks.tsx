@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Card } from '../common/Card'
-import { Task } from './Task'
+import { Task, TTask } from './Task'
 
-const defaultTasks = [
+const defaultTasks: TTask[] = [
   {
     label: 'Clear floor 1',
     value: false,
@@ -38,12 +38,21 @@ const defaultTasks = [
 export function WeeklyTasks() {
   const [tasks, setTasks] = useState(defaultTasks)
 
-  const onTaskChange = (id: number, isChecked: boolean) => {
-    setTasks(tasks.map((t) => (t.id === id ? { ...t, value: isChecked } : t)))
+  function onTaskChange<T>(id: string | number, value: T) {
+    const newTasks: TTask[] = tasks.map((t) => {
+      if (t.id === id) {
+        return {
+          ...t,
+          value,
+        } as TTask
+      }
+      return t
+    })
+    setTasks(newTasks)
   }
 
   return (
-    <Card title="Weekly Tasks">
+    <Card title="Weekly Tasks" width="25%">
       {tasks.map((t) => (
         <div style={{ margin: '4px auto' }}>
           <Task task={t} onChange={onTaskChange} />
@@ -54,6 +63,9 @@ export function WeeklyTasks() {
           task={{
             label: 'Buy Healer Pants (Raid)',
             type: 'bool',
+
+            id: 'r1',
+            value: false,
           }}
           onChange={() => {}}
         />
@@ -61,8 +73,11 @@ export function WeeklyTasks() {
       <Card title="Buy Tome Gear">
         <Task
           task={{
-            label: 'Buy Healer Body (Tome)',
+            label: 'Buy Healer Pants (Raid)',
             type: 'bool',
+
+            id: 'r1',
+            value: false,
           }}
           onChange={() => {}}
         />

@@ -1,18 +1,15 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Type } from '../common/Type'
 import { useSiteContext } from '../context/useSiteContext'
-import { GearSetPriority } from './GearSetPriority'
 import { WeeklyTasks } from './WeeklyTasks'
-import { PriorityItems } from './PriorityItems'
 import { FlexColumn, FlexRow } from '../common/Layout'
 import { Card } from '../common/Card'
 import { Button } from '../common/Button'
 import { Color } from '../../utils/colorSchemes'
-import { GearSet } from '../../utils/types'
+import { Task } from './Task'
 
 export function GearPlannerPage() {
   const { characters, selectedCharacter } = useSiteContext()
-  const [priorityOpen, setPriorityOpen] = useState<null | GearSet>(null)
 
   const lastTuesday = useMemo(() => {
     const today = new Date(Date.now())
@@ -27,10 +24,6 @@ export function GearPlannerPage() {
     () => (selectedCharacter ? characters[selectedCharacter] : undefined),
     [selectedCharacter],
   )
-
-  useEffect(() => {
-    console.log(priorityOpen)
-  }, [priorityOpen])
 
   return (
     <FlexColumn
@@ -77,37 +70,39 @@ export function GearPlannerPage() {
       </FlexRow>
 
       {displayedCharacter && (
-        <>
-          <FlexRow
-            gap="16"
-            justify="center"
-            style={{ position: 'relative', width: 'min-content' }}
-          >
-            <WeeklyTasks />
-            <GearSetPriority
-              gearSets={displayedCharacter.gearSets}
-              onOpenPriority={(gs: GearSet) => {
-                if (priorityOpen?.id === gs.id) {
-                  setPriorityOpen(null)
-                } else {
-                  setPriorityOpen(gs)
-                }
+        <FlexRow justify="center" style={{ width: '100%' }}>
+          <WeeklyTasks />
+          <WeeklyTasks />
+          <Card title="Looking Forward" width="25%">
+            <Task
+              task={{
+                label: '3/25',
+                type: 'display',
+                editable: false,
+                id: 0,
+                value: 'Buy Tome Pants',
               }}
             />
-            <div
-              style={{
-                visibility: priorityOpen !== null ? 'visible' : 'hidden',
-                position: 'absolute',
-                right: -300,
+            <Task
+              task={{
+                label: '4/01',
+                type: 'display',
+                editable: false,
+                id: 0,
+                value: 'Buy Tome Head',
               }}
-            >
-              <PriorityItems
-                onClose={() => setPriorityOpen(null)}
-                gearSet={priorityOpen}
-              />
-            </div>
-          </FlexRow>
-        </>
+            />
+            <Task
+              task={{
+                label: '4/01',
+                type: 'display',
+                editable: false,
+                id: 0,
+                value: 'Buy Raid Hands',
+              }}
+            />
+          </Card>
+        </FlexRow>
       )}
     </FlexColumn>
   )

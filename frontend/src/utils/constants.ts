@@ -146,94 +146,125 @@ export const SLOT_INFO: Record<
   },
 }
 
-export const JobInfo: Record<Jobs, { name?: string; icon?: string }> = {
+enum Role {
+  TANK,
+  HEALER,
+  MELEE,
+  RANGED,
+  CASTER,
+  LIMITED
+}
+
+export const JobInfo: Record<Jobs, { name?: string; icon?: string, role: Role }> = {
   [Jobs.AST]: {
     icon: ast,
     name: 'Astrologian',
+    role: Role.HEALER
   },
   [Jobs.BLM]: {
     icon: blm,
     name: 'Black Mage',
+    role: Role.CASTER
   },
   [Jobs.BLU]: {
     icon: blu,
     name: 'Blue Mage',
+    role: Role.LIMITED
   },
   [Jobs.BRD]: {
     icon: brd,
     name: 'Bard',
+    role: Role.RANGED
   },
   [Jobs.DNC]: {
     icon: dnc,
     name: 'Dancer',
+    role: Role.RANGED
   },
   [Jobs.DRG]: {
     icon: drg,
     name: 'Dragoon',
+    role: Role.MELEE
   },
   [Jobs.DRK]: {
     icon: drk,
     name: 'Dark Knight',
+    role: Role.TANK
   },
   [Jobs.PCT]: {
     icon: pct,
     name: 'Pictomancer',
+    role: Role.CASTER
   },
   [Jobs.GNB]: {
     icon: gnb,
     name: 'Gunbreaker',
+    role: Role.TANK
   },
   [Jobs.MCH]: {
     icon: mch,
     name: 'Machinist',
+    role: Role.RANGED
   },
   [Jobs.MNK]: {
     icon: mnk,
     name: 'Monk',
+    role: Role.MELEE
   },
   [Jobs.NIN]: {
     icon: nin,
     name: 'Ninja',
+    role: Role.MELEE
   },
   [Jobs.PLD]: {
     icon: pld,
     name: 'Paladin',
+    role: Role.TANK
   },
   [Jobs.RDM]: {
     icon: rdm,
     name: 'Red Mage',
+    role: Role.CASTER
   },
   [Jobs.RPR]: {
     icon: rpr,
     name: 'Reaper',
+    role: Role.MELEE
   },
   [Jobs.SAM]: {
     icon: sam,
     name: 'Samurai',
+    role: Role.MELEE
   },
   [Jobs.SCH]: {
     icon: sch,
     name: 'Scholar',
+    role: Role.HEALER
   },
   [Jobs.SGE]: {
     icon: sge,
     name: 'Sage',
+    role: Role.HEALER
   },
   [Jobs.SMN]: {
     icon: smn,
     name: 'Summoner',
+    role: Role.CASTER
   },
   [Jobs.VPR]: {
     icon: vpr,
     name: 'Viper',
+    role: Role.MELEE
   },
   [Jobs.WAR]: {
     icon: war,
     name: 'Warrior',
+    role: Role.TANK
   },
   [Jobs.WHM]: {
     icon: whm,
     name: 'White Mage',
+    role: Role.HEALER
   },
 }
 

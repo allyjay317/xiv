@@ -163,6 +163,7 @@ export function useCharacters(id: string | null) {
         }
       })
       setCharacters(nc)
+      setselectedCharacter(Object.keys(nc)[0])
     },
     [],
   )

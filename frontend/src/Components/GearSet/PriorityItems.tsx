@@ -49,7 +49,6 @@ export function PriorityItems({
     })
     updateGearSet(newGearSet)
   }
-  console.log(gearSet)
 
   return (
     <DragAndDropCard<TPItem>
