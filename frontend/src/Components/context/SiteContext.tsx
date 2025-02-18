@@ -121,6 +121,7 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
           items: gs.items,
           index: i,
           id: gs.id,
+          archived: gs.archived,
         })),
       )
       setCharacters({

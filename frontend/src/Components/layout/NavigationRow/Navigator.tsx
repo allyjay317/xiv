@@ -12,6 +12,7 @@ export const Navigator = () => {
   const { isLoggedIn } = useSiteContext()
   const navigate = useNavigate()
   const query = useMediaQuery('only screen and (min-width: 1020px)')
+  const dev = localStorage.getItem('dev')
 
   return (
     <div
@@ -40,10 +41,12 @@ export const Navigator = () => {
         {isLoggedIn && (
           <>
             <Button label="Gear Sets" onClick={() => navigate('/gear-sets')} />
-            <Button
-              label="Gear Planner"
-              onClick={() => navigate('gear-planner')}
-            />
+            {dev === 'true' && (
+              <Button
+                label="Gear Planner"
+                onClick={() => navigate('gear-planner')}
+              />
+            )}
             <Button
               label="Stats"
               onClick={() => {

@@ -11,6 +11,7 @@ export type GearSetRequest = {
   job: Jobs
   items: Record<Slot, GearPiece>
   index: number
+  archived?: boolean
 }
 
 async function getGearsets(characterId: string) {
@@ -60,10 +61,24 @@ async function bulkUpdateGearSets(
   await axios.patch(`${baseUrl}/${characterId}`, gearSets)
 }
 
+async function loadArchivedSets(characterId: string){
+  const res = await axios.get(`${baseUrl}/${characterId}?archived`)
+  if (res.status !== 200) {
+    throw new Error('Not Found')
+  }
+  if (res.data) {
+    return res.data as Array<GearSet>
+  } else {
+    return [] as Array<GearSet>
+  }
+}
+
 export const gearsets = {
   getGearsets,
   deleteGearSet,
   createGearSet,
   updateGearSet,
-  bulkUpdateGearSets
+  bulkUpdateGearSets,
+  loadArchivedSets
 }
+

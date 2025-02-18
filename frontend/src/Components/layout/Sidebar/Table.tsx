@@ -45,24 +45,26 @@ export function Table({ rows, title }: { title: string; rows: Row[] }) {
         {title}
       </Type>
       <table>
-        <tr>
-          <th style={{ width: '100px' }}>
-            <Type bold size="XS">
-              Slot
-            </Type>
-          </th>
-          <th>
-            <Type bold size="XS">
-              Raid
-            </Type>
-          </th>
-          <th>
-            <Type bold size="XS">
-              Tomestone
-            </Type>
-          </th>
-        </tr>
-        {rowDisplay}
+        <thead>
+          <tr>
+            <th style={{ width: '100px' }}>
+              <Type bold size="XS">
+                Slot
+              </Type>
+            </th>
+            <th>
+              <Type bold size="XS">
+                Raid
+              </Type>
+            </th>
+            <th>
+              <Type bold size="XS">
+                Tomestone
+              </Type>
+            </th>
+          </tr>
+        </thead>
+        <tbody>{rowDisplay}</tbody>
       </table>
     </>
   ) : null

@@ -39,6 +39,7 @@ export type GearSet = {
   job: Jobs
   items: Record<Slot, GearPiece>
   modified: boolean
+  archived: boolean
 }
 
 export enum DataCenter {

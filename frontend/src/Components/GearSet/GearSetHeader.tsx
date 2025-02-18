@@ -54,7 +54,17 @@ export function GearSetHeader({
         />
         {!compact && <Job gearSet={gearSet} />}
         {isJobMenuOpen && (
-          <div style={{ position: 'absolute', backgroundColor: Color.bg1 }}>
+          <div
+            style={{
+              position: 'absolute',
+              backgroundColor: Color.bg1,
+              left: '50%',
+              transform: 'translate(-50%)',
+              zIndex: 999,
+              padding: '16px',
+              borderRadius: '15px',
+            }}
+          >
             <JobSelector
               type="list"
               onSelect={onChangeJob}

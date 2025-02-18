@@ -11,7 +11,7 @@ import { Button } from './Button'
 import { Separator } from './Layout'
 import { JSX } from 'react'
 
-type Action = {
+export type Action = {
   label: string
   onClick: VoidFunction
 }
@@ -56,7 +56,11 @@ export function Card({
         )}
 
         {actions.map((action) => (
-          <Button label={action.label} onClick={action.onClick} />
+          <Button
+            key={`action-${action.label}`}
+            label={action.label}
+            onClick={action.onClick}
+          />
         ))}
       </div>
       {(title || actions.length > 0) && <Separator />}

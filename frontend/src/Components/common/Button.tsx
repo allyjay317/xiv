@@ -79,7 +79,9 @@ export function Button({
       state={state}
       {...buttonProps}
     >
-      <Type size={adjustedSize}>{label}</Type>
+      <Type size={adjustedSize} style={{ userSelect: 'none' }}>
+        {label}
+      </Type>
     </ButtonContainer>
   )
 }

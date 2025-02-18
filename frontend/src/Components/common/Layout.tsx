@@ -58,6 +58,8 @@ export function FlexColumn({
         ...style,
         alignContent: align,
         justifyItems: justify,
+        alignItems: align,
+        justifyContent: justify,
         flexWrap: wrap,
         gap: `${gap}px`,
       }}
