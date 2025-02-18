@@ -1,15 +1,36 @@
 import { Color } from '../../utils/colorSchemes'
 import { Type } from './Type'
-import { Draggable } from '@hello-pangea/dnd'
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from '@hello-pangea/dnd'
 import styled from '@emotion/styled'
+import { Button } from './Button'
+import { Separator } from './Layout'
+import { JSX } from 'react'
+
+export type Action = {
+  label: string
+  onClick: VoidFunction
+}
 
 type CardProps = {
   children: React.ReactNode
   title?: string
   style?: React.CSSProperties
+  actions?: Action[]
+  width?: string
 }
 
-export function Card({ children, title, style }: CardProps) {
+export function Card({
+  children,
+  title,
+  style,
+  actions = [],
+  width,
+}: CardProps) {
   return (
     <div
       style={{
@@ -20,12 +41,29 @@ export function Card({ children, title, style }: CardProps) {
         position: 'relative',
         padding: '16px',
         maxHeight: 'fit-content',
+        minWidth: actions.length ? `${150 + actions.length * 50}px` : undefined,
         gap: 4,
         border: `1px solid ${Color.bg1}`,
+        width,
         ...style,
       }}
     >
-      {title && <Type size="M">{title}</Type>}
+      <div style={{ display: 'flex' }}>
+        {title && (
+          <Type size="M" style={{ flexGrow: 2 }}>
+            {title}
+          </Type>
+        )}
+
+        {actions.map((action) => (
+          <Button
+            key={`action-${action.label}`}
+            label={action.label}
+            onClick={action.onClick}
+          />
+        ))}
+      </div>
+      {(title || actions.length > 0) && <Separator />}
       {children}
     </div>
   )
@@ -49,6 +87,7 @@ export function DragableCard({
   index,
   title,
   children,
+  actions = [],
 }: CardProps & { id: string; index: number }) {
   return (
     <Draggable draggableId={id} index={index}>
@@ -58,10 +97,67 @@ export function DragableCard({
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          {title && <Type size="M">{title}</Type>}
+          <div>
+            {title && <Type size="M">{title}</Type>}
+            {actions.map((action) => (
+              <Button label={action.label} onClick={action.onClick} />
+            ))}
+          </div>
           {children}
         </Container>
       )}
     </Draggable>
+  )
+}
+
+interface Identifyable {
+  id: string
+}
+
+export function DragAndDropCard<T extends Identifyable>({
+  items,
+  setItems,
+  id,
+  Component,
+  ...cardProps
+}: {
+  items: T[]
+  setItems: (value: T[]) => void
+  id: string
+  Component: ({ item }: { item: T }) => JSX.Element
+} & Omit<CardProps, 'children'>) {
+  const onDragEnd = ({ destination, source, draggableId }: DropResult) => {
+    if (!destination) return
+    if (destination.index === source.index) {
+      return
+    }
+    const movedItems = items.find((s) => s.id === draggableId)
+    if (!movedItems) return
+
+    const newItems = [...items]
+    newItems.splice(source.index, 1)
+    newItems.splice(destination.index, 0, movedItems)
+    setItems(newItems)
+  }
+
+  return (
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Card {...cardProps}>
+        <Droppable droppableId={id}>
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {items.map((s, index) => {
+                return (
+                  <DragableCard id={s.id} key={s.id} index={index}>
+                    <Component item={s} />
+                  </DragableCard>
+                )
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </Card>
+    </DragDropContext>
   )
 }

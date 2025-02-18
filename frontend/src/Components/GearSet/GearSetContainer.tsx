@@ -11,6 +11,7 @@ import { GearSetHeader } from './GearSetHeader'
 import { FlexColumn, FlexRow } from '../common/Layout'
 import { Type } from '../common/Type'
 import { useMediaQuery } from '@react-hook/media-query'
+import { Icon } from '../common/IconButton'
 
 const Container = styled.div`
   background-color: ${Color.bg1};
@@ -55,15 +56,18 @@ export function GearSetContainer({
   gearSet,
   onDelete,
   onEdit,
+  onArchive,
 }: {
   gearSet: GearSet
   onDelete: (id: string) => void
-  onEdit: (gearSet: GearSet) => void
+  onEdit?: (gearSet: GearSet) => void
+  onArchive?: (id: string) => void
 }) {
   const { characters, saveGearSet, selectedCharacter } = useSiteContext()
   const query = useMediaQuery('only screen and (min-width: 1020px)')
 
   const onGearPieceEdit = ({ slot, value }: { slot: Slot; value: GearPiece }) =>
+    onEdit &&
     onEdit({
       ...gearSet,
       items: {
@@ -92,14 +96,22 @@ export function GearSetContainer({
       })
   }, [characters])
 
+  const editText = useMemo(() => {
+    if (gearSet.archived) {
+      return <Icon type="cancel" />
+    }
+    if (gearSet.modified) {
+      return (
+        <Type size="M">{gearSet.id.startsWith(NEW_GEARSET) ? 'New' : '*'}</Type>
+      )
+    }
+    return <></>
+  }, [gearSet])
+
   return (
     <Container>
       <Menu compact={!query}>
-        {gearSet.modified && (
-          <Type size="M">
-            {gearSet.id.startsWith(NEW_GEARSET) ? 'New' : '*'}
-          </Type>
-        )}
+        {editText}
 
         <MenuButton
           direction="right"
@@ -112,6 +124,15 @@ export function GearSetContainer({
               label: 'Delete',
               onClick: () => onDelete(gearSet.id),
             },
+            ...(onArchive !== undefined
+              ? [
+                  {
+                    type: 'button',
+                    label: gearSet.archived ? 'Unarchive' : 'Archive',
+                    onClick: () => onArchive(gearSet.id),
+                  } as TMenuItem,
+                ]
+              : []),
             {
               type: 'menu',
               label: 'Copy to another character',

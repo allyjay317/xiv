@@ -30,12 +30,13 @@ export function Page() {
         <div
           style={{
             position: 'absolute',
+            zIndex: 999,
           }}
         >
           <Button
             label={isSidebarOpen ? '<' : '>'}
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            style={{ zIndex: 999 }}
+            style={{ zIndex: 99999 }}
             size="XS"
           />
         </div>

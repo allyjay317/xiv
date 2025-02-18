@@ -19,7 +19,18 @@ const icons = {
   save: AiOutlineSave,
 }
 
-export type Icon = keyof typeof icons
+export type TIcon = keyof typeof icons
+
+export function Icon({
+  type,
+  color = Color.fg1,
+}: {
+  type: TIcon
+  color?: string
+}) {
+  const Component = icons[type]
+  return <Component color={color} />
+}
 
 export function IconButton({
   onClick,
@@ -28,7 +39,7 @@ export function IconButton({
   style,
 }: {
   onClick: () => void
-  icon: Icon
+  icon: TIcon
   size?: Size
   style?: React.CSSProperties
 }) {

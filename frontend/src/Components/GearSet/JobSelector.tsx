@@ -36,6 +36,12 @@ export function JobSelector({
       value: job,
       img: JobInfo[job as unknown as Jobs].icon,
     }))
+    .sort((a, b) => {
+      return (
+        JobInfo[a.value as unknown as Jobs].role -
+        JobInfo[b.value as unknown as Jobs].role
+      )
+    })
 
   switch (type) {
     case 'select':
@@ -45,7 +51,7 @@ export function JobSelector({
         <FlexRow
           wrap="wrap"
           style={{
-            width: size === 'XL' ? undefined : '300px',
+            width: size === 'XL' ? undefined : '250px',
           }}
         >
           {options.map((o) => (

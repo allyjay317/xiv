@@ -80,9 +80,15 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
   )
 
   const saveGearSets = useCallback(
-    async (newGearSets: GearSet[]) => {
+    async ({
+      newGearSets = [],
+      existingGearSets,
+    }: {
+      newGearSets?: GearSet[]
+      existingGearSets?: GearSet[]
+    }) => {
       if (!selectedCharacter || !id) return API_REQUEST_RESULT.NOT_LOGGED_IN
-      let gearSets = characters[selectedCharacter].gearSets
+      let gearSets = existingGearSets ?? characters[selectedCharacter].gearSets
       if (newGearSets.length) {
         const gsPromises: Promise<GearSet>[] = []
         newGearSets.forEach((gs, i) => {
@@ -115,6 +121,7 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
           items: gs.items,
           index: i,
           id: gs.id,
+          archived: gs.archived,
         })),
       )
       setCharacters({
@@ -185,7 +192,15 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
   )
 
   const updateGearPiece = useCallback(
-    ({ id, slot, value }: { id: string; slot: Slot; value: GearPiece }) => {
+    ({
+      id,
+      slot,
+      value,
+    }: {
+      id: string
+      slot: Slot
+      value: Partial<GearPiece>
+    }) => {
       if (!selectedCharacter) return
       const gearSets = characters[selectedCharacter].gearSets || []
       const gearSetValue = gearSets.find((gs) => gs.id === id)
@@ -194,7 +209,10 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
       }
       const newGearSet: GearSet = {
         ...gearSetValue,
-        items: { ...gearSetValue.items, [slot]: value },
+        items: {
+          ...gearSetValue.items,
+          [slot]: { ...gearSetValue.items[slot], ...value },
+        },
       }
       updateGearSet(newGearSet)
     },

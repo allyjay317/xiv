@@ -3,9 +3,11 @@ import { Jobs } from '../../utils/types'
 import { Color } from '../../utils/colorSchemes'
 import { IconButton } from '../common/IconButton'
 import styled from '@emotion/styled'
-import { FlexColumn, FlexRow } from '../common/Layout'
+import { FlexRow } from '../common/Layout'
 import { JobSelector } from './JobSelector'
 import { useSiteContext } from '../context/useSiteContext'
+import { useMediaQuery } from '@react-hook/media-query'
+import { PriorityModal } from './PriorityModal'
 
 const AbsoluteContainer = styled.div`
   position: absolute;
@@ -34,18 +36,26 @@ export function Header({
 }) {
   const [isSetCreatorOpen, setIsSetCreatorOpen] = useState(false)
   const { modifiedGearSets } = useSiteContext()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const query = useMediaQuery('only screen and (min-width: 1020px)')
 
   return (
-    <AbsoluteContainer>
+    <AbsoluteContainer style={{ left: query ? undefined : '32px' }}>
+      <PriorityModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <Container
         style={{
-          backgroundColor: isSetCreatorOpen ? Color.bg1 : undefined,
+          borderRadius: '15px',
+          backgroundColor: isSetCreatorOpen || !query ? Color.bg1 : undefined,
+          left: query ? undefined : 16,
         }}
         wrap="wrap"
       >
-        <FlexColumn
+        <div
           style={{
             marginRight: '16px',
+            display: 'flex',
+            flexDirection: query ? 'column' : 'row',
+            gap: query ? undefined : '16px',
           }}
         >
           <IconButton
@@ -55,10 +65,19 @@ export function Header({
               setIsSetCreatorOpen(!isSetCreatorOpen)
             }}
           />
-          {(modifiedGearSets || hasNewGearSets) && (
-            <IconButton icon="save" size="L" onClick={onSave} />
+          {!isSetCreatorOpen && (
+            <>
+              {(modifiedGearSets || hasNewGearSets) && !isSetCreatorOpen && (
+                <IconButton icon="save" size="L" onClick={onSave} />
+              )}
+              <IconButton
+                icon="menu"
+                size="L"
+                onClick={() => setIsModalOpen(true)}
+              />
+            </>
           )}
-        </FlexColumn>
+        </div>
         <FlexRow wrap="wrap">
           {isSetCreatorOpen && (
             <JobSelector

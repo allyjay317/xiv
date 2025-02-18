@@ -1,47 +1,14 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Type } from '../common/Type'
-import { Card } from '../common/Card'
-import { Task } from './Task'
 import { useSiteContext } from '../context/useSiteContext'
-import { Slot } from '../../utils/types'
-import { SLOT_INFO } from '../../utils/constants'
-import { GearSetPriority } from './GearSetPriority'
-
-const defaultTasks = [
-  {
-    label: 'Clear floor 1',
-    value: false,
-    type: 'bool',
-    id: 0,
-  },
-  {
-    label: 'Clear floor 2',
-    value: false,
-    type: 'bool',
-    id: 1,
-  },
-  {
-    label: 'Clear floor 3',
-    value: false,
-    type: 'bool',
-    id: 2,
-  },
-  {
-    label: 'Clear floor 4',
-    value: false,
-    type: 'bool',
-    id: 3,
-  },
-  {
-    label: 'Cap Tomes',
-    value: false,
-    type: 'bool',
-    id: 4,
-  },
-]
+import { WeeklyTasks } from './WeeklyTasks'
+import { FlexColumn, FlexRow } from '../common/Layout'
+import { Card } from '../common/Card'
+import { Button } from '../common/Button'
+import { Color } from '../../utils/colorSchemes'
+import { Task } from './Task'
 
 export function GearPlannerPage() {
-  const [tasks, setTasks] = useState(defaultTasks)
   const { characters, selectedCharacter } = useSiteContext()
 
   const lastTuesday = useMemo(() => {
@@ -58,60 +25,85 @@ export function GearPlannerPage() {
     [selectedCharacter],
   )
 
-  const onTaskChange = (id: number, isChecked: boolean) => {
-    setTasks(tasks.map((t) => (t.id === id ? { ...t, value: isChecked } : t)))
-  }
-
-  const priorityItems = useMemo(() => {
-    const newSI = { ...SLOT_INFO, [Slot.RING2]: undefined }
-    return Object.values(newSI).filter(
-      (si) => si && si?.bookCost !== 0 && si.tomeCost !== 0,
-    )
-  }, [])
-
   return (
-    <>
-      <Type size="M">Week of {lastTuesday.toLocaleDateString()}</Type>
-      <div style={{ display: 'flex', gap: '16px' }}>
-        {displayedCharacter && (
-          <>
-            <Card title="Weekly Tasks">
-              {tasks.map((t) => (
-                <Task task={t} onChange={onTaskChange} />
-              ))}
-              <Card title="Buy Raid Gear">
-                <Task
-                  task={{
-                    label: 'Buy Healer Pants (Raid)',
-                    type: 'bool',
-                  }}
-                  onChange={() => {}}
-                />
-              </Card>
-              <Card title="Buy Tome Gear">
-                <Task
-                  task={{
-                    label: 'Buy Healer Body (Tome)',
-                    type: 'bool',
-                  }}
-                  onChange={() => {}}
-                />
-              </Card>
-            </Card>
-            <GearSetPriority gearSets={displayedCharacter.gearSets} />
+    <FlexColumn
+      gap="16"
+      style={{ position: 'relative' }}
+      justify="center"
+      align="center"
+    >
+      <Card title="Currencies">
+        <FlexRow justify="center" align="center">
+          <Card title="Tomes">
+            <Type size="S">
+              <Type size="S">Total: 1500</Type>
+            </Type>
+          </Card>
+          <Card title="Floor 1 Books" style={{ height: '100%' }}>
+            <Type size="S">1</Type>
+          </Card>
+          <Card title="Floor 2 Books">
+            <Type size="S">2</Type>
+          </Card>
+          <Card title="Floor 3 Books">
+            <Type size="S">3</Type>
+          </Card>
+          <Card title="Floor 4 Books">
+            <Type size="S">4</Type>
+          </Card>
+        </FlexRow>
+      </Card>
+      <FlexRow align="center">
+        <Button label="<" />
+        <Type
+          size="M"
+          style={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 999,
+            backgroundColor: Color.ui,
+          }}
+        >
+          Week of {lastTuesday.toLocaleDateString()}
+        </Type>
+        <Button label=">" style={{ visibility: 'hidden' }} />
+      </FlexRow>
 
-            <Card title="Gear Priority">
-              {priorityItems.map((s) => {
-                return (
-                  <Card>
-                    <Type size="S">{s?.name}</Type>
-                  </Card>
-                )
-              })}
-            </Card>
-          </>
-        )}
-      </div>
-    </>
+      {displayedCharacter && (
+        <FlexRow justify="center" style={{ width: '100%' }}>
+          <WeeklyTasks />
+          <WeeklyTasks />
+          <Card title="Looking Forward" width="25%">
+            <Task
+              task={{
+                label: '3/25',
+                type: 'display',
+                editable: false,
+                id: 0,
+                value: 'Buy Tome Pants',
+              }}
+            />
+            <Task
+              task={{
+                label: '4/01',
+                type: 'display',
+                editable: false,
+                id: 0,
+                value: 'Buy Tome Head',
+              }}
+            />
+            <Task
+              task={{
+                label: '4/01',
+                type: 'display',
+                editable: false,
+                id: 0,
+                value: 'Buy Raid Hands',
+              }}
+            />
+          </Card>
+        </FlexRow>
+      )}
+    </FlexColumn>
   )
 }

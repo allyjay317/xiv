@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Button } from './Button'
 import { ImgButton } from './ImgButton'
-import { Icon, IconButton } from './IconButton'
+import { TIcon, IconButton } from './IconButton'
 import { Size } from '../../utils/types'
 
 type TButton = {
@@ -16,7 +16,7 @@ type TImgButton = {
 
 type TIconButton = {
   type: 'icon'
-  icon: Icon
+  icon: TIcon
   color: string
 }
 

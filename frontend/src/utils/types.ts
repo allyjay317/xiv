@@ -30,6 +30,7 @@ export type GearPiece = {
   source: GearSource
   have: boolean
   augmented: boolean
+  priority: number
 }
 
 export type GearSet = {
@@ -38,6 +39,7 @@ export type GearSet = {
   job: Jobs
   items: Record<Slot, GearPiece>
   modified: boolean
+  archived: boolean
 }
 
 export enum DataCenter {

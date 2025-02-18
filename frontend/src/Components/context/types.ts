@@ -24,7 +24,7 @@ export type SiteValues = {
   }: {
     id: string
     slot: Slot
-    value: GearPiece
+    value: Partial<GearPiece>
   }) => void
   addGearSet: (gearSet: GearSet) => void
   deleteGearSet: (id: string) => void
@@ -41,6 +41,6 @@ export type SiteValues = {
   ) => Promise<API_REQUEST_RESULT | Error>
   deleteCharacter: (characterId: number) => Promise<API_REQUEST_RESULT | Error>
   updateCharacter: (characterId: number) => Promise<API_REQUEST_RESULT | Error>
-  saveGearSets: (newGearSets: GearSet[]) => Promise<API_REQUEST_RESULT | Error>
+  saveGearSets: (props: {existingGearSets?: GearSet[], newGearSets?: GearSet[]}) => Promise<API_REQUEST_RESULT | Error>
   modifiedGearSets: boolean
 }
