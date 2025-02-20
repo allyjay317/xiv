@@ -57,8 +57,7 @@ export function IconButton({
       style={{
         cursor: 'pointer',
         display: 'inline-block',
-        marginLeft: '8px',
-        width: '16px',
+        margin: '8px',
         ...style,
       }}
     >

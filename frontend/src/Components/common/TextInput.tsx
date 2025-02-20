@@ -25,6 +25,7 @@ export function TextInput({
   value,
   size = 'S',
   width,
+  style,
   ...inputProps
 }: {
   onChange: (s: string) => void
@@ -32,10 +33,7 @@ export function TextInput({
   size?: Size
   width?: number
 } & Partial<
-  Omit<
-    React.ComponentProps<'input'>,
-    'onChange' | 'value' | 'style' | 'css' | 'size'
-  >
+  Omit<React.ComponentProps<'input'>, 'onChange' | 'value' | 'css' | 'size'>
 >) {
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value)
@@ -48,6 +46,7 @@ export function TextInput({
         height: `${getSize(size) / 10}rem`,
         minWidth: `${width}px`,
         width: `${width}px`,
+        ...style,
       }}
       type="text"
       onChange={onInputChange}

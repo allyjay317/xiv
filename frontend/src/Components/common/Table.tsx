@@ -26,12 +26,14 @@ export function Table<T>({
   title,
   size = 'XS',
   pivot: iPivot = false,
+  allowPivot,
 }: {
   columns: Array<TCol<T>>
-  title: string
+  title?: string
   rows: T[]
   size?: Size
   pivot?: boolean
+  allowPivot?: boolean
 }) {
   const [pivot, setPivot] = useState(iPivot)
 
@@ -41,7 +43,9 @@ export function Table<T>({
         <Type bold size="M" style={{ flexGrow: 2 }}>
           {title}
         </Type>
-        <Button label="Pivot" onClick={() => setPivot(!pivot)} />
+        {allowPivot && (
+          <Button label="Pivot" onClick={() => setPivot(!pivot)} />
+        )}
       </div>
       <table style={{ width: '100%' }}>
         {pivot ? (
