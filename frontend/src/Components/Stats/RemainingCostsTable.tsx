@@ -4,6 +4,7 @@ import { useSiteContext } from '../context/useSiteContext'
 import { UpgradeItem } from '../../utils/types'
 import { getStats } from '../../utils/utils'
 import { SLOT_INFO } from '../../utils/constants'
+import { Card } from '../common/Card'
 
 type RemainingRow = {
   name: string
@@ -69,7 +70,7 @@ export function RemainingCostsTable() {
   }, [characters])
 
   return (
-    <div style={{ width: '500px' }}>
+    <Card style={{ maxWidth: '500px' }} title="Remaining Costs">
       <Table
         columns={[
           {
@@ -114,10 +115,9 @@ export function RemainingCostsTable() {
           },
         ]}
         rows={rows}
-        title="Remaining Costs"
         size="S"
         pivot
       />
-    </div>
+    </Card>
   )
 }

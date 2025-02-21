@@ -23,7 +23,7 @@ const ModalContainer = styled.div`
   top: 50%;
   left: 50%;
   padding: 20px;
-  border: 1px solid #888;
+  border: 1px solid ${Color.fg1};
   width: fit-content;
   border-radius: 15px;
   position: absolute;

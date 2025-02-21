@@ -22,7 +22,7 @@ export function Select({
       }}
       style={{
         backgroundColor: Color.bg1,
-        border: '1px solid #ccc',
+        border: `1px solid ${Color.fg3}`,
         borderRadius: '4px',
         color: Color.fg1,
         display: 'inline',

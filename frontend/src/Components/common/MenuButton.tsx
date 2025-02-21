@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Button } from './Button'
 import { ImgButton } from './ImgButton'
 import { TIcon, IconButton } from './IconButton'
 import { Size } from '../../utils/types'
+import { Color } from '../../utils/colorSchemes'
 
 type TButton = {
   type: 'button'
@@ -40,6 +41,8 @@ export type TMenuItem = TButtonMenuItem | TSubMenuItem
 
 type ButtonConfig = TButton | TImgButton | TIconButton
 
+console.log(window.innerWidth)
+
 export function MenuButton({
   label,
   style,
@@ -64,6 +67,7 @@ export function MenuButton({
   size?: Size
 }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [buttonRef, setButtonRef] = useState<Element | null>(null)
 
   const menuStyles: React.CSSProperties = useMemo(() => {
     switch (direction) {
@@ -139,41 +143,29 @@ export function MenuButton({
       {isOpen && (
         <>
           <div
+            ref={setButtonRef}
             style={{
               position: 'absolute',
-              backgroundColor: 'white',
+              backgroundColor: Color.fg1,
               width: menuWidth,
               zIndex: '200',
               display: 'flex',
               flexDirection: 'column',
+              right:
+                buttonRef &&
+                buttonRef.getBoundingClientRect().right > window.innerWidth
+                  ? 0
+                  : undefined,
+              left:
+                buttonRef && buttonRef.getBoundingClientRect().left < 0
+                  ? 0
+                  : undefined,
               ...menuStyles,
             }}
             color="white"
           >
             {menuItems.map((mi) => {
               return <MenuItem {...mi} width={menuWidth} />
-              // if (mi.type === 'button') {
-              //   return (
-              //     <Button
-              //       label={mi.label}
-              //       onClick={mi.onClick}
-              //       width={menuWidth}
-              //     />
-              //   )
-              // } else {
-              //   return (
-              //     <div
-              //       onMouseOver={(e) => {
-              //         e.stopPropagation()
-              //         e.preventDefault()
-              //         mi.onClick()
-              //         e.target.dispatchEvent()
-              //       }}
-              //     >
-              //       {mi.label}
-              //     </div>
-              //   )
-              // }
             })}
           </div>
         </>

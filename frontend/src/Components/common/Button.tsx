@@ -6,11 +6,11 @@ import { Size } from '../../utils/types'
 import { useMemo } from 'react'
 
 const ButtonContainer = styled.div<{ state?: 'disabled' | 'default' }>`
-  background-color: ${Color.bg1};
-  border: 1px solid ${Color.fg1};
+  background-color: ${Color.accent};
+  border: 1px solid ${Color.fg3};
   border-radius: 4px;
   cursor: pointer;
-  filter: drop-shadow(7px 5px 4px rgba(0, 0, 0, 0.25));
+
   padding: 12px 10px;
   text-align: center;
   box-sizing: border-box;
@@ -22,8 +22,9 @@ const ButtonContainer = styled.div<{ state?: 'disabled' | 'default' }>`
     props.state === 'disabled'
       ? ''
       : `&:hover {
-    filter: drop-shadow(15px 10px 4px rgba(0, 0, 0, 0.25));
-    background-color: ${Color.bg2};
+    filter: drop-shadow(7px 5px 4px ${Color.rgba(Color.fg1, 0.25)});
+    background-color: ${Color.accent2};
+    color: ${Color.fg3};
     left: 5px';
     top: 5px;
   };`};
@@ -37,6 +38,7 @@ export function Button({
   state,
   width = 'fit-content',
   size = 'S',
+  innerRef,
   ...buttonProps
 }: {
   label: string
@@ -45,6 +47,7 @@ export function Button({
   state?: 'default' | 'disabled'
   width?: string
   size?: Size
+  innerRef?: React.RefObject<HTMLDivElement | null>
 } & React.ComponentProps<'div'>) {
   const query = useMediaQuery('only screen and (min-width: 1020px)')
   const baseOnClick = (e: React.SyntheticEvent) => {
@@ -71,11 +74,12 @@ export function Button({
       onClick={baseOnClick}
       style={{
         ...style,
-        color: state === 'disabled' ? Color.bg3 : (style?.color ?? Color.fg1),
+        //color: state === 'disabled' ? Color.bg3 : (style?.color ?? Color.fg1),
         cursor: state === 'disabled' ? 'default' : 'pointer',
         width: width,
         height: 'min-content',
       }}
+      ref={innerRef}
       state={state}
       {...buttonProps}
     >

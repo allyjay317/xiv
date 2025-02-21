@@ -4,7 +4,7 @@ import { CharacterInfo } from '../context/types'
 import { v4 as uuidv4 } from 'uuid'
 import { useMemo, useState } from 'react'
 import { API_REQUEST_RESULT } from '../../utils/constants'
-import ClipLoader from 'react-spinners/ClipLoader'
+import Spinner from 'react-spinners/BarLoader'
 import { Color } from '../../utils/colorSchemes'
 import { useSiteContext } from '../context/useSiteContext'
 
@@ -67,10 +67,21 @@ export function Character({ character }: { character: CharacterInfo }) {
       />
       {!verified ? (
         <>
-          <Type size="S">Place</Type>
-          <Type size="S">{verifyPhrase}</Type>
-          <Type size="S">in your bio to verify</Type>
-          <Button label="verify" onClick={onVerify} />
+          <div style={{ width: '300px' }}>
+            <Type size="S">Place</Type>
+            <Type
+              size="S"
+              style={{
+                backgroundColor: Color.bg1,
+                border: `1px dashed ${Color.fg1}`,
+                margin: '4px 0',
+              }}
+            >
+              {verifyPhrase}
+            </Type>
+            <Type size="S">in your bio to verify</Type>
+          </div>
+          {!isLoading && <Button label="Verify" onClick={onVerify} />}
 
           <Type size="S" color="red">
             {error}
@@ -82,7 +93,7 @@ export function Character({ character }: { character: CharacterInfo }) {
           <Button label="Delete" onClick={onDelete} />
         </div>
       )}
-      <ClipLoader color={Color.fg1} loading={isLoading} />
+      <Spinner color={Color.fg1} loading={isLoading} />
       {error}
     </div>
   )

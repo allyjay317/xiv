@@ -13,7 +13,7 @@ import { useMediaQuery } from '@react-hook/media-query'
 
 const GearPieceContainer = styled.div<{ compact?: boolean }>`
   background-color: ${Color.bg2};
-  border: 1px solid ${Color.fg1};
+  border: 1px solid ${Color.bg3};
   border-radius: 16px;
   overflow: hidden;
   padding: 8px;
