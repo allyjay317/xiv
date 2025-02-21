@@ -96,7 +96,7 @@ export function GearPieceDisplay({
 
   const isLeftSide = useMemo(
     () =>
-      [Slot.BODY, Slot.FEET, Slot.HANDS, Slot.HEAD, Slot.HEAD].includes(slot),
+      [Slot.BODY, Slot.FEET, Slot.HANDS, Slot.HEAD, Slot.LEGS].includes(slot),
     [slot],
   )
 
