@@ -20,6 +20,16 @@ type TCol<T> = {
   type?: TColType
 }
 
+const TableElement = ({
+  children,
+  i,
+}: {
+  children: React.ReactNode
+  i: number
+}) => {
+  return i === 0 ? <thead>{children}</thead> : <tbody>{children}</tbody>
+}
+
 export function Table<T>({
   columns,
   rows,
@@ -52,37 +62,39 @@ export function Table<T>({
           <>
             {columns.map((c, i) => {
               return (
-                <tr>
-                  {i !== 0 ? (
-                    <Cell
-                      key={c.label}
-                      value={c.label}
-                      size={size}
-                      type={c.type === 'name' ? c.type : 'string'}
-                    />
-                  ) : (
-                    <th />
-                  )}
-                  {rows.map((r) => {
-                    const h = r[columns[i].key]
-                    return i === 0 ? (
+                <TableElement i={i} key={String(c.key)}>
+                  <tr>
+                    {i !== 0 ? (
                       <Cell
                         key={c.label}
-                        type={c.type === 'name' ? c.type : 'string'}
-                        value={h}
+                        value={c.label}
                         size={size}
-                        header
+                        type={c.type === 'name' ? c.type : 'string'}
                       />
                     ) : (
-                      <Cell
-                        key={String(c)}
-                        size={size}
-                        value={h}
-                        type={columns[i].type}
-                      />
-                    )
-                  })}
-                </tr>
+                      <th />
+                    )}
+                    {rows.map((r) => {
+                      const h = r[columns[i].key]
+                      return i === 0 ? (
+                        <Cell
+                          key={`${String(c.key)} - ${h} - ${c.label}`}
+                          type={c.type === 'name' ? c.type : 'string'}
+                          value={h}
+                          size={size}
+                          header
+                        />
+                      ) : (
+                        <Cell
+                          key={`${String(c.key)} - ${h} - ${c.label}`}
+                          size={size}
+                          value={h}
+                          type={columns[i].type}
+                        />
+                      )
+                    })}
+                  </tr>
+                </TableElement>
               )
             })}
           </>
@@ -97,8 +109,8 @@ export function Table<T>({
                 </th>
               ))}
             </tr>
-            {rows.map((row) => (
-              <Row key={String(row)} columns={columns} row={row} size={size} />
+            {rows.map((row, i) => (
+              <Row key={`row- ${i}`} columns={columns} row={row} size={size} />
             ))}
           </>
         )}

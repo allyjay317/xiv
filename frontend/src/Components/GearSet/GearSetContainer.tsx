@@ -15,8 +15,8 @@ import { Icon } from '../common/IconButton'
 
 const Container = styled.div`
   background-color: ${Color.bg1};
-  border: 1px solid ${Color.fg1};
-  border-radius: 5%;
+  border: 2px solid ${Color.bg3};
+  border-radius: 15px;
   padding: 16px;
   position: relative;
   width: fit-content;

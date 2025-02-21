@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { useSiteContext } from '../context/useSiteContext'
 import { FlexColumn, FlexRow } from '../common/Layout'
 import { Button } from '../common/Button'
+import { Color } from '../../utils/colorSchemes'
 
 function GearSetDisplay({
   gs,
@@ -42,7 +43,7 @@ function GearSetDisplay({
             height: 0,
             borderTop: '35px solid transparent',
             borderBottom: '35px solid transparent',
-            borderRight: '35px solid black',
+            borderRight: `35px solid ${Color.bg1}`,
             // border: 'solid black',
             // borderWidth: '0 16px 16px 0',
             // display: 'inline-block',

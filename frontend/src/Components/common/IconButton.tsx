@@ -9,6 +9,7 @@ import {
 import { AiOutlineSave } from 'react-icons/ai'
 import { Size } from '../../utils/types'
 import { getSize } from './utils'
+import { useState } from 'react'
 
 const icons = {
   pen: BsFillPencilFill,
@@ -37,12 +38,15 @@ export function IconButton({
   icon,
   size = 'S',
   style,
+  innerRef,
 }: {
   onClick: () => void
   icon: TIcon
   size?: Size
   style?: React.CSSProperties
+  innerRef?: React.RefObject<HTMLDivElement | null>
 }) {
+  const [isHovered, setIsHovered] = useState(false)
   const Component = icons[icon]
   const sizeVal = getSize(size)
 
@@ -57,13 +61,16 @@ export function IconButton({
       style={{
         cursor: 'pointer',
         display: 'inline-block',
-        margin: '8px',
+        margin: 'auto',
         ...style,
       }}
+      ref={innerRef}
     >
       <Component
-        color={Color.fg1}
-        style={{ height: sizeVal, width: sizeVal }}
+        color={isHovered ? Color.darken(Color.fg1, 5) : Color.fg1}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{ height: sizeVal, width: sizeVal, cursor: 'pointer' }}
       />
     </div>
   )

@@ -52,7 +52,7 @@ export function CharacterPanel() {
         <FlexColumn
           gap={4}
           justify="flex-start"
-          style={{ padding: '8px 0', margin: '8px 0' }}
+          style={{ padding: '8px 0', margin: '8px 0', position: 'relative' }}
         >
           <Type size="S">New Character</Type>
           <img style={{ width: '256px', height: '256px' }} />
@@ -100,6 +100,12 @@ export function CharacterPanel() {
                 size="XL"
                 onClick={() => {
                   setIsAddingCharacter(true)
+                }}
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
                 }}
               />
               <Spinner color={Color.fg1} loading={isLoading} />

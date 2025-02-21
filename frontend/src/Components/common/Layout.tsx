@@ -71,7 +71,7 @@ export function FlexColumn({
 }
 
 export function Separator({
-  color = Color.bg1,
+  color = Color.fg3,
   type = 'solid',
   margin = 8,
 }: {

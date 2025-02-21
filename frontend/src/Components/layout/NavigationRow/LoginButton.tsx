@@ -26,7 +26,7 @@ export function LoginButton({
         },
         { label: 'Logout', onClick: logOut, type: 'button' },
       ]}
-      direction="left"
+      direction="down"
       config={{
         type: 'img',
         img: `https://cdn.discordapp.com/avatars/${userInfo.discord_id}/${userInfo.avatar}`,
