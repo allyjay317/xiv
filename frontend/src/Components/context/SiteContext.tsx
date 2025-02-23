@@ -102,8 +102,8 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
                   items: gs.items,
                   index: gearSets.length + i,
                 })
-                .then(({ id: gsId }) => {
-                  resolve({ ...gs, id: gsId })
+                .then((gearSet) => {
+                  resolve(gearSet)
                 })
                 .catch(reject)
             }),

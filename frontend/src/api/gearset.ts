@@ -41,9 +41,8 @@ async function createGearSet(characterId: string, gearSet: GearSetRequest) {
   if (!res.data.id) {
     throw new Error('Id missing')
   }
-  return {
-    id: res.data.id as string,
-  }
+  return res.data as GearSet
+  
 }
 
 async function updateGearSet(
