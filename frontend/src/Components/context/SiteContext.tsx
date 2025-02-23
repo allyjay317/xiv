@@ -202,19 +202,35 @@ export const SiteProvider = (props: { children: React.ReactNode }) => {
       value: Partial<GearPiece>
     }) => {
       if (!selectedCharacter) return
-      const gearSets = characters[selectedCharacter].gearSets || []
-      const gearSetValue = gearSets.find((gs) => gs.id === id)
-      if (!gearSetValue) {
+      const changedGearSets = characters[selectedCharacter].gearSets.filter(
+        (gs) => {
+          if (gs.id === id) return true
+          const sets = Object.values(gs.items).find((p) => p.id === value.id)
+          return sets !== undefined
+        },
+      )
+      // const gearSets = characters[selectedCharacter].gearSets || []
+      // const gearSetValue = gearSets.find((gs) => gs.id === id)
+      if (changedGearSets.length === 0) {
         return
       }
-      const newGearSet: GearSet = {
-        ...gearSetValue,
-        items: {
-          ...gearSetValue.items,
-          [slot]: { ...gearSetValue.items[slot], ...value },
-        },
-      }
-      updateGearSet(newGearSet)
+      const newCharacter = { ...characters[selectedCharacter] }
+      changedGearSets.forEach((gearSetValue) => {
+        const newGearSet: GearSet = {
+          ...gearSetValue,
+          items: {
+            ...gearSetValue.items,
+            [slot]: { ...gearSetValue.items[slot], ...value },
+          },
+        }
+        newCharacter.gearSets = newCharacter.gearSets.map((gs) => {
+          if (gs.id === gearSetValue.id) {
+            return { ...newGearSet, modified: true }
+          }
+          return gs
+        })
+      })
+      setCharacters({ ...characters, [selectedCharacter]: newCharacter })
     },
     [characters, selectedCharacter, updateGearSet],
   )

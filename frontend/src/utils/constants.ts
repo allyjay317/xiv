@@ -146,10 +146,12 @@ export const SLOT_INFO: Record<
   },
 }
 
-enum Role {
+export enum Role {
   TANK,
   HEALER,
-  MELEE,
+  STRIKING,
+  MAIMING,
+  SCOUTING,
   RANGED,
   CASTER,
   LIMITED
@@ -184,7 +186,7 @@ export const JobInfo: Record<Jobs, { name?: string; icon?: string, role: Role }>
   [Jobs.DRG]: {
     icon: drg,
     name: 'Dragoon',
-    role: Role.MELEE
+    role: Role.MAIMING
   },
   [Jobs.DRK]: {
     icon: drk,
@@ -209,12 +211,12 @@ export const JobInfo: Record<Jobs, { name?: string; icon?: string, role: Role }>
   [Jobs.MNK]: {
     icon: mnk,
     name: 'Monk',
-    role: Role.MELEE
+    role: Role.STRIKING
   },
   [Jobs.NIN]: {
     icon: nin,
     name: 'Ninja',
-    role: Role.MELEE
+    role: Role.SCOUTING
   },
   [Jobs.PLD]: {
     icon: pld,
@@ -229,12 +231,12 @@ export const JobInfo: Record<Jobs, { name?: string; icon?: string, role: Role }>
   [Jobs.RPR]: {
     icon: rpr,
     name: 'Reaper',
-    role: Role.MELEE
+    role: Role.MAIMING
   },
   [Jobs.SAM]: {
     icon: sam,
     name: 'Samurai',
-    role: Role.MELEE
+    role: Role.STRIKING
   },
   [Jobs.SCH]: {
     icon: sch,
@@ -254,7 +256,7 @@ export const JobInfo: Record<Jobs, { name?: string; icon?: string, role: Role }>
   [Jobs.VPR]: {
     icon: vpr,
     name: 'Viper',
-    role: Role.MELEE
+    role: Role.SCOUTING
   },
   [Jobs.WAR]: {
     icon: war,

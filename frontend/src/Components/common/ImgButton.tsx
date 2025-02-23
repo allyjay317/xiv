@@ -25,16 +25,17 @@ export function ImgButton({
   src: string
   onClick: VoidFunction
   size: Size
-  innerRef?: React.RefObject<HTMLDivElement | null>
+  innerRef?: React.RefCallback<Element>
 }) {
   return (
-    <div ref={innerRef}>
+    <div>
       <Image
         color={color || Color.fg1}
         size={getSize(size)}
         src={src}
         onClick={onClick}
         aria-label={label}
+        ref={innerRef}
       />
     </div>
   )

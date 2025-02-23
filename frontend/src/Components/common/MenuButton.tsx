@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Button } from './Button'
 import { ImgButton } from './ImgButton'
 import { TIcon, IconButton } from './IconButton'
 import { Size } from '../../utils/types'
 import { Color } from '../../utils/colorSchemes'
+import styled from '@emotion/styled'
 
 type TButton = {
   type: 'button'
@@ -41,7 +42,30 @@ export type TMenuItem = TButtonMenuItem | TSubMenuItem
 
 type ButtonConfig = TButton | TImgButton | TIconButton
 
-console.log(window.innerWidth)
+const MRoot = styled.div<{ width: string; isOpen: boolean }>`
+  position: absolute;
+  background-color: ${Color.fg1};
+  width: ${(props) => props.width};
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  ${(props) => (props.isOpen ? '' : 'visibility: hidden;')}
+`
+
+const MButton = styled.div<{
+  hover: boolean
+}>`
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+  ${(props) =>
+    props.hover
+      ? `&:hover ${MRoot} {
+    visibility: visible;
+  }`
+      : ''};
+`
 
 export function MenuButton({
   label,
@@ -52,7 +76,7 @@ export function MenuButton({
   width = '100px',
   menuWidth = '100px',
   config = { type: 'button' },
-  hover,
+  hover = false,
   size = 'S',
 }: {
   label: string
@@ -67,31 +91,58 @@ export function MenuButton({
   size?: Size
 }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [menuRef, setMenuRef] = useState<Element | null>(null)
   const [buttonRef, setButtonRef] = useState<Element | null>(null)
 
   const menuStyles: React.CSSProperties = useMemo(() => {
+    const rect = menuRef ? menuRef.getBoundingClientRect() : undefined
+    const offScreenRight =
+      rect && rect.right > window.innerWidth ? 0 : undefined
+    const offScreenLeft = rect && rect.left < 0 ? 0 : undefined
+
+    const down: React.CSSProperties = {
+      bottom: -48 * menuItems.length,
+      right: offScreenRight,
+      left: offScreenLeft,
+    }
+    const left: React.CSSProperties = {
+      left: `-${menuWidth}`,
+      top: 0,
+    }
+    const right: React.CSSProperties = {
+      right: `-${menuWidth}`,
+      top: 0,
+    }
+
+    const up: React.CSSProperties = {
+      top: -48 * menuItems.length,
+      flexDirection: 'column-reverse',
+      right: offScreenRight,
+      left: offScreenLeft,
+    }
+
     switch (direction) {
       case 'down':
-        return {
-          bottom: -48 * menuItems.length,
-        }
+        return rect && rect.bottom > window.innerHeight ? up : down
       case 'left':
-        return {
-          left: `-${menuWidth}`,
-          top: 0,
-        }
+        return rect && rect.left < 0 ? right : left
       case 'right':
-        return {
-          right: `-${menuWidth}`,
-          top: 0,
-        }
+        return rect && rect.right > window.innerWidth ? left : right
       case 'up':
-        return {
-          top: -48 * menuItems.length,
-          flexDirection: 'column-reverse',
-        }
+        return rect && rect.top < 0 ? down : up
     }
-  }, [direction])
+  }, [direction, menuRef])
+
+  useEffect(() => {
+    const listener = (e: MouseEvent) => {
+      if (e.target === buttonRef) return
+      setIsOpen(false)
+    }
+    window.addEventListener('click', listener)
+    return () => {
+      window.removeEventListener('click', listener)
+    }
+  }, [buttonRef])
 
   const Component = useMemo(() => {
     switch (config.type) {
@@ -103,8 +154,9 @@ export function MenuButton({
             state={state}
             width={width}
             style={style}
-            onMouseOver={hover ? () => setIsOpen(true) : undefined}
-            //onMouseLeave={hover ? () => setIsOpen(false) : undefined}
+            innerRef={setButtonRef}
+            // onMouseOver={hover ? () => setIsOpen(true) : undefined}
+            // onMouseLeave={hover ? () => setIsOpen(false) : undefined}
           />
         )
       case 'img':
@@ -115,6 +167,7 @@ export function MenuButton({
             src={config.img}
             onClick={() => setIsOpen(!isOpen)}
             size={size}
+            innerRef={setButtonRef}
           />
         )
       case 'icon':
@@ -123,54 +176,40 @@ export function MenuButton({
             onClick={() => setIsOpen(!isOpen)}
             icon={config.icon}
             size={size}
+            innerRef={setButtonRef}
           />
         )
     }
   }, [config.type, isOpen, state, width, style, label, setIsOpen])
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        display: 'inline-block',
-        verticalAlign: 'middle',
-        height: '100%',
-      }}
-      onBlur={() => setIsOpen(false)}
+    <MButton
+      // onBlur={() => {
+      //   setIsOpen(false)
+      // }}
+      className="menu-button"
       tabIndex={1}
+      hover={hover}
     >
       {Component}
-      {isOpen && (
-        <>
-          <div
-            ref={setButtonRef}
-            style={{
-              position: 'absolute',
-              backgroundColor: Color.fg1,
-              width: menuWidth,
-              zIndex: '200',
-              display: 'flex',
-              flexDirection: 'column',
-              right:
-                buttonRef &&
-                buttonRef.getBoundingClientRect().right > window.innerWidth
-                  ? 0
-                  : undefined,
-              left:
-                buttonRef && buttonRef.getBoundingClientRect().left < 0
-                  ? 0
-                  : undefined,
-              ...menuStyles,
-            }}
-            color="white"
-          >
-            {menuItems.map((mi) => {
-              return <MenuItem {...mi} width={menuWidth} />
-            })}
-          </div>
-        </>
-      )}
-    </div>
+      <>
+        <MRoot
+          width={menuWidth}
+          ref={setMenuRef}
+          style={menuStyles}
+          isOpen={isOpen}
+          className="menu"
+        >
+          {menuItems.map((mi) => {
+            return (
+              <div className="menu-item">
+                <MenuItem {...mi} width={menuWidth} />
+              </div>
+            )
+          })}
+        </MRoot>
+      </>
+    </MButton>
   )
 }
 

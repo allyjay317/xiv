@@ -22,19 +22,21 @@ type CardProps = {
   style?: React.CSSProperties
   actions?: Action[]
   width?: string
+  color?: string
 }
 
 export function Card({
   children,
   title,
   style,
+  color = Color.bg2,
   actions = [],
   width,
 }: CardProps) {
   return (
     <div
       style={{
-        backgroundColor: Color.bg2,
+        backgroundColor: color,
         // display: ref ? 'default' : 'flex',
         flexDirection: 'column',
         filter: `drop-shadow(3px 3px ${Color.bg1})`,

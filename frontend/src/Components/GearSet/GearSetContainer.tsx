@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { ComponentProps, useMemo } from 'react'
+import { ComponentProps, useMemo, useState } from 'react'
 
 import { GearPieceDisplay } from './GearPiece'
 import { GearPiece, GearSet, Jobs, Slot } from '../../utils/types'
@@ -12,6 +12,7 @@ import { FlexColumn, FlexRow } from '../common/Layout'
 import { Type } from '../common/Type'
 import { useMediaQuery } from '@react-hook/media-query'
 import { Icon } from '../common/IconButton'
+import { LinkModal } from './LinkModal'
 
 const Container = styled.div`
   background-color: ${Color.bg1};
@@ -60,21 +61,26 @@ export function GearSetContainer({
 }: {
   gearSet: GearSet
   onDelete: (id: string) => void
-  onEdit?: (gearSet: GearSet) => void
+  onEdit?: (updateType: 'set' | 'piece', gearSet: GearSet, slot?: Slot) => void
   onArchive?: (id: string) => void
 }) {
   const { characters, saveGearSet, selectedCharacter } = useSiteContext()
   const query = useMediaQuery('only screen and (min-width: 1020px)')
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const onGearPieceEdit = ({ slot, value }: { slot: Slot; value: GearPiece }) =>
     onEdit &&
-    onEdit({
-      ...gearSet,
-      items: {
-        ...gearSet.items,
-        [slot]: value,
+    onEdit(
+      'piece',
+      {
+        ...gearSet,
+        items: {
+          ...gearSet.items,
+          [slot]: value,
+        },
       },
-    })
+      slot,
+    )
 
   const GearPiece = withProps(gearSet.job, onGearPieceEdit)
 
@@ -138,6 +144,11 @@ export function GearSetContainer({
               label: 'Copy to another character',
               menuItems: characterItems,
             },
+            {
+              type: 'button',
+              label: 'Link to other set',
+              onClick: () => setIsModalOpen(true),
+            },
           ]}
           config={{
             type: 'icon',
@@ -145,9 +156,18 @@ export function GearSetContainer({
             color: Color.fg1,
           }}
         />
+        <LinkModal
+          gearSet={gearSet}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </Menu>
 
-      <GearSetHeader gearSet={gearSet} compact={!query} onEdit={onEdit} />
+      <GearSetHeader
+        gearSet={gearSet}
+        compact={!query}
+        onEdit={(gs) => onEdit && onEdit('set', gs)}
+      />
       <FlexRow gap={gap}>
         <FlexColumn gap={gap}>
           <GearPiece
