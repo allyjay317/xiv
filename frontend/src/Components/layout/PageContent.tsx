@@ -43,6 +43,7 @@ export function PageContent({ sidebarOpen }: { sidebarOpen: boolean }) {
         padding: '15px',
         width: !sidebarOpen ? '100%' : `calc(100vw - ${SIDEBAR_WIDTH}px)`,
         transition: !sidebarOpen || resizing ? 'none' : 'width .5s ease-in-out',
+        scrollbarWidth: 'none',
       }}
     >
       <Outlet />

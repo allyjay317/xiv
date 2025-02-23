@@ -10,6 +10,7 @@ import { Checkbox } from '../common/Checkbox'
 
 import { ffIcons } from './util'
 import { useMediaQuery } from '@react-hook/media-query'
+import { isLeftSide } from '../../utils/utils'
 
 const GearPieceContainer = styled.div<{ compact?: boolean }>`
   background-color: ${Color.bg2};
@@ -94,11 +95,7 @@ export function GearPieceDisplay({
     setIsEditing(false)
   }
 
-  const isLeftSide = useMemo(
-    () =>
-      [Slot.BODY, Slot.FEET, Slot.HANDS, Slot.HEAD, Slot.HEAD].includes(slot),
-    [slot],
-  )
+  const leftSide = useMemo(() => isLeftSide(slot), [slot])
 
   return (
     <GearPieceContainer compact={!query}>
@@ -127,7 +124,7 @@ export function GearPieceDisplay({
             onClick={changeSource}
             raidImage={raidSourceImage}
             isWeapon={slot === Slot.WEAPON}
-            isLeftSide={isLeftSide}
+            isLeftSide={leftSide}
           />
         ) : (
           <>

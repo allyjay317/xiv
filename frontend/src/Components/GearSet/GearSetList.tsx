@@ -1,6 +1,6 @@
 import { GearSetContainer } from './GearSetContainer'
 import { Header } from './Header'
-import { GearSet, Jobs } from '../../utils/types'
+import { GearSet, Jobs, Slot } from '../../utils/types'
 import { gearSet } from '../../Fixtures/GearSet'
 import { useSiteContext } from '../context/useSiteContext'
 import { NEW_GEARSET } from '../context/constants'
@@ -17,6 +17,7 @@ export function GearSetList() {
     deleteGearSet,
     saveGearSets,
     updateGearSet,
+    updateGearPiece,
   } = useSiteContext()
   const [newGearSets, setNewGearSets] = useState<GearSet[]>([])
   const [archivedSets, setArchivedSets] = useState<GearSet[]>([])
@@ -29,13 +30,29 @@ export function GearSetList() {
   const onDelete = (id: string) =>
     setNewGearSets(newGearSets.filter((s) => s.id !== id))
 
-  const onEdit = (gearSet: GearSet) => {
+  const onEdit = (
+    updateType: 'set' | 'piece',
+    gearSet: GearSet,
+    slot?: Slot,
+  ) => {
     if (gearSet.id.startsWith(NEW_GEARSET)) {
       setNewGearSets(
         newGearSets.map((gs) => (gs.id === gearSet.id ? gearSet : gs)),
       )
     } else {
-      updateGearSet(gearSet)
+      switch (updateType) {
+        case 'set':
+          updateGearSet(gearSet)
+          break
+        case 'piece':
+          if (slot === undefined) break
+          updateGearPiece({
+            id: gearSet.id,
+            slot,
+            value: gearSet.items[slot],
+          })
+          break
+      }
     }
   }
 
@@ -50,7 +67,7 @@ export function GearSetList() {
 
   const getArchivedSets = async () => {
     const sets = await gearsets.loadArchivedSets(selectedCharacter ?? '')
-    debugger
+
     setArchivedSets(sets)
   }
 

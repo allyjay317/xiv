@@ -47,7 +47,7 @@ export function Button({
   state?: 'default' | 'disabled'
   width?: string
   size?: Size
-  innerRef?: React.RefObject<HTMLDivElement | null>
+  innerRef?: React.RefCallback<Element>
 } & React.ComponentProps<'div'>) {
   const query = useMediaQuery('only screen and (min-width: 1020px)')
   const baseOnClick = (e: React.SyntheticEvent) => {

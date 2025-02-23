@@ -1,6 +1,6 @@
 import { GearPiece, GearSet, GearSource, Jobs, Slot } from '../utils/types'
 
-const piece: Omit<GearPiece, 'source'> =  { augmented: false, have: false, priority: 0 }
+const piece: Omit<GearPiece, 'source'> =  { augmented: false, have: false, priority: 0, id: -1 }
 
 export const gearSet: GearSet = {
   id: '1',

@@ -2,7 +2,7 @@ import { GearSet } from '../../utils/types'
 import { DragAndDropCard } from '../common/Card'
 import { GearSetHeader } from './GearSetHeader'
 import { Type } from '../common/Type'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSiteContext } from '../context/useSiteContext'
 import { FlexColumn, FlexRow } from '../common/Layout'
 import { Button } from '../common/Button'
@@ -35,8 +35,11 @@ function GearSetDisplay({
         onClick={() => {
           onOpenPriority(gs)
         }}
+        style={{
+          backgroundColor: isSelected === gs.id ? Color.bg1 : Color.accent,
+        }}
       />
-      {isSelected === gs.id && (
+      {/* {isSelected === gs.id && (
         <div
           style={{
             width: 0,
@@ -55,9 +58,18 @@ function GearSetDisplay({
             transform: 'translate(0, -50%)',
           }}
         />
-      )}
+      )} */}
     </FlexRow>
   )
+}
+
+function compareGearSetIndicies(o: GearSet[], c: GearSet[]) {
+  let isDifferent = false
+  if (o.length != c.length) return true
+  o.forEach((gs, i) => {
+    isDifferent = isDifferent || gs.id !== c[i].id
+  })
+  return isDifferent
 }
 
 export function GearSetPriority({
@@ -76,30 +88,40 @@ export function GearSetPriority({
     setSets(gearSets)
   }, [gearSets])
 
+  const hasUnsavedChanges = useMemo(() => {
+    const isChanged = compareGearSetIndicies(gearSets, sets)
+    return isChanged
+  }, [sets, gearSets])
+
   return (
-    <DragAndDropCard<GearSet>
-      items={sets}
-      setItems={(i) => setSets(i)}
-      title="Gear Set Priority"
-      id="gsPrios"
-      Component={({ item }) => (
-        <GearSetDisplay
-          gs={item}
-          onOpenPriority={onOpenPriority}
-          isSelected={isSelected}
-        />
-      )}
-      actions={[
-        {
-          label: 'Save',
-          onClick: () => {
-            saveGearSets({
-              existingGearSets: sets,
-            })
-          },
-        },
-      ]}
-      width="300px"
-    />
+    <div style={{ height: '70vh', overflowY: 'auto', scrollbarWidth: 'none' }}>
+      <DragAndDropCard<GearSet>
+        items={sets}
+        setItems={(i) => setSets(i)}
+        title="Gear Set Priority"
+        id="gsPrios"
+        Component={({ item }) => (
+          <GearSetDisplay
+            gs={item}
+            onOpenPriority={onOpenPriority}
+            isSelected={isSelected}
+          />
+        )}
+        actions={
+          hasUnsavedChanges
+            ? [
+                {
+                  label: 'Save',
+                  onClick: () => {
+                    saveGearSets({
+                      existingGearSets: sets,
+                    })
+                  },
+                },
+              ]
+            : []
+        }
+      />
+    </div>
   )
 }

@@ -11,8 +11,10 @@ export function createTypeMap<T extends string>(map: StringMap<T>) {
 
 export function getStats(gearSets: GearSet[]) {
   const data = structuredClone(baseStats)
+  const handledIds: number[] = []
   gearSets.forEach((gs) => {
     Object.entries(gs.items).forEach(([slot, item]) => {
+      if(handledIds.includes(item.id)) return
       const name: keyof typeof data = (
         parseInt(slot) === Slot.RING2 ? Slot.RING1 : (slot as unknown as Slot)
       ) as keyof typeof data
@@ -31,6 +33,7 @@ export function getStats(gearSets: GearSet[]) {
           }
         }
       }
+      handledIds.push(item.id)
     })
   })
   return {
@@ -57,4 +60,8 @@ export function getStats(gearSets: GearSet[]) {
     ],
     floor4: [{ slot: Slot.WEAPON, ...data[Slot.WEAPON] }],
   }
+}
+
+export function isLeftSide(s: Slot){
+  return [Slot.BODY, Slot.FEET, Slot.HANDS, Slot.HEAD, Slot.LEGS].includes(s)
 }

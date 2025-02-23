@@ -44,7 +44,7 @@ export function IconButton({
   icon: TIcon
   size?: Size
   style?: React.CSSProperties
-  innerRef?: React.RefObject<HTMLDivElement | null>
+  innerRef?: React.RefCallback<Element>
 }) {
   const [isHovered, setIsHovered] = useState(false)
   const Component = icons[icon]

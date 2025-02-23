@@ -4,30 +4,33 @@ import { Modal } from '../common/Modal'
 import { GearSetPriority } from './GearSetPriority'
 import { PriorityItems } from './PriorityItems'
 import { useSiteContext } from '../context/useSiteContext'
+import { FlexRow } from '../common/Layout'
+import { Card } from '../common/Card'
 
-export function PriorityModal(props: { open: boolean; onClose: VoidFunction }) {
+export function PriorityModal({
+  onClose,
+  ...props
+}: {
+  open: boolean
+  onClose: VoidFunction
+}) {
   const { characters, selectedCharacter } = useSiteContext()
   const [priorityOpen, setPriorityOpen] = useState<null | GearSet>(null)
   const displayedCharacter = useMemo(
     () => (selectedCharacter ? characters[selectedCharacter] : undefined),
-    [selectedCharacter],
+    [selectedCharacter, characters],
   )
-
-  const piTop = useMemo(() => {
-    const sets = displayedCharacter?.gearSets
-    if (!sets) return { top: 0 }
-    const index = sets.findIndex((gs) => gs.id === priorityOpen?.id)
-    if (index && index >= sets.length / 2) {
-      return { bottom: 0 }
-    }
-    return { top: 0 }
-  }, [priorityOpen, displayedCharacter])
 
   if (!displayedCharacter) return null
 
+  const onModalClose = () => {
+    setPriorityOpen(null)
+    onClose()
+  }
+
   return (
-    <Modal {...props} title="Priority">
-      <div style={{ position: 'relative' }}>
+    <Modal onClose={onModalClose} {...props} title="Priority">
+      <FlexRow justify="center">
         <GearSetPriority
           gearSets={displayedCharacter.gearSets}
           onOpenPriority={(gs: GearSet) => {
@@ -39,20 +42,17 @@ export function PriorityModal(props: { open: boolean; onClose: VoidFunction }) {
           }}
           isSelected={priorityOpen?.id}
         />
-        <div
-          style={{
-            visibility: priorityOpen !== null ? 'visible' : 'hidden',
-            position: 'absolute',
-            left: 350,
-            ...piTop,
-          }}
-        >
-          <PriorityItems
-            onClose={() => setPriorityOpen(null)}
-            gearSet={priorityOpen}
-          />
-        </div>
-      </div>
+        {priorityOpen && (
+          <Card style={{ height: '65vh' }} title={priorityOpen.name}>
+            <FlexRow style={{ minWidth: '256px' }}>
+              <PriorityItems
+                onClose={() => setPriorityOpen(null)}
+                gearSet={priorityOpen}
+              />
+            </FlexRow>
+          </Card>
+        )}
+      </FlexRow>
     </Modal>
   )
 }

@@ -24,9 +24,12 @@ const ModalContainer = styled.div`
   left: 50%;
   padding: 20px;
   border: 1px solid ${Color.fg1};
-  width: fit-content;
+  min-width: 50%;
   border-radius: 15px;
   position: absolute;
+  max-height: 80%;
+  overflow-y: auto;
+  scrollbar-width: none;
 `
 
 const ModalHeader = styled.div`

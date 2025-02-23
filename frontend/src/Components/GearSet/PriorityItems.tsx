@@ -4,6 +4,7 @@ import { Type } from '../common/Type'
 import { SLOT_INFO } from '../../utils/constants'
 import { GearSet, Slot } from '../../utils/types'
 import { useSiteContext } from '../context/useSiteContext'
+import { Color } from '../../utils/colorSchemes'
 
 type TPItem = (typeof SLOT_INFO)[Slot.BODY] & { id: string; slot: Slot }
 
@@ -67,6 +68,7 @@ export function PriorityItems({
           onClick: onClose,
         },
       ]}
+      color={Color.bg1}
     />
   )
 }
